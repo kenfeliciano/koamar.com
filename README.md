@@ -1,3 +1,5 @@
+![CI](https://github.com/kenfeliciano/koamar.com/workflows/CI/badge.svg)
+
 # koamar.com
 
 > Source for koamar.com site and blog
