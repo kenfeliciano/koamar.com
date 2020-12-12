@@ -1,21 +1,17 @@
 import React from 'react'
-import { Link } from 'gatsby'
 
 import Layout from '../components/layout'
-import Image from '../components/image'
 import SEO from '../components/seo'
 
 const IndexPage = () => (
   <Layout>
     <SEO title='Home' />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to='/page-2/'>Go to page 2</Link> <br />
-    <Link to='/using-typescript/'>Go to "Using TypeScript"</Link>
+    <h2>Greetings folks,</h2>
+    <p>Welcome to KoaMar 2020</p>
+    <p>It's been 24 years, about time something happened!</p>
+    <hr />
+    But, nothing to see yet, so <a href='https://google.com'>search for someplace</a> better for now.
+    <h2>Be well!</h2>
   </Layout>
 )
 
