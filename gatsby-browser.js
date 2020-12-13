@@ -1,7 +1,7 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/browser-apis/
- */
+import * as React from 'react'
+import { App } from './src/components'
+import './src/styles/global.css'
 
-// You can delete this file if you're not using it
+export const wrapRootElement = ({ element }) => {
+  return <App>{element}</App>
+}
