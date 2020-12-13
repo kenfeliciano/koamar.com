@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.light {
+  --primary: #007889;
+  --background: #e5e7eb;
+  --surface: #ffffff;
+  --container: #d1d5db;
+  --branded-surface: #d1d5db;
+  --text: #1f2937;
+  --text-header: #09090a;
+  --link: #007889;
+  --muted: #4b5563;
+  --text-disabled: #6b7280;
+}
+
+.dark {
+  --primary: #f4901e;
+  --background: #1f2937;
+  --surface: #000000;
+  --container: #111827;
+  --branded-surface: #111a1c;
+  --text: #e5e7eb;
+  --text-header: #f3f4f6;
+  --link: #f4901e;
+  --muted: #9ca3af;
+  --text-disabled: #6b7280;
+}

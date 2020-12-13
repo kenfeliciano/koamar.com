@@ -6,12 +6,21 @@ import SEO from '../components/seo'
 const IndexPage = () => (
   <Layout>
     <SEO title='Home' />
-    <h2>Greetings folks,</h2>
+    <h1 className='text-xl2'>Greetings folks,</h1>
     <p>Welcome to KoaMar 2020</p>
     <p>It's been 24 years, about time something happened!</p>
     <hr />
-    But, nothing to see yet, so <a href='https://google.com'>search for someplace</a> better for now.
+    Not much to see yet, but...
+    <h2>Updates so far!</h2>
+    <ul>
+      <li className='list-disc'>
+        Dark Mode Implementation with <a href='https://tailwindcss.com'>Tailwind CSS</a>
+      </li>
+    </ul>
     <h2>Be well!</h2>
+    <p>
+      Still, probably best to <a href='https://google.com'>search for someplace</a> better for now.
+    </p>
   </Layout>
 )
 
