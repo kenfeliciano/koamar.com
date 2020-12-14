@@ -9,7 +9,7 @@ module.exports = {
         surface: 'var(--surface)',
         container: 'var(--container)',
         brandedSurface: 'var(--branded-surface)',
-        text: 'var(--text)',
+        body: 'var(--text)',
         header: 'var(--text-header)',
         link: 'var(--link)',
         muted: 'var(--muted)',
