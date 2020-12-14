@@ -14,9 +14,11 @@ Very empty! The first koamar.com started on Dec 21 so I give myself at least unt
 
 ## Acknowledgments
 
-Licensing ideas copied from [Dan Abramov's overreacted.io blog repo](https://github.com/gaearon/overreacted.io). I really like this idea! 🎉 I did add one. You can tell because it is the one that doesn't make as much sense.
+- Licensing ideas copied from [Dan Abramov's overreacted.io blog repo](https://github.com/gaearon/overreacted.io). I really like this idea! 🎉 I did add one. You can tell because it is the one that doesn't make as much sense.
+- [How to add dark mode to a Gatsby site | joshwcomeau.com](https://www.joshwcomeau.com/react/dark-mode/)
+- [FREE hands-on course about using Git in a professional team | ooloo.io](https://ooloo.io/project/github-flow)
 
-## See Also
+## Using
 
 - [`noffle/common-readme`](https://github.com/noffle/common-readme)
 - [Gatsby](https://www.gatsbyjs.com/)
