@@ -2,14 +2,12 @@ import * as React from 'react'
 
 import Layout from '../components/layout'
 import SEO from '../components/seo'
-import { Greeting, Hero } from '../components'
-import { greetingMessage } from '../utils'
+import { Hero } from '../components'
 
 const IndexPage = () => (
   <Layout>
     <SEO title='Home' />
-    {/* <h1 className='text-xl2'>Greetings folks,</h1> */}
-    <Greeting greetingMessage={greetingMessage()} />
+    <h1 className='text-xl2'>Hi all!</h1>
     <Hero />
     <hr />
     Not much to see yet, but...
