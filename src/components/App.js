@@ -1,8 +1,12 @@
 import * as React from 'react'
-import { ThemeProvider } from '../components'
+import { ThemeProvider, TimeOfDayProvider } from '../components'
 
 export const App = ({ children }) => {
-  return <ThemeProvider>{children}</ThemeProvider>
+  return (
+    <ThemeProvider>
+      <TimeOfDayProvider>{children}</TimeOfDayProvider>
+    </ThemeProvider>
+  )
 }
 
 export default App

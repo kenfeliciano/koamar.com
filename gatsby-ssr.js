@@ -23,12 +23,37 @@ const MagicScriptTag = () => {
         // color themes, let's default to 'light'.
         return 'light'
       }
-    
+
+      function getTimeOfDay() {
+        const today = new Date()
+
+        // This should still give me the correct time in another country right?
+        // I just want to be able to read what it returns!
+        const currentHour = today.toLocaleTimeString('pt-PT').slice(0, 2)
+
+        // Starting with a simple implementation without regard to sunrise / sunset
+        // It would be nice if it took that into account
+        switch (true) {
+          case currentHour < '12':
+            return 'morning'
+          case currentHour < '18':
+            return 'afternoon'
+          case currentHour <= '22':
+            return 'evening'
+          default:
+            return 'night'
+        }                
+      }
+
       const theme = getInitialTheme()
       
       const root = document.documentElement
       root.className = theme      
-      root.style.setProperty('--initial-theme', theme)
+      root.style.setProperty('--initial-theme', theme)    
+
+      const timeOfDay = getTimeOfDay()      
+      root.setAttribute('timeOfDay', timeOfDay)
+
     })()`
 
   // eslint-disable-next-line react/no-danger
