@@ -8,7 +8,7 @@
   --surface: #ffffff;
   --container: #d1d5db;
   --branded-surface: #d1d5db;
-  --text: #1f2937;
+  --text-body: #1f2937;
   --text-header: #09090a;
   --link: #007889;
   --muted: #4b5563;
@@ -21,7 +21,7 @@
   --surface: #000000;
   --container: #111827;
   --branded-surface: #111a1c;
-  --text: #e5e7eb;
+  --text-body: #e5e7eb;
   --text-header: #f3f4f6;
   --link: #f4901e;
   --muted: #9ca3af;
