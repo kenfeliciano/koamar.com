@@ -3,7 +3,7 @@ import * as React from 'react'
 export const Logo = ({ siteTitle }) => (
   <svg
     aria-labelledby={siteTitle}
-    title='KoaMar Logo'
+    title={`${siteTitle} Logo`}
     className='fill-current h-10'
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 38 11'
