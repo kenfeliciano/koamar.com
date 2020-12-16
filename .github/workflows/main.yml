@@ -5,8 +5,11 @@ name: CI
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+# It seems this CI runs twice when a pull_request is merged. It should only run once on the push.
+# Another CI that would run when a pull_request is submitted but before it is merged would be nice.
+# But, I'd want it to push to a different environment, not my production server as it is doing now!
+#  pull_request:
+#    branches: [main]
 
 jobs:
   build:
