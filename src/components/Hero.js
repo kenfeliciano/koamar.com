@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 export const Hero = () => (
-  <div className='bg-container p-4 rounded-lg shadow-lg'>
+  <div className='bg-container p-4 rounded-lg shadow-lg mb-4'>
     <p>
       Welcome to <span className='text-primary font-semibold'>KoaMar</span> in 2020, home of Ken Feliciano
     </p>
@@ -16,6 +16,6 @@ export const Hero = () => (
     </p>
     <p className='hidden sm:inline lg:hidden'>Documenting learning and creating stuff...for the future</p>
     <p className='sm:hidden'>Documenting learning and creating stuff</p>
-    <p>It's been 24 years, about time something happened!</p>
+    <p className='mb-0'>It's been 24 years, about time something happened!</p>
   </div>
 )
