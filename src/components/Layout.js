@@ -22,11 +22,11 @@ export const Layout = ({ children }) => {
         style={{
           margin: `0 auto`,
           maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
+          padding: `0 1.0rem 1.5rem`,
         }}
       >
-        <main>{children}</main>
-        <footer className='text-muted text-sm'>
+        <main className='mt-6'>{children}</main>
+        <footer className='text-muted text-sm mt-6'>
           © {new Date().getFullYear()}, Built with
           {` `}
           <a href='https://www.gatsbyjs.com'>Gatsby</a>

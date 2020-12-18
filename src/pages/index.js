@@ -6,7 +6,7 @@ import { Layout, Hero } from '../components'
 const IndexPage = () => (
   <Layout>
     <SEO title='Home' />
-    <h1 className='text-xl2 mt-4'>Hi all!</h1>
+    <h1>Hi all!</h1>
     <Hero />
     <p>Not much to see yet, but...</p>
     <div className='bg-container rounded-lg shadow-lg p-4'>
@@ -17,7 +17,7 @@ const IndexPage = () => (
         </li>
       </ul>
     </div>
-    <h2 className='mt-3'>Be well!</h2>
+    <h2>Be well!</h2>
     <p>
       Still, probably best to <a href='https://google.com'>search for someplace</a> better for now.
     </p>
