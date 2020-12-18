@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 
-import { Header } from '.'
+import { Header, ExternalLink } from '.'
 
 export const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -29,7 +29,7 @@ export const Layout = ({ children }) => {
         <footer className='text-muted text-sm mt-6'>
           © {new Date().getFullYear()}, Built with
           {` `}
-          <a href='https://www.gatsbyjs.com'>Gatsby</a>
+          <ExternalLink href='https://www.gatsbyjs.com'>Gatsby</ExternalLink>
         </footer>
       </div>
     </>

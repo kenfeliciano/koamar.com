@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import SEO from '../components/seo'
-import { Layout, Hero } from '../components'
+import { Layout, Hero, ExternalLink } from '../components'
 
 const IndexPage = () => (
   <Layout>
@@ -13,13 +13,14 @@ const IndexPage = () => (
       <h2>Updates so far!</h2>
       <ul>
         <li>
-          Dark Mode Implementation with <a href='https://tailwindcss.com'>Tailwind CSS</a>
+          Dark Mode Implementation with <ExternalLink href='https://tailwindcss.com'>Tailwind CSS</ExternalLink>
         </li>
       </ul>
     </div>
     <h2>Be well!</h2>
     <p>
-      Still, probably best to <a href='https://google.com'>search for someplace</a> better for now.
+      Still, probably best to <ExternalLink href='https://google.com'>search for someplace</ExternalLink> better for
+      now.
     </p>
   </Layout>
 )

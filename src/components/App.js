@@ -58,8 +58,34 @@ const GlobalStyles = createGlobalStyle`
       margin-top: 0;
     }
   }
-  
-  
+  .border-gradient {
+    border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%);
+    border-image-slice: 0 0 100 0;
+  }
+
+  .border-fadeaway {
+    border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%, transparent 100%);
+    border-image-slice: 0 0 100 0;
+  }
+
+  .inline-link {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none; 
+  }
+
+  .standalone-link {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .standalone-link:hover {
+    color: var(--primary);
+  }
+  .standalone-link:focus {
+    color: var(--primary);
+  }  
 `
 
 export const App = ({ children }) => {
