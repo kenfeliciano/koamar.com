@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     background-color: var(--background);
     color: var(--text-body);
-    font-family: georgia, serif;
+    font-family: open sans, georgia, serif;
     font-weight: normal;
     word-wrap: break-word;
     font-kerning: normal;
@@ -22,7 +22,7 @@ const GlobalStyles = createGlobalStyle`
   h1 {
     color: var(--text-header);
     font-size: 2.25rem;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    font-family: lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
     Helvetica Neue, sans-serif;
     font-weight: bold;
     line-height: 1;
@@ -34,7 +34,7 @@ const GlobalStyles = createGlobalStyle`
   h2 {
     margin-top: 1.5rem;
     color: var(--text-header);
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    font-family: lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
       Helvetica Neue, sans-serif;
     font-weight: bold;
     font-size: 1.5rem;
