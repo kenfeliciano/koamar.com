@@ -23,7 +23,7 @@ module.exports = {
         fonts: [
           `fira code`,
           `open sans\:400,400i,700,700i`,
-          `lato\:400,400i,700,700i`, // you can also specify font weights and styles
+          `lato\:400,400i,600,600i,700,700i`, // you can also specify font weights and styles
         ],
         display: 'swap', // uses other fonts while Google Fonts load. Recommended.
       },
