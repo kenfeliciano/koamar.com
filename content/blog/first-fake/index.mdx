@@ -1,0 +1,119 @@
+---
+title: Hello World!
+slug: first-fake
+date: 2020-12-19
+coverImage: ./nature.jpg
+excerpt: Mdx tests for rendering
+tags: [mdx, test, code, table]
+---
+
+# Heading 1
+
+**_Don't use Heading 1_**
+
+[x] Most of Markdown
+
+[ ] Footnotes
+
+[ ] Task Lists
+
+## Heading 2
+
+### Heading 3
+
+#### Heading 4
+
+##### Heading 5
+
+###### Heading 6
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. `Consecutivation`
+
+---
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. ~~consectetur adipiscing elit~~.
+
+> Be just what you is, not what you is not. Folks what do this has the happiest lot.
+
+Gimme some sort of text here so we can gaze at the slight indention of the lists!
+
+1. Showcase and embed your work with
+2. peach iced tea
+3. It is so hot
+
+- Horizontal rules
+- just show up from everywhere
+- if only it would remember I'm in a list
+
+## Picture test
+
+![Nature cover photo](./nature.jpg)
+
+## Simple code tests
+
+```html
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>KoaMar Home Page</title>
+  </head>
+
+  <body>
+    <p><img src="images/km2.JPG" alt="really ugly logo (15523 bytes)" width="269" height="59" /></p>
+    <p>Why are you here?</p>
+    <hr />
+    <a href="http://www.google.com">Go someplace better</a><br />
+  </body>
+</html>
+```
+
+---
+
+```css
+.gatsby-highlight pre[class~='language-js']::before {
+  content: 'js';
+  background: #f7df1e;
+  color: black;
+}
+```
+
+---
+
+```js
+import React from 'react'
+import Highlight, { defaultProps } from 'prism-react-renderer'
+import theme from 'prism-react-renderer/themes/vsDark'
+
+export const Code = ({ codeString, language, ...props }) => {
+  return (
+    <Highlight {...defaultProps} code={codeString} language={language} theme={theme}>
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <div className='gatsby-highlight' data-language={language}>
+          <pre className={className} style={style}>
+            {tokens.map((line, i) => (
+              <div {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span {...getTokenProps({ token, key })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        </div>
+      )}
+    </Highlight>
+  )
+}
+```
+
+## Table Test
+
+| Tables   |      Are      | Cool |      Are      |      Are      |
+| -------- | :-----------: | ---: | :-----------: | :-----------: |
+| col 1 is | left-aligned  | 1600 | left-aligned  | left-aligned  |
+| col 2 is |   centered    |   12 |   centered    |   centered    |
+| col 3 is | right-aligned |    1 | right-aligned | right-aligned |
+
+## Credits
+
+Photo by [Lukasz Szmigiel (@szmigieldesign)](https://unsplash.com/@szmigieldesign?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/nature?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText")

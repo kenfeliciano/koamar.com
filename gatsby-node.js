@@ -1,7 +1,27 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/node-apis/
- */
+exports.createPages = async ({ graphql, actions }) => {
+  const { data } = await graphql(`
+    query {
+      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+        edges {
+          node {
+            frontmatter {
+              slug
+            }
+            id
+          }
+        }
+      }
+    }
+  `)
 
-// You can delete this file if you're not using it
+  // Create single blog posts
+  data.allMdx.edges.forEach((edge) => {
+    const slug = edge.node.frontmatter.slug
+    const id = edge.node.id
+    actions.createPage({
+      path: slug,
+      component: require.resolve('./src/templates/blog-post.js'),
+      context: { id },
+    })
+  })
+}
