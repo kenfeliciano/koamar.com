@@ -3,7 +3,7 @@ import * as React from 'react'
 export const Hero = () => (
   <div className='bg-container p-4 rounded-lg shadow-lg mt-4'>
     <p>
-      Welcome to <span className='text-primary font-semibold'>KoaMar</span> in 2020, home of Ken Feliciano
+      Welcome to <span className='text-primary font-semibold font-sans'>KoaMar</span> in 2020, home of Ken Feliciano
     </p>
     <p className='text-3xl leading-none tracking-tight font-extrabold sm:text-2xl'>
       <span className='hidden sm:inline'>Lifelong learner</span>
