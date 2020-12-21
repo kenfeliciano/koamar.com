@@ -4,6 +4,8 @@
 
 .light {
   --primary: #007889;
+  --primary-rgb: 0, 120, 137;
+  --th-opacity: 0.5;
   --background: #e5e7eb;
   --surface: #ffffff;
   --container: #d1d5db;
@@ -17,6 +19,8 @@
 
 .dark {
   --primary: #f4901e;
+  --primary-rgb: 244, 144, 30;
+  --th-opacity: 0.7;
   --background: #1f2937;
   --surface: #000000;
   --container: #111827;
