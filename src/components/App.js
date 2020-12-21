@@ -18,46 +18,147 @@ const GlobalStyles = createGlobalStyle`
     font-weight: normal;
     word-wrap: break-word;
     font-kerning: normal;
+    font-size: 1rem;    
   }
-  h1 {
+  h1,h2,h3,h4,h5,h6 {
     color: var(--text-header);
-    font-size: 2.25rem;
     font-family: lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
     Helvetica Neue, sans-serif;
-    font-weight: bold;
-    line-height: 1;
     margin-top: 1.5rem;
     &:first-child {
       margin-top: 0;
     }
+  }
+  h1 {    
+    font-size: 2.25rem;
+    font-weight: bold;
+    line-height: 2.5rem;    
   }
   h2 {
-    margin-top: 1.5rem;
-    color: var(--text-header);
-    font-family: lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-      Helvetica Neue, sans-serif;
-    font-weight: bold;
     font-size: 1.5rem;
-    line-height: 1;    
-    &:first-child {
-      margin-top: 0;
-    }
+    font-weight: bold;
+    line-height: 1.75rem;        
+  }
+  h3 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.625rem;        
+  }
+  h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.5rem;        
+  }
+  h5 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    line-height: 1.375rem;        
+  }
+  
+  /* If definitions are used - must be in HTML, Mdx does not support */
+  h6, dt {
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.25rem;        
+  }
+  dt {
+    margin-top: 1.25rem;
   }
   ul, ol {
-    margin-left: 1.5rem;
-    margin-top: 1.5rem;
+    margin: 1rem 0 1rem 2rem;
     list-style-position: outside;
   }
   ul {
-    list-style-type: disc;
+    list-style-type: disc;    
   }
+
+  /* Outline Styles for one level deep for Mdx */
+  ul ul {
+    list-style-type: circle;
+    margin: 0 0 0 2rem;
+  }
+  ol ul {    
+    list-style-type: disc;
+    margin: 0 0 0 2rem;
+  }
+  ol ol {
+    list-style-type: lower-latin;
+    margin: 0 0 0 2rem;
+  }
+  ul ol {
+    list-style-type: decimal;
+    margin: 0 0 0 2rem;    
+  }
+  ol {
+    list-style-type: decimal;
+  }
+
   p {
     margin-top: 1.5rem;
-    color: var(--text-body);    
+    color: var(--text-body);
     &:first-child {
       margin-top: 0;
     }
   }
+  blockquote {
+    margin: 1.5rem 3rem 0 3rem;    
+  }
+  blockquote p {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    padding-left: 1rem;    
+    border-left: 10px solid rgba(var(--primary-rgb), 0.7);
+    margin-top: 0;    
+  }
+  blockquote cite {
+    display: inline-block;
+    line-height: 2.75rem;
+  }
+  code {
+    color: var(--primary);    
+    background-color: var(--container);
+    padding: 0 0.3rem;    
+  }
+  hr {
+    border: 0;
+    height: 2px;
+    margin-top: 1.5rem;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary), rgba(0, 0, 0, 0));
+  }
+  table {
+    width: 100%;    
+    border: 2px solid var(--muted);
+  }
+  th, td {
+    border: 1px solid var(--muted);
+  }
+  th, td {
+    padding: 0.5rem;
+  }
+  th {
+    border-bottom: 2px solid var(--muted);
+    background-color: rgba(var(--primary-rgb), var(--th-opacity));
+  }
+
+  /* Footnotes */
+  .footnote-ref {
+    color: var(--primary);
+    margin-left: .25rem;
+
+    font-size: .75rem;
+    &:before {
+      content: '[';
+    }
+    &:after {
+      content: ']';
+    }
+  }
+  .footnote-backref {
+    color: var(--primary);
+    margin-left: .25rem;
+  }
+
+  /* Branded Links */
   .border-gradient {
     border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%);
     border-image-slice: 0 0 100 0;

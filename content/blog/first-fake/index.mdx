@@ -34,22 +34,48 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. `Consecutivation`
 Lorem ipsum dolor sit amet consectetur adipisicing elit. ~~consectetur adipiscing elit~~.
 
 > Be just what you is, not what you is not. Folks what do this has the happiest lot.
+>
+> -- <cite>Mr. Wizard</cite>[^1].
+
+Sorry, not using the official citation here.
+
+[^1]: [Tooter Turtle - Wikipedia](https://en.wikipedia.org/wiki/Tooter_Turtle) in **_every_** episode
 
 Gimme some sort of text here so we can gaze at the slight indention of the lists!
 
-1. Showcase and embed your work with
-2. peach iced tea
-3. It is so hot
+### Lists
 
-- Horizontal rules
-- just show up from everywhere
-- if only it would remember I'm in a list
+The easy support is for no nesting. You can nest by putting four spaces before the next item in the list. You can learn something new everyday! The `CSS` displays outline style for one level down for each list type. `CSS` is code!
+
+1. Ordered List test
+   - Nested ul
+   - Should be disc and indented
+     1. Back to ordered is still numeric
+        1. It fails here where it should be a.
+2. Nested Ordered List
+   1. Should be lowercase latin and indented
+   2. Use 4 spaces to nest
+3. Final ordered list item
+
+- Unordered List test
+  - Nested ul
+  - Should be circle and indented
+- Nested Ordered List
+  1. Should be numeric and indented
+  2. Use 4 spaces to nest
+     - Unordered list should be disc here
+       - It fails here where it should be a circle
+- Final unordered list item
 
 ## Picture test
 
 ![Nature cover photo](./nature.jpg)
 
 ## Simple code tests
+
+It looks bad because `code style` is for inline code. `prism-react` will render this in the future.
+
+---
 
 ```html
 <!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
@@ -113,7 +139,55 @@ export const Code = ({ codeString, language, ...props }) => {
 | col 2 is |   centered    |   12 |   centered    |   centered    |
 | col 3 is | right-aligned |    1 | right-aligned | right-aligned |
 
+## Definition Test
+
+If Mdx supports definitions...It doesn't.
+
+### Input
+
+```md
+First Term
+: This is the definition of the first term.
+
+Second term
+: This is one definition of the second term.
+: This is another definition of the second term.
+```
+
+### Output
+
+First Term
+: This is the definition of the first term.
+
+Second term
+: This is one definition of the second term.
+: This is another definition of the second term.
+
+Can it be done with embedded HTML? Yes!
+
+### Input
+
+```html
+<dl>
+  <dt>First Term</dt>
+  <dd>This is the definition of the first term.</dd>
+  <dt>Second term</dt>
+  <dd>This is one definition of the second term.</dd>
+  <dd>This is another definition of the second term.</dd>
+</dl>
+```
+
+### Output
+
+<dl>
+  <dt>First Term</dt>
+  <dd>This is the definition of the first term.</dd>
+  <dt>Second term</dt>
+  <dd>This is one definition of the second term.</dd>
+  <dd>This is another definition of the second term.</dd>
+</dl>
+
 ## Credits
 
 Photo by [Lukasz Szmigiel (@szmigieldesign)](https://unsplash.com/@szmigieldesign?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
-on [Unsplash](https://unsplash.com/s/photos/nature?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText")
+on [Unsplash](https://unsplash.com/s/photos/nature?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText") 😊
