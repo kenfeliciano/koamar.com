@@ -5,7 +5,7 @@ import tw, { styled } from 'twin.macro'
 
 import { Header, ExternalLink } from '.'
 
-const SiteWrapper = styled.div(() => [tw`h-full m-auto max-w-screen-lg pt-0 px-4 pb-6 mt-6`])
+const SiteWrapper = styled.div(() => [tw`h-full m-auto max-w-screen-lg pt-0 px-0 pb-6 mt-0`])
 
 export const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -23,7 +23,7 @@ export const Layout = ({ children }) => {
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
       <SiteWrapper>
         <main>{children}</main>
-        <footer className='text-muted text-sm mt-6'>
+        <footer className='text-muted text-sm mt-6 px-4'>
           © {new Date().getFullYear()}, Built with
           {` `}
           <ExternalLink href='https://www.gatsbyjs.com'>Gatsby</ExternalLink>

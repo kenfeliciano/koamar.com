@@ -14,7 +14,7 @@ export const CoverImage = ({ fluid }) => {
   `)
 
   return (
-    <div className='overflow-hidden relative'>
+    <div className='overflow-hidden relative m-auto h-96'>
       <Img className='absolute top-0 left-0 w-full h-full' fluid={fluid ? fluid : data.imageSharp.fluid} />
     </div>
   )
