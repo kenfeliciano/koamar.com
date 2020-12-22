@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 export const Hero = () => (
-  <div className='bg-container p-4 rounded-lg shadow-lg mt-4'>
+  <div className='bg-surface p-4 rounded-lg shadow-lg mt-4'>
     <p>
       Welcome to <span className='text-primary font-semibold font-sans'>KoaMar</span> in 2020, home of Ken Feliciano
     </p>

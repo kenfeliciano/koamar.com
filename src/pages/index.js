@@ -9,7 +9,7 @@ const IndexPage = () => (
     <h1>Hi all!</h1>
     <Hero />
     <p>Not much to see yet, but...</p>
-    <div className='bg-container rounded-lg shadow-lg p-4'>
+    <div className='bg-surface rounded-lg shadow-lg p-4'>
       <h2>Updates so far!</h2>
       <ul>
         <li>
