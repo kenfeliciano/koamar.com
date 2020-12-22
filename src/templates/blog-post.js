@@ -2,7 +2,7 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import SEO from '../components/seo'
-import { Layout, CoverImage } from '../components'
+import { Layout, CoverImage, Content } from '../components'
 
 const BlogPost = ({ data }) => {
   const coverImage = data.mdx.frontmatter.coverImage ? data.mdx.frontmatter.coverImage.childImageSharp.fluid : null
@@ -10,8 +10,10 @@ const BlogPost = ({ data }) => {
     <Layout>
       <SEO title={data.mdx.frontmatter.title} description={data.mdx.frontmatter.excerpt} />
       <CoverImage fluid={coverImage} />
-      <h1>{data.mdx.frontmatter.title}</h1>
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      <Content>
+        <h1>{data.mdx.frontmatter.title}</h1>
+        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      </Content>
     </Layout>
   )
 }
