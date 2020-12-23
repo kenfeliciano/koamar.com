@@ -1,0 +1,157 @@
+.prism-code {
+  font-size: 0.8rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+  background-color: transparent;
+  overflow: auto;
+}
+.token {
+  display: inline-block;
+}
+.gatsby-highlight {
+  font-size: 0.8rem; /* ! is this even doing anything? */
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+p + .gatsby-highlight {
+  margin-top: 1rem;
+}
+gatsby-highlight > code[class*='language-'],
+.gatsby-highlight > pre[class*='language-'] {
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  line-height: 1.3;
+  tab-size: 2;
+  hyphens: none;
+}
+.line-number-style {
+  display: inline-block;
+  padding-left: 1em;
+  padding-right: 1.5em;
+  width: 1.2em;
+  user-select: none;
+  opacity: 0.6;
+  text-align: center;
+  position: relative;
+}
+.highlight-line {
+  background-color: var(--code-highlight);
+  border-left: 0.35em solid var(--link);
+  margin-right: -1em;
+  margin-left: -1em;
+  padding-right: 1em;
+  padding-left: 0.65em;
+}
+.highlight-line .line-number-style {
+  opacity: 0.6;
+}
+.gatsby-highlight pre[class*='language-'] {
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem 0.75rem;
+  border-radius: 0.25rem;
+}
+.gatsby-highlight pre[class*='language-']::before {
+  background: black;
+  border-radius: 0 0 0.25rem 0.25rem;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 0.025rem;
+  padding: 0.1rem 0.5rem;
+  position: absolute;
+  left: 1rem;
+  text-align: left;
+  text-transform: uppercase;
+  top: -0.3rem;
+}
+.gatsby-highlight pre[class~='language-javascript']::before {
+  content: 'js';
+  background: #f7df1e;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-js']::before {
+  content: 'js';
+  background: #f7df1e;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-html']::before {
+  content: 'html';
+  background: #005a9c;
+  color: white;
+}
+.gatsby-highlight pre[class~='language-css']::before {
+  content: 'css';
+  background: #ff9800;
+  color: white;
+}
+.gatsby-highlight pre[class~='language-jsx']:before {
+  content: 'jsx';
+  background: #1ef7e5;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-tsx']:before {
+  content: 'tsx';
+  background: #1ef7e5;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-svg']:before {
+  content: 'svg';
+  background: #005a9c;
+  color: white;
+}
+.gatsby-highlight pre[class~='language-graphql']:before {
+  content: 'graphql';
+  background: #e10098;
+  color: white;
+}
+.gatsby-highlight pre[class~='language-xml']:before {
+  content: 'xml';
+  background: #005a9c;
+  color: white;
+}
+.gatsby-highlight pre[class~='language-mdx']:before {
+  content: 'mdx';
+  background: #f9ac00;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-md']:before {
+  content: 'md';
+  background: #f9ac00;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-text']:before {
+  content: 'text';
+  /* background: #f9ac00;
+  color: black; */
+}
+.gatsby-highlight pre[class~='language-shell']:before {
+  content: 'shell';
+  background: #d8ae87;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-sh']:before {
+  content: 'sh';
+  background: #d8ae87;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-bash']:before {
+  content: 'bash';
+  background: #d8ae87;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-yaml']:before {
+  content: 'yaml';
+  background: #78b370;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-yml']:before {
+  content: 'yml';
+  background: #78b370;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-json']:before {
+  content: 'json';
+  background: linen;
+  color: black;
+}

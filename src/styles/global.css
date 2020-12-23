@@ -9,12 +9,15 @@
   --background: #e5e7eb;
   --surface: #ffffff;
   --container: #d1d5db;
-  --branded-surface: #d1d5db;
+  --branded-surface: #rgba(244, 144, 30, 0.9);
   --text-body: #1f2937;
   --text-header: #09090a;
   --link: hsl(187, 100%, 40%);
   --muted: #4b5563;
   --text-disabled: #6b7280;
+  --code-title-background: #111a1c;
+  --code-title-text: hsl(187, 100%, 40%);
+  --code-highlight: hsl(32, 91%, 88%);
 }
 
 .dark {
@@ -30,4 +33,7 @@
   --link: hsl(32, 91%, 73%);
   --muted: #9ca3af;
   --text-disabled: #6b7280;
+  --code-title-background: #111a1c;
+  --code-title-text: hsl(32, 91%, 73%);
+  --code-highlight: rgba(2, 55, 81, 0.5);
 }
