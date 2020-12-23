@@ -1,0 +1,308 @@
+---
+title: Code Tests
+slug: code-test
+date: 2020-12-22
+coverImage: ./code.jpg
+excerpt: Mdx tests for rendering
+tags: [mdx, test, code, table]
+---
+
+# Hello Code
+
+import SpotifyPlayer from './SpotifyPlayer'
+
+Imported React Component
+
+<SpotifyPlayer uri='spotify:user:bbcamerica:playlist:3w18u69NplCpXVG4fQG726' size='large' theme='black' view='list' />
+
+Live Code Example with title
+
+```js:title=src/react-live-test.js react-live
+const onClick = () => {
+  alert('You opened me')
+}
+render(<button onClick={onClick}>Alohomora!</button>)
+```
+
+Normal code block with language defined
+
+```js
+(function() {
+
+var cache = {};
+var form = $('form');
+var minified = true;
+
+var dependencies = {};
+
+var treeURL = 'https://api.github.com/repos/PrismJS/prism/git/trees/gh-pages?recursive=1';
+var treePromise = new Promise(function(resolve) {
+	$u.xhr({
+		url: treeURL,
+		callback: function(xhr) {
+			if (xhr.status < 400) {
+				resolve(JSON.parse(xhr.responseText).tree);
+			}
+		}
+	});
+});
+```
+
+A code block with a title, JSDoc comment, short, and long comment
+
+```js:title=src/util/getValue.js
+/**
+ * Get value out of string (e.g. rem => px)
+ * If value is px strip the px part
+ * If the input is already a number only return that value
+ * @param {string | number} input
+ * @param {number} [rootFontSize]
+ * @return {number} Number without last three characters
+ * @example removeLastThree('6rem') => 6
+ */
+const getValue = (input, rootFontSize = 16) => {
+  if (typeof input === `number`) {
+    return input / rootFontSize
+  }
+
+  const isPxValue = input.slice(-2) === `px`
+
+  if (isPxValue) {
+    return parseFloat(input.slice(0, -2))
+  }
+
+  return parseFloat(input.slice(0, -3))
+}
+
+// This is a little helper function
+const helper = (a, b) => a + b
+
+// This is also a little helper function but this time with a really long one-line comment that should show some more details
+const morehelper = (a, b) => a * b
+
+export { getValue, helper, morehelper }
+```
+
+Normal block without language or anything else specified
+
+```
+import Test from "../components/test"
+
+const Layout = ({ children }) => (
+  <Test>
+    {children}
+  </Test>
+)
+
+export default Layout
+```
+
+Code block with title and code highlighting
+
+```jsx:title=src/components/post.jsx {5-7,10}
+import React from 'react'
+
+const Post = ({ data: { post } }) => (
+  <Layout>
+    <Heading variant='h2' as='h2'>
+      {post.title}
+    </Heading>
+    <p
+      sx={{
+        color: `secondary`,
+        mt: 3,
+        a: { color: `secondary` },
+        fontSize: [1, 1, 2],
+      }}
+    >
+      <span>{post.date}</span>
+      {post.tags && (
+        <React.Fragment>
+          {` — `}
+          <ItemTags tags={post.tags} />
+        </React.Fragment>
+      )}
+    </p>
+    <section
+      sx={{
+        ...CodeStyles,
+        my: 5,
+        '.gatsby-resp-image-wrapper': { my: 5, boxShadow: `lg` },
+      }}
+    >
+      <MDXRenderer>{post.body}</MDXRenderer>
+    </section>
+  </Layout>
+)
+
+export default Post
+```
+
+Code block without title or language
+
+```
+Harry Potter and the Philosopher's Stone
+```
+
+Some GraphQL
+
+```graphql
+query SITE_INDEX_QUERY {
+  allMdx(sort: { fields: [frontmatter___date], order: DESC }, filter: { frontmatter: { published: { eq: true } } }) {
+    nodes {
+      id
+      excerpt(pruneLength: 250)
+      frontmatter {
+        title
+        date(formatString: "YYYY MMMM Do")
+      }
+      fields {
+        slug
+      }
+    }
+  }
+}
+```
+
+An SVG of something...twitter?
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#607D8B" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" class="icon icon-tabler icon-tabler-brand-twitter" viewBox="0 0 24 24">
+  <defs/>
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/>
+</svg>
+```
+
+Ewww, XML (nah, good 'ol days)
+
+```xml
+<Emp><name>Michael Hartstein</name><hiredate>2004-02-17</hiredate></Emp>
+<Emp><name>Pat Fay</name><hiredate>2005-08-17</hiredate></Emp>
+<Emp><name>Susan Mavris</name><hiredate>2002-06-07</hiredate></Emp>
+<Emp><name>Hermann Baer</name><hiredate>2002-06-07</hiredate></Emp>
+<Emp><name>Shelley Higgins</name><hiredate>2002-06-07</hiredate></Emp>
+<Emp><name>William Gietz</name><hiredate>2002-06-07</hiredate></Emp>
+```
+
+MD works, mdx does not
+
+```md
+---
+title: My Second Post! I'm liking this...
+slug: my-second-post
+date: 2020-09-02
+featureImage: ./mountain.jpg
+excerpt: something excerptatious
+---
+
+# Hi there!
+
+This is a blog page
+```
+
+How do you install this MDX again?
+
+```shell
+npm install gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react
+npm install mdx-utils
+```
+
+Aww, some funding code
+
+```yaml
+github: [thomaswang]
+```
+
+Here's some JSON
+
+```json:title=package.json
+{
+  "name": "gatsby-starter-hello-world",
+  "private": true,
+  "description": "Tutorial blog from Skillthrive's Build a Blog series",
+  "version": "0.1.0",
+  "license": "0BSD"
+}
+```
+
+Code block without lineNumbers (but lang):
+
+```text noLineNumbers
+Harry Potter and the Chamber of Secrets
+```
+
+Code block without lineNumbers (and without lang):
+
+```noLineNumbers
+Harry Potter and the Chamber of Secrets
+```
+
+Code block with only the title:
+
+```:title=src/utils/scream.js noLineNumbers
+const scream = (input) => window.alert(input)
+```
+
+Code block with only the title but with lineNumbers:
+
+```:title=src/utils/scream.js
+const scream = (input) => window.alert(input)
+```
+
+Line highlighting without code title:
+
+```js {2,4-5}
+const test = 3
+const foo = 'bar'
+const harry = 'potter'
+const hermione = 'granger'
+const ron = 'weasley'
+```
+
+Here will `inline code` go, just inside the text. Wow!
+
+Code block without line numbers but with highlighting, language, and title:
+
+```tsx:title=src/components/blog.tsx {7-9,16} noLineNumbers
+import React from 'react'
+
+const Blog = ({ posts }: PostsProps) => {
+  const { tagsPath, basePath } = useSiteMetadata()
+
+  return (
+    <Layout>
+      <Flex sx={{ alignItems: `center`, justifyContent: `space-between` }}>
+        <Heading variant='h2' as='h2'>
+          Blog
+        </Heading>
+        <Styled.a as={Link} sx={{ variant: `links.secondary` }} to={`/${basePath}/${tagsPath}`.replace(/\/\/+/g, `/`)}>
+          View all tags
+        </Styled.a>
+      </Flex>
+      <Listing posts={posts} sx={{ mt: [4, 5] }} />
+    </Layout>
+  )
+}
+
+export default Blog
+```
+
+Exploration of diff and JavaScript. I would really like both! Currently, the `prism-react-renderer` does not support syntax highlighting diff and JavaScript. There is a plugin for prism that will using `diff-javascript` but plugins are currently not supported.
+
+Just JavaScript
+
+```javascript
+function addTwoNumbers(num1, num2) {
+  return 1 + 2
+}
+```
+
+Now the diff version
+
+```diff
+function addTwoNumbers (num1, num2) {
+-  return 1 + 2
++  return num1 + num2
+}
+```

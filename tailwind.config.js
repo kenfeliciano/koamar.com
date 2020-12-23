@@ -19,6 +19,8 @@ module.exports = {
         link: 'var(--link)',
         muted: 'var(--muted)',
         disabled: 'var(--disabled)',
+        codeTitleContainer: 'var(--code-title-background)',
+        codeTitle: 'var(--code-title-text)',
       },
     },
   },
