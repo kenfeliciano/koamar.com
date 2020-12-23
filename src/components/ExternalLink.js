@@ -5,7 +5,7 @@ export const ExternalLink = ({ href, children }) => (
     href={href}
     className='inline-link border-fadeaway border-primary border-b-2'
     target='_blank'
-    rel='noreferrer noopener'
+    rel='noreferrer noopener nofollow'
   >
     {children}
   </a>
