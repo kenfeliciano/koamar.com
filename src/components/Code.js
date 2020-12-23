@@ -37,7 +37,6 @@ const getParams = (language = ``) => {
 
 export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
   const { theme } = useContext(ThemeContext)
-  console.log({ theme })
   const shouldHighlightLine = calculateLinesToHighlight(metastring)
   const hasLineNumbers = !noLineNumbers && language !== `noLineNumbers`
   const [lang, { title = `` }] = getParams(language)
