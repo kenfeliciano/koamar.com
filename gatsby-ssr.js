@@ -2,7 +2,7 @@ import * as React from 'react'
 import { App } from './src/components'
 import { MDXProvider } from '@mdx-js/react'
 import { preToCodeBlock } from 'mdx-utils'
-import { Table, Code } from './src/components'
+import { Table, Code, MarkdownLink } from './src/components'
 import './src/styles/code-layout.css'
 
 const MagicScriptTag = () => {
@@ -51,6 +51,7 @@ const components = {
     }
     return <pre {...preProps} />
   },
+  a: (props) => <MarkdownLink {...props} />,
   wrapper: ({ children }) => <>{children}</>,
 }
 
