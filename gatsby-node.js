@@ -36,7 +36,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
     actions.createPage({
       path: `${collection}/${slug}`,
-      component: require.resolve('./src/templates/blog-post.js'),
+      component: require.resolve('./src/templates/single-post.js'),
       context: { id },
     })
   })
