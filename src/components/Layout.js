@@ -2,6 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 import tw, { styled } from 'twin.macro'
+import Headroom from 'react-headroom'
 
 import { Header, ExternalLink } from '.'
 
@@ -20,7 +21,9 @@ export const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      <Headroom>
+        <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      </Headroom>
       <SiteWrapper>
         <main>{children}</main>
         <footer className='text-muted text-sm mt-6 px-4'>
