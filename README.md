@@ -18,10 +18,11 @@ _Mostly_ empty! The first koamar.com started on Dec 21 so I give myself at least
 - [How to add dark mode to a Gatsby site | joshwcomeau.com](https://www.joshwcomeau.com/react/dark-mode/) Getting dark mode to work in Gatsby was indeed not so easy but I was able to get it to work thanks to Josh's work!
 - [FREE hands-on course about using Git in a professional team | ooloo.io](https://ooloo.io/project/github-flow) This was great for someone who spent their working years in less distributive source code control systems.
 - [Gatsby JS: Build a Blog - YouTube | skillthrive.com](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT) This was one of the first Gatsby tutorials I went through and I learned a lot from it!
+- [Notion](https://www.notion.so/product) I've used Microsoft OneNote for years, and still do, but Notion handles code samples much better!
 
 ## Using
 
-- [`noffle/common-readme`](https://github.com/noffle/common-readme)
+- [noffle/common-readme](https://github.com/noffle/common-readme)
 - [Gatsby](https://www.gatsbyjs.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Headroom](https://kyleamathews.github.io/react-headroom/)
