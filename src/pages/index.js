@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { Link } from 'gatsby'
 
 import SEO from '../components/seo'
-import { Layout, Hero, ExternalLink, Content } from '../components'
+import { Layout, Hero, ExternalLink, Content, InternalLink } from '../components'
 
 const IndexPage = () => (
   <Layout>
@@ -18,24 +17,16 @@ const IndexPage = () => (
             Dark Mode Implementation with <ExternalLink href='https://tailwindcss.com'>Tailwind CSS</ExternalLink>
           </li>
           <li key='upd2'>
-            A page of{' '}
-            <Link className='inline-link border-fadeaway border-primary border-b-2' to='/blog/code-test'>
-              code snippets
-            </Link>{' '}
-            for working on syntax highlighting
+            A page of <InternalLink href='/blog/code-test'>code snippets</InternalLink> for working on syntax
+            highlighting
           </li>
           <li key='upd3'>
-            A page of{' '}
-            <Link className='inline-link border-fadeaway border-primary border-b-2' to='/blog/first-fake'>
-              Mdx content
-            </Link>{' '}
-            for working out all the rest of the styling
+            A page of <InternalLink href='/blog/first-fake'>Mdx content</InternalLink> for working out all the rest of
+            the styling
           </li>
           <li key='upd4'>
-            <Link className='inline-link border-fadeway border-primary border-b-2' to='/site/initial-setup'>
-              Site: Initial Setup
-            </Link>{' '}
-            - First post in the Site Development section!
+            <InternalLink href='/site/initial-setup'>Site: Initial Setup</InternalLink> - First post in the Site
+            Development section!
           </li>
         </ul>
       </div>
