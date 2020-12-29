@@ -31,14 +31,15 @@ const IndexPage = () => (
             </Link>{' '}
             for working out all the rest of the styling
           </li>
+          <li key='upd4'>
+            <Link className='inline-link border-fadeway border-primary border-b-2' to='/site/initial-setup'>
+              Site: Initial Setup
+            </Link>{' '}
+            - First post in the Site Development section!
+          </li>
         </ul>
-        I like how both of them are 1 min. reads!
       </div>
       <h2>Be well!</h2>
-      <p>
-        Still, probably best to <ExternalLink href='https://google.com'>search for someplace</ExternalLink> better for
-        now.
-      </p>
     </Content>
   </Layout>
 )
