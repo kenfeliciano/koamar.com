@@ -16,10 +16,14 @@ const postList = ({ pageContext, data }) => {
       <h1>{collection} posts</h1>
       <h2>To Do List:</h2>
       <ul>
-        <li>Add cover image that is correct for the collection</li>
-        <li>Add blurb for what is going to go into this section (short!) This should come from an Mdx file.</li>
         <li>Create Card components for the posts and format them better</li>
+        <li>Perhaps they could be in two columns for larger screens</li>
         <li>Add pagination</li>
+        <li>Need some sort of light side branded surface</li>
+        <h3>Mdx File</h3>
+        <li>Title of section</li>
+        <li>Add cover image that is correct for the collection</li>
+        <li>Add blurb for what is going to go into this section (short!)</li>
       </ul>
       {posts.map((post) => (
         <div key={post.node.id} className='flex rounded-lg shadow-lg bg-surface mt-4 p-4'>
