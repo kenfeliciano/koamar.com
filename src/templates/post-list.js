@@ -19,7 +19,7 @@ const postList = ({ pageContext, data }) => {
         <h1>{site.frontmatter.title}</h1>
         <MDXRenderer>{site.body}</MDXRenderer>
         {posts.map((post) => (
-          <div key={post.node.id} className='flex rounded-lg shadow-lg bg-container mt-4 p-4'>
+          <div key={post.node.id} className='flex rounded-lg shadow-lg bg-surface mt-4 p-4'>
             {post.node.frontmatter.coverImage ? (
               <Img
                 className='absolute top-0 left-0 w-36 h-24 flex-none'

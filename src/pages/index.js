@@ -6,7 +6,7 @@ import { Layout, Hero, ExternalLink, Content, InternalLink } from '../components
 const IndexPage = () => (
   <Layout>
     <SEO title='Home' />
-    <Content>
+    <Content menuShift={true}>
       <h1>Hi all!</h1>
       <Hero />
       <p>Not much to see yet, but...</p>

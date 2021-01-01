@@ -19,6 +19,7 @@ _Mostly_ empty! The first koamar.com started on Dec 21 so I give myself at least
 - [FREE hands-on course about using Git in a professional team | ooloo.io](https://ooloo.io/project/github-flow) This was great for someone who spent their working years in less distributive source code control systems.
 - [Gatsby JS: Build a Blog - YouTube | skillthrive.com](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT) This was one of the first Gatsby tutorials I went through and I learned a lot from it!
 - [Notion](https://www.notion.so/product) I've used Microsoft OneNote for years, and still do, but Notion handles code samples much better!
+- [Designing with Tailwind CSS - YouTube](https://youtu.be/21HuwjmuS7A) by [Adam Wathan](https://www.youtube.com/channel/UCy1H38XrN7hi7wHSClfXPqQ) Going through this tutorial really got me psyched about Tailwind CSS and I felt I had a better understanding of design too. Adam goes through some thought processes as he's designing the various examples and to me, that was invaluable.
 
 ## Using
 

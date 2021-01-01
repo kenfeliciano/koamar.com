@@ -1,18 +1,43 @@
 import { Link } from 'gatsby'
 import * as React from 'react'
+import { useContext } from 'react'
 
-import { DarkToggle, Logo } from '.'
+import { DarkToggle, Logo, MenuContext, Hamburger, X, MenuItem } from '.'
 
-export const Header = ({ siteTitle }) => (
-  <header
-    className='bg-container text-body p-4 flex justify-between items-center 
-                     border-primary border-b-4 border-fadeaway'
-  >
-    <h1 className='no-underline m-0'>
-      <Link to='/'>
-        <Logo siteTitle={siteTitle} />
-      </Link>
-    </h1>
-    <DarkToggle />
-  </header>
-)
+export const Header = ({ siteTitle }) => {
+  const { menuOpen, setMenuOpen } = useContext(MenuContext)
+  return (
+    <header className='bg-container text-body border-primary border-b-4 border-fadeaway sm:flex sm:justify-between sm:px-4 sm:py-3 sm:items-center'>
+      <div className='px-4 py-3 sm:p-0 flex items-center justify-between'>
+        <h1>
+          <Link to='/'>
+            <Logo siteTitle={siteTitle} />
+          </Link>
+        </h1>
+        <div className='sm:hidden'>
+          <button
+            type='button'
+            onClick={() => setMenuOpen(!menuOpen)}
+            className='rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary aria-expanded="false"'
+          >
+            <span className='sr-only'>Open main menu</span>
+            {menuOpen ? <X /> : <Hamburger />}
+          </button>
+        </div>
+      </div>
+      <nav className={`absolute w-full sm:static sm:w-auto sm:block ${menuOpen ? ' block' : ' hidden'}`}>
+        <div
+          className='sm:flex sm:p-0 w-full bg-container
+          border-primary border-b-4 border-fadeaway sm:border-none'
+        >
+          <MenuItem href='/blog' first='true'>
+            Blog
+          </MenuItem>
+          <MenuItem href='/project'>Projects</MenuItem>
+          <MenuItem href='/site'>Site Dev</MenuItem>
+          <DarkToggle />
+        </div>
+      </nav>
+    </header>
+  )
+}
