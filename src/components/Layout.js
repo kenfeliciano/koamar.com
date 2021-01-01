@@ -31,9 +31,10 @@ export const Layout = ({ children }) => {
         <SiteWrapper>
           <main>{children}</main>
           <footer className='text-muted text-sm mt-6 px-4'>
-            © {new Date().getFullYear()}, Built with
+            Built with
             {` `}
-            <ExternalLink href='https://www.gatsbyjs.com'>Gatsby</ExternalLink>
+            <ExternalLink href='https://www.gatsbyjs.com'>Gatsby</ExternalLink> from 2020 thru{' '}
+            {new Date().getFullYear()} (and beyond?!)
           </footer>
         </SiteWrapper>
       </MenuProvider>
