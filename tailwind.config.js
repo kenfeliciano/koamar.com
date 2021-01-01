@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       colors: {
         primary: 'var(--primary)',
+        opposite: 'var(--opposite)',
         background: 'var(--background)',
         surface: 'var(--surface)',
         container: 'var(--container)',
