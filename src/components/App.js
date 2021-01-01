@@ -10,6 +10,7 @@ const GlobalStyles = createGlobalStyle`
   }
   html {
     font: 112.5%/1.5em georgia, serif, sans-serif;
+    overflow-y: scroll;
   }
   body {
     background-color: var(--background);
