@@ -7,8 +7,8 @@ const IndexPage = () => (
   <Layout>
     <SEO title='Home' />
     <Content menuShift={true}>
-      <h1>Hi all!</h1>
       <Hero />
+      <h1>Hi all!</h1>
       <p>Not much to see yet, but...</p>
       <div className='bg-surface rounded-lg shadow-lg p-4'>
         <h2>Updates so far!</h2>
