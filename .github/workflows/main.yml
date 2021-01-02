@@ -46,12 +46,11 @@ jobs:
         with:
           name: public
           path: public
-      - name: Upload via FTP
-        uses: isthatcentered/dist-to-ftp@master
+      - name: 📂 Sync files over FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          host: ${{ secrets.FTP_SERVER }}
-          path: public
-          into: /
-          cleanupExisting: false # true is default, removes already existing files @into
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}          
+          local-dir: ./public/
+          server-dir: ./      
