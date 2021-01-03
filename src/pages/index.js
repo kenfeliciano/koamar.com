@@ -28,6 +28,20 @@ const IndexPage = () => (
             <InternalLink href='/site/initial-setup'>Site: Initial Setup</InternalLink> - First post in the Site
             Development section!
           </li>
+          <li key='upd5'>I've got the navigation up and running!</li>
+          <li key='upd6'>
+            Each <em>landing</em> page is defined with an Mdx file. That was fun to figure out.
+          </li>
+          <li key='upd7'>
+            I've got a hero displaying, thanks to a{' '}
+            <ExternalLink href='https://dev.to/dailydevtips1/responsive-header-in-tailwind-css-2djn'>
+              lovely tutorial
+            </ExternalLink>{' '}
+            by <ExternalLink href='https://dev.to/dailydevtips1'>Chris Bongers</ExternalLink>
+          </li>
+          <li key='upd8'>
+            The post list on the pages are using a card, that is clickable, but the text isn't selectable.
+          </li>
         </ul>
       </div>
       <h2>Be well!</h2>

@@ -1,9 +1,16 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import tw, { styled } from 'twin.macro'
 
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, PostCard } from '../components'
+
+const PostContainer = styled.div(
+  tw`
+    lg:grid lg:grid-cols-2 lg:gap-x-4 lg:gap-y-2 lg:pb-4
+  `
+)
 
 const postList = ({ pageContext, data }) => {
   const { collection } = pageContext
@@ -17,9 +24,11 @@ const postList = ({ pageContext, data }) => {
       <Content>
         <h1>{site.frontmatter.title}</h1>
         <MDXRenderer>{site.body}</MDXRenderer>
-        {posts.map((post) => (
-          <PostCard post={post} collection={collection} />
-        ))}
+        <PostContainer>
+          {posts.map((post) => (
+            <PostCard post={post} collection={collection} />
+          ))}
+        </PostContainer>
       </Content>
     </Layout>
   )
