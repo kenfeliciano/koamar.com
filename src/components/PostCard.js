@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
 import Img from 'gatsby-image'
-import styled from 'styled-components'
 
 export const PostCard = ({ post, collection }) => (
   <Link to={`/${collection}/${post.node.frontmatter.slug}`}>
