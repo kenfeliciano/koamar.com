@@ -8,7 +8,7 @@ import { Layout, CoverImage, Content, PostCard } from '../components'
 
 const PostContainer = styled.div(
   tw`
-    lg:grid lg:grid-cols-2 lg:gap-x-4
+    lg:grid lg:grid-cols-2 lg:gap-x-4 lg:gap-y-2 lg:pb-4
   `
 )
 
