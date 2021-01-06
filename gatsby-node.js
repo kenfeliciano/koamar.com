@@ -83,14 +83,14 @@ exports.createPages = async ({ graphql, actions }) => {
     const id = edge.node.id
     const collection = edge.node.fields.collection
 
-    const previousPage = edge.previous && edge.previous.fields.collection === collection ? edge.previous : null
-    const nextPage = edge.next && edge.next.fields.collection === collection ? edge.next : null
+    const prev = edge.previous && edge.previous.fields.collection === collection ? edge.previous : null
+    const next = edge.next && edge.next.fields.collection === collection ? edge.next : null
 
     if (collection !== 'collections') {
       actions.createPage({
         path: `${collection}/${slug}`,
         component: require.resolve('./src/templates/single-post.js'),
-        context: { id, previousPage, nextPage },
+        context: { id, prev, next },
       })
     }
   })

@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { Link } from 'gatsby'
 
 const PaginationWrapper = styled.div`
-  grid-column: 2 / span 12;
   padding: 3rem 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   a:nth-child(1) {
     color: ${(props) => (props.isFirst ? props.inactive : props.active)};
@@ -34,26 +33,11 @@ export const PaginationElement = styled((props) => <Link {...props} />)`
   }
 `
 
-export const Pagination = ({ isFirst, isLast, prevPage, nextPage, collection }) => {
-  let prevLink, nextLink
-  let prevLinkText, nextLinkText
-
-  if (collection === 'collections') {
-    prevLink = prevPage
-    nextLink = nextPage
-    prevLinkText = 'Previous Page'
-    nextLinkText = 'Next Page'
-  } else {
-    prevLink = prevPage ? `/${collection}/${prevPage.frontmatter.slug}` : null
-    nextLink = nextPage ? `/${collection}/${nextPage.frontmatter.slug}` : null
-    prevLinkText = prevPage ? `Previous Post: ${prevPage.frontmatter.title}` : null
-    nextLinkText = nextPage ? `Next Post: ${nextPage.frontmatter.title}` : null
-  }
-
+export const Pagination = ({ isFirst, isLast, prevPage, nextPage }) => {
   return (
     <PaginationWrapper isFirst={isFirst} isLast={isLast} inactive='var(--text-disabled)' active='var(--text-body)'>
-      <PaginationElement to={prevLink}>{prevLinkText}</PaginationElement>
-      <PaginationElement to={nextLink}>{nextLinkText}</PaginationElement>
+      <PaginationElement to={prevPage}>Previous Page</PaginationElement>
+      <PaginationElement to={nextPage}>Next Page</PaginationElement>
     </PaginationWrapper>
   )
 }

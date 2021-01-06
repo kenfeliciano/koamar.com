@@ -35,7 +35,7 @@ const postList = ({ pageContext, data }) => {
           ))}
         </PostContainer>
       </Content>
-      <Pagination isFirst={isFirst} isLast={isLast} prevPage={prevPage} nextPage={nextPage} collection='collections' />
+      <Pagination isFirst={isFirst} isLast={isLast} prevPage={prevPage} nextPage={nextPage} />
     </Layout>
   )
 }
