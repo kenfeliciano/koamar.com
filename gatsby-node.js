@@ -12,32 +12,12 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query {
-      allMdx(sort: { fields: [fields___collection, frontmatter___date], order: [ASC, DESC] }) {
+      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
         edges {
           node {
             id
             frontmatter {
               slug
-            }
-            fields {
-              collection
-            }
-          }
-          next {
-            id
-            frontmatter {
-              slug
-              title
-            }
-            fields {
-              collection
-            }
-          }
-          previous {
-            id
-            frontmatter {
-              slug
-              title
             }
             fields {
               collection
