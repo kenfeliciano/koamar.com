@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { Link } from 'gatsby'
 
 const PaginationWrapper = styled.div`
-  grid-column: 2 / span 12;
   padding: 3rem 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   a:nth-child(1) {
     color: ${(props) => (props.isFirst ? props.inactive : props.active)};
