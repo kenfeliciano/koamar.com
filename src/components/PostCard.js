@@ -16,7 +16,7 @@ export const PostCard = ({ post, collection }) => (
       <div className='sm:ml-4 mt-2 sm:mt-0 relative flex flex-col justify-between'>
         <div>
           <h2>{post.node.frontmatter.title}</h2>
-          <p className='mt-1'>{post.node.excerpt}</p>
+          <p className='mt-1'>{post.node.frontmatter.excerpt}</p>
         </div>
         <p className='text-sm text-muted'>{post.node.frontmatter.date}</p>
       </div>
