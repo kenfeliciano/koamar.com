@@ -12,12 +12,32 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query {
-      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+      allMdx(sort: { fields: [fields___collection, frontmatter___date], order: [ASC, DESC] }) {
         edges {
           node {
             id
             frontmatter {
               slug
+            }
+            fields {
+              collection
+            }
+          }
+          next {
+            id
+            frontmatter {
+              slug
+              title
+            }
+            fields {
+              collection
+            }
+          }
+          previous {
+            id
+            frontmatter {
+              slug
+              title
             }
             fields {
               collection
@@ -63,10 +83,13 @@ exports.createPages = async ({ graphql, actions }) => {
     const id = edge.node.id
     const collection = edge.node.fields.collection
 
+    const previousPage = edge.previous && edge.previous.fields.collection === collection ? edge.previous : null
+    const nextPage = edge.next && edge.next.fields.collection === collection ? edge.next : null
+
     actions.createPage({
       path: `${collection}/${slug}`,
       component: require.resolve('./src/templates/single-post.js'),
-      context: { id },
+      context: { id, previousPage, nextPage },
     })
   })
 }
