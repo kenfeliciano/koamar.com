@@ -4,7 +4,7 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import tw, { styled } from 'twin.macro'
 
 import SEO from '../components/seo'
-import { Layout, CoverImage, Content, PostCard, Pagination } from '../components'
+import { Layout, CoverImage, Content, PostCard } from '../components'
 
 const PostContainer = styled.div(
   tw`
@@ -13,12 +13,7 @@ const PostContainer = styled.div(
 )
 
 const postList = ({ pageContext, data }) => {
-  const { currentPage, numPages, collection } = pageContext
-  const isFirst = currentPage === 1
-  const isLast = currentPage === numPages
-  const prevPage = currentPage - 1 === 1 ? `/${collection}` : `/${collection}/${currentPage - 1}`
-  const nextPage = `/${collection}/${currentPage + 1}`
-
+  const { collection } = pageContext
   const posts = data.allMdx.edges
   const site = data.mdx
 
@@ -28,14 +23,13 @@ const postList = ({ pageContext, data }) => {
       <CoverImage fluid={site.frontmatter.coverImage.childImageSharp.fluid} />
       <Content>
         <h1>{site.frontmatter.title}</h1>
-        {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
+        <MDXRenderer>{site.body}</MDXRenderer>
         <PostContainer>
           {posts.map((post) => (
             <PostCard post={post} collection={collection} />
           ))}
         </PostContainer>
       </Content>
-      <Pagination isFirst={isFirst} isLast={isLast} prevPage={prevPage} nextPage={nextPage} collection='collections' />
     </Layout>
   )
 }
@@ -67,7 +61,6 @@ export const pageQuery = graphql`
             }
           }
           id
-          excerpt
         }
       }
     }
