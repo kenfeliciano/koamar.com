@@ -2,7 +2,7 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import SEO from '../components/seo'
-import { Layout, CoverImage, Content } from '../components'
+import { Layout, CoverImage, Content, Pagination } from '../components'
 
 const getThirdField = ({ implementation, created, createdCirca, date }) => {
   if (implementation) return <span>Implemented: {implementation}</span>
@@ -11,10 +11,16 @@ const getThirdField = ({ implementation, created, createdCirca, date }) => {
   return <span className='invisible'>Posted: {date}</span>
 }
 
-const BlogPost = ({ data }) => {
+const BlogPost = ({ data, pageContext }) => {
   const frontmatter = data.mdx.frontmatter
   const coverImage = frontmatter.coverImage ? frontmatter.coverImage.childImageSharp.fluid : null
   const thirdField = getThirdField(frontmatter)
+  const collection = data.mdx.fields.collection
+  const nextPage = pageContext.nextPage
+  const prevPage = pageContext.previousPage
+  const isFirst = !prevPage
+  const isLast = !nextPage
+
   return (
     <Layout>
       <SEO title={frontmatter.title} description={frontmatter.excerpt} />
@@ -28,6 +34,7 @@ const BlogPost = ({ data }) => {
         <h1>{frontmatter.title}</h1>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
       </Content>
+      <Pagination isFirst={isFirst} isLast={isLast} prevPage={prevPage} nextPage={nextPage} collection={collection} />
     </Layout>
   )
 }
