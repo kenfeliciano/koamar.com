@@ -18,8 +18,6 @@ const BlogPost = ({ data, pageContext }) => {
   const collection = data.mdx.fields.collection
   const nextPost = pageContext.next
   const prevPost = pageContext.prev
-  const isFirst = !prevPost
-  const isLast = !nextPost
 
   return (
     <Layout>
@@ -34,7 +32,7 @@ const BlogPost = ({ data, pageContext }) => {
         <h1>{frontmatter.title}</h1>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
       </Content>
-      <LinkEdges isFirst={isFirst} isLast={isLast} prevPage={prevPost} nextPage={nextPost} collection={collection} />
+      <LinkEdges prevPage={prevPost} nextPage={nextPost} collection={collection} />
     </Layout>
   )
 }
