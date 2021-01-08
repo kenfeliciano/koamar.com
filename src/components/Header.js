@@ -2,7 +2,8 @@ import { Link } from 'gatsby'
 import * as React from 'react'
 import { useContext } from 'react'
 
-import { DarkToggle, Logo, MenuContext, Hamburger, X, MenuItem } from '.'
+import { DarkToggle, MenuContext, MenuItem } from '.'
+import { Logo, Hamburger, X } from '../svgs'
 
 export const Header = ({ siteTitle }) => {
   const { menuOpen, setMenuOpen } = useContext(MenuContext)
