@@ -1,22 +1,12 @@
 import * as React from 'react'
-import { Link } from 'gatsby'
-import tw from 'twin.macro'
 
+import { LinkWrapper, LinkButton } from '../components'
 import { DoubleChevronLeft, DoubleChevronRight } from '../svgs'
 
-const LinkWrapper = tw.div`
-  py-12 px-0 flex items-center justify-between mx-4
-`
-
-const LinkButton = tw(Link)`
-  text-body text-sm p-2 font-bold
-  bg-container hover:bg-brandedSurface dark:hover:bg-opposite
-`
-
-export const LinkEdges = ({ isFirst, isLast, prevPage, nextPage, collection }) => {
+export const LinkEdges = ({ prevPage, nextPage, collection }) => {
   return (
     (prevPage || nextPage) && (
-      <LinkWrapper isFirst={isFirst} isLast={isLast} inactive='var(--text-disabled)' active='var(--text-body)'>
+      <LinkWrapper>
         {prevPage ? (
           <LinkButton to={`/${prevPage.fields.collection}/${prevPage.frontmatter.slug}`}>
             <DoubleChevronLeft />
