@@ -1,43 +1,29 @@
 import * as React from 'react'
-import styled from 'styled-components'
-import { Link } from 'gatsby'
 
-const PaginationWrapper = styled.div`
-  padding: 3rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  a:nth-child(1) {
-    color: ${(props) => (props.isFirst ? props.inactive : props.active)};
-    pointer-events: ${(props) => (props.isFirst ? 'none' : 'pointer')};
-    cursor: ${(props) => (props.isFirst ? 'default' : 'pointer')};
-  }
-
-  a:nth-child(2) {
-    color: ${(props) => (props.isLast ? props.inactive : props.active)};
-    pointer-events: ${(props) => (props.isLast ? 'none' : 'pointer')};
-    cursor: ${(props) => (props.isLast ? 'default' : 'pointer')};
-  }
-`
-
-export const PaginationElement = styled((props) => <Link {...props} />)`
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.125rem;
-  text-decoration: none;
-  margin: 0 2rem;
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
-`
+import { LinkWrapper, LinkButton } from '../components'
+import { DoubleChevronLeft, DoubleChevronRight } from '../svgs'
 
 export const Pagination = ({ isFirst, isLast, prevPage, nextPage }) => {
   return (
-    <PaginationWrapper isFirst={isFirst} isLast={isLast} inactive='var(--text-disabled)' active='var(--text-body)'>
-      <PaginationElement to={prevPage}>Previous Page</PaginationElement>
-      <PaginationElement to={nextPage}>Next Page</PaginationElement>
-    </PaginationWrapper>
+    (prevPage || nextPage) && (
+      <LinkWrapper isFirst={isFirst} isLast={isLast}>
+        {!isFirst ? (
+          <LinkButton to={prevPage}>
+            <DoubleChevronLeft />
+            Previous Page
+          </LinkButton>
+        ) : (
+          <div></div>
+        )}
+        {!isLast ? (
+          <LinkButton to={nextPage}>
+            Next Page
+            <DoubleChevronRight />
+          </LinkButton>
+        ) : (
+          <div></div>
+        )}
+      </LinkWrapper>
+    )
   )
 }
