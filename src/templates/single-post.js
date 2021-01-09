@@ -29,7 +29,12 @@ const BlogPost = ({ data, pageContext }) => {
         {thirdField}
       </div>
       <Content>
-        <h1>{frontmatter.title}</h1>
+        <h1>
+          {frontmatter.draft && (
+            <span className='bg-opposite rounded-lg p-2 inline-block uppercase tracking-wide'>(Draft)</span>
+          )}{' '}
+          {frontmatter.title}
+        </h1>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
       </Content>
       <LinkEdges prevPage={prevPost} nextPage={nextPost} collection={collection} />
@@ -49,6 +54,7 @@ export const blogQuery = graphql`
         slug
         title
         tags
+        draft
         implementation(formatString: "MM/DD/YYYY")
         created(formatString: "MM/DD/YYYY")
         createdCirca
