@@ -9,6 +9,33 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 }
 
+exports.createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes, createFieldExtension } = actions
+
+  createFieldExtension({
+    name: `defaultFalse`,
+    extend() {
+      return {
+        resolve(source, args, context, info) {
+          if (source[info.fieldName] == null) {
+            return false
+          }
+          return source[info.fieldName]
+        },
+      }
+    },
+  })
+
+  createTypes(`
+    type Mdx implements Node {
+      frontmatter: Frontmatter
+    }
+    type Frontmatter {
+      draft: Boolean @defaultFalse
+    }
+  `)
+}
+
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query {
