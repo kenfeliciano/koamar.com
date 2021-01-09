@@ -46,7 +46,7 @@ export const pageQuery = graphql`
   query AllPostsQuery($skip: Int!, $limit: Int!, $collection: String!) {
     allMdx(
       sort: { fields: frontmatter___date, order: DESC }
-      filter: { fields: { collection: { eq: $collection } } }
+      filter: { fields: { collection: { eq: $collection } }, frontmatter: { draft: { eq: false } } }
       skip: $skip
       limit: $limit
     ) {
