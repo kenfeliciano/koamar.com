@@ -3,12 +3,42 @@ import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, LinkEdges } from '../components'
+import tw from 'twin.macro'
+
+const InfoWrapper = tw.div`
+  flex flex-col items-center sm:flex-row
+`
+
+const InfoSeparator = tw.span`
+  hidden sm:inline
+`
 
 const getThirdField = ({ implementation, created, createdCirca, date }) => {
-  if (implementation) return <span>Implemented: {implementation}</span>
-  if (created) return <span>Written on: {created}</span>
-  if (createdCirca) return <span>Written during: {createdCirca}</span>
-  return <span className='invisible'>Posted: {date}</span>
+  if (implementation)
+    return (
+      <InfoWrapper>
+        <span>Implemented</span>
+        <InfoSeparator>:&nbsp;</InfoSeparator>
+        <span>{implementation}</span>
+      </InfoWrapper>
+    )
+  if (created)
+    return (
+      <InfoWrapper>
+        <span>Written</span>
+        <InfoSeparator>:&nbsp;</InfoSeparator>
+        <span>{created}</span>
+      </InfoWrapper>
+    )
+  if (createdCirca)
+    return (
+      <InfoWrapper>
+        <span>Written during</span>
+        <InfoSeparator>:&nbsp;</InfoSeparator>
+        <span>{createdCirca}</span>
+      </InfoWrapper>
+    )
+  return <span className='invisible'>Posted {date}</span>
 }
 
 const BlogPost = ({ data, pageContext }) => {
@@ -23,9 +53,17 @@ const BlogPost = ({ data, pageContext }) => {
     <Layout>
       <SEO title={frontmatter.title} description={frontmatter.excerpt} />
       <CoverImage fluid={coverImage} />
-      <div className='flex justify-between text-sm text-muted mt-1 ml-4 lg:ml-0 mr-4 lg:mr-0'>
-        <span>Posted: {frontmatter.date}</span>
-        <span>{data.mdx.timeToRead} min. read</span>
+      <div className='flex items-center justify-between text-xs lg:items-start lg:text-sm text-muted mt-1 ml-2 lg:ml-0 mr-2 lg:mr-0'>
+        <InfoWrapper>
+          <span>Posted </span>
+          <InfoSeparator>:&nbsp;</InfoSeparator>
+          <span>{frontmatter.date}</span>
+        </InfoWrapper>
+        <InfoWrapper>
+          <span>{data.mdx.timeToRead} min.</span>
+          <InfoSeparator>&nbsp;</InfoSeparator>
+          <span>read</span>
+        </InfoWrapper>
         {thirdField}
       </div>
       <Content>
