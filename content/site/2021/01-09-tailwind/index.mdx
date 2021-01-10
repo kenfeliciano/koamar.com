@@ -2,16 +2,15 @@
 title: Tailwind CSS install
 slug: tailwind-install
 date: 2021-01-09
-coverImage: ./danielle-macinnes-IuLgi9PWETU-unsplash.jpg
-excerpt: Let's use Tailwind!
+coverImage: ./jason-blackeye-nyL-rzwP-Mk-unsplash.jpg
+excerpt: Let's use Tailwind! Initial installation with distractions!
 tags: [tailwind, dark-mode]
 implementation: 2020-12-12
-draft: true
 ---
 
-## Tailwind with Gatsby
+## Installing Tailwind CSS with Gatsby
 
-I'm following my recipe again (not a chef). This information comes from [Install Tailwind CSS with Gatsby | Tailwind CSS](https://tailwindcss.com/docs/guides/gatsby). I chose not to use `@latest` as it is specified. I had used Tailwind CSS before without doing that and I wanted to try it. It worked just fine this way. I've actually never used `@latest` before and didn't want to disrupt everything I thought I knew just yet!
+I followed my recipe again (not a chef). This information here came from [Install Tailwind CSS with Gatsby](https://tailwindcss.com/docs/guides/gatsby). I chose not to use `@latest` as specified. I had used Tailwind CSS before without doing that and it worked. It worked just fine this way. I've actually never used `@latest` before when installing an `npm` package and I didn't want to disrupt everything I thought I knew just yet!
 
 ```bash
 npm install gatsby-plugin-postcss tailwindcss postcss autoprefixer
@@ -20,10 +19,50 @@ npm install gatsby-plugin-postcss tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-## A slight draft
+#### You feel a slight draft...
 
-I want(ted) this post to be draft so I looked up a best practice for implementing `draft` in Gatsby sites. I've seen where you just add draft: true (or false) to frontmatter. But, I ran into an article by lekoarts, [Adding a draft feature to your Gatsby site | LekoArts](https://www.lekoarts.de/en/blog/adding-a-draft-feature-to-your-gatsby-site), that shows how to extend the GraphQL schema so the draft frontmatter is a boolean and defaults to false if it is not supplied. I like it! Without this, I'd have to make sure there was always at least one post with draft frontmatter for GraphQL to know about it.
+I wanted this post to be draft so I searched for best practice for implementing `draft` in Gatsby sites. I've seen where you just add draft: true (or false) to frontmatter. I ran into an article by lekoarts, [Adding a draft feature to your Gatsby site](https://www.lekoarts.de/en/blog/adding-a-draft-feature-to-your-gatsby-site), that shows how to extend the GraphQL schema so the draft frontmatter is a boolean and defaults to false if it is not supplied. I liked this! GraphQL can know about the frontmatter field even if it has never been used.
 
-### Why?
+**_But why?_** Oh yeah, I wanted to add some code that, in my notes, I had used `diff`. The standard `diff` for [prism-react-renderer](https://github.com/FormidableLabs/prism-react-renderer) loses the syntax highlighting on an inserted or deleted line. I wanted to keep the syntax highlighting! 🎉 So, I made this post draft while I did that! Someday, this post might link to a post on adding draft frontmatter and one on implementing diff syntax highlighting! Someday... 😭
 
-Oh yeah, I want to try adding my diff feature! So, it's draft right now!
+### Continuing onward
+
+Add `gatsby-plugin-postcss` to the array of plugins.
+
+```diff-js:title=/gatsby.config.js
+  module.exports = {
+    /* Your site config here */
+-   plugins: [],
++   plugins: [`gatsby-plugin-postcss`],
+  }
+```
+
+Remove unused styles during production build for Tailwind.
+
+```diff-js:title=/tailwind.config.js
+  module.exports = {
+-   purge: [],
++   purge: ["./src/**/*.{js,jsx,ts,tsx}"],
+    darkMode: false, // or 'media' or 'class'
+    theme: {
+      extend: {}
+    },
+    variants: {},
+    plugins: []
+  }
+```
+
+Create the standard Tailwind CSS file. I've created a styles folder for this.
+
+```css:title=/src/styles/global.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+At this point, Tailwind is working and you can use Tailwind CSS classes everywhere. Next step for me was to implement a dark mode that works with Tailwind.
+
+#### Attributions
+
+Photo by [Jason Blackeye (@jeisblack)](https://unsplash.com/@jeisblack?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/wind?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
