@@ -19,6 +19,10 @@
   --code-title-background: #001b1f;
   --code-title-text: hsl(187, 100%, 40%);
   --code-highlight: hsl(32, 91%, 88%);
+  --code-diff-add: rgba(2, 81, 55, 0.25);
+  --code-mark-add: rgba(2, 81, 55, 0.25);
+  --code-diff-sub: rgba(255, 153, 153, 0.25);
+  --code-mark-sub: rgba(120, 35, 35, 1);
 }
 
 .dark {
@@ -38,4 +42,8 @@
   --code-title-background: #1d1001;
   --code-title-text: hsl(32, 91%, 73%);
   --code-highlight: rgba(2, 55, 81, 0.5);
+  --code-diff-add: rgba(2, 81, 55, 0.25);
+  --code-mark-add: rgba(2, 81, 55, 1);
+  --code-diff-sub: rgba(120, 35, 35, 0.25);
+  --code-mark-sub: rgba(120, 35, 35, 1);
 }
