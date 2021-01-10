@@ -191,3 +191,11 @@ gatsby-highlight > code[class*='language-'],
   padding-right: 1em;
   padding-left: 0.65em;
 }
+
+.diff-line-add > .operator:nth-child(3) {
+  color: var(--code-mark-add) !important;
+}
+
+.diff-line-sub > .operator:nth-child(3) {
+  color: var(--code-mark-sub) !important;
+}
