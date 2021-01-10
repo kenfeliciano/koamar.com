@@ -40,6 +40,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
   const shouldHighlightLine = calculateLinesToHighlight(metastring)
   const hasLineNumbers = !noLineNumbers && language !== `noLineNumbers`
   const [lang, { title = `` }] = getParams(language)
+  const hasDiff = lang.slice(0, 5) === 'diff-'
   const handleClick = () => {
     copyToClipboard(codeString)
   }
@@ -56,31 +57,39 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
     )
   }
 
+  const langType = hasDiff ? lang.slice(5) : lang
+
   return (
     <>
       {title && <TitleContainer>{title}</TitleContainer>}
       <Highlight
         {...defaultProps}
         code={codeString}
-        language={lang}
+        language={langType}
         theme={theme === 'dark' ? nightOwl : nightOwlLight}
         {...props}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <div className='gatsby-highlight' data-language={language}>
+          <div className='gatsby-highlight' data-language={langType}>
             <pre className={className} style={style}>
               <CopyCode onClick={handleClick}>Copy</CopyCode>
               {tokens.map((line, i) => {
                 const lineProps = getLineProps({ line, key: i })
-
                 if (shouldHighlightLine(i)) {
                   lineProps.className = `${lineProps.className} highlight-line`
                 }
+
+                if (hasDiff && !shouldHighlightLine.length && (line[1].content === '+' || line[1].content === '-')) {
+                  lineProps.className = `${lineProps.className} ${
+                    line[1].content === '+' ? 'diff-line-add' : 'diff-line-sub'
+                  }`
+                }
+
                 return (
                   <div {...lineProps}>
                     {hasLineNumbers && <span className='line-number-style'>{i + 1}</span>}
                     {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
+                      <span key={key} {...getTokenProps({ token, key })} />
                     ))}
                   </div>
                 )

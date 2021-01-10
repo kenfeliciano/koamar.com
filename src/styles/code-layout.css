@@ -57,7 +57,6 @@ gatsby-highlight > code[class*='language-'],
 .highlight-line {
   background-color: var(--code-highlight);
   border-left: 0.35em solid var(--link);
-  margin-right: -1em;
   margin-left: -1em;
   padding-right: 1em;
   padding-left: 0.65em;
@@ -172,4 +171,31 @@ gatsby-highlight > code[class*='language-'],
   content: 'json';
   background: linen;
   color: black;
+}
+.gatsby-highlight pre[class~='language-diff']:before {
+  content: 'diff';
+  background: #50945e;
+  color: black;
+}
+.diff-line-add {
+  background-color: var(--code-diff-add);
+  border-left: 0.35em solid var(--code-mark-add);
+  margin-left: -1em;
+  padding-right: 1em;
+  padding-left: 0.65em;
+}
+.diff-line-sub {
+  background-color: var(--code-diff-sub);
+  border-left: 0.35em solid var(--code-mark-sub);
+  margin-left: -1em;
+  padding-right: 1em;
+  padding-left: 0.65em;
+}
+
+.diff-line-add > .operator:nth-child(3) {
+  color: var(--code-mark-add) !important;
+}
+
+.diff-line-sub > .operator:nth-child(3) {
+  color: var(--code-mark-sub) !important;
 }
