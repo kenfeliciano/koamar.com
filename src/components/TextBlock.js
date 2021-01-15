@@ -81,8 +81,8 @@ const StyledTextBlock = styled.div`
   padding: ${({ padding }) => padding};
 
   /* These are defaults, used for primary */
-  border-color: var(--primary);
-  background: var(--background);
+  border-color: var(--opposite);
+  background: var(--branded-surface);
 
   /* These override the defaults based on the blockType */
   border-color: ${(props) => color[props.blockType]};
