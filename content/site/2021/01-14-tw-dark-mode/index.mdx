@@ -1,0 +1,376 @@
+---
+title: Tailwind - Dark Mode
+slug: tw-dark-mode
+date: 2021-01-14
+coverImage: ./sunset-in-maui.jpg
+excerpt: It's getting darker...
+tags: [tailwind, dark-mode]
+implementation: 2020-12-12
+---
+
+## Installing Tailwind CSS with Gatsby - Part 2
+
+...or Dark Mode in Paradise!
+
+I did a lot of research for implementing Dark Mode and I wanted to do it with Tailwind CSS. Tailwind has its own [implementation](https://tailwindcss.com/docs/dark-mode). I originally had the plan of implementing it like this. However, after researching how most developers were doing this, I saw benefit in using CSS Variables. All of this was new to me. I've never been a web designer and I haven't fully grokked CSS. See the Acknowledgements below for all the sites that gave me clues and information!
+
+<Info>
+  One of the main reasons I went with Tailwind CSS was due to the dark mode support  in 2.0. Ironically
+  (or perhaps not...not an expert on irony) I'm not normally using Tailwind's dark mode Still,
+  I'm enjoying a lot of Tailwind and there is plenty of normal CSS and some styled-components in the site as well!
+</Info>
+
+<Warning>
+  One issue I kept running into was if I was using Tailwind with twin.macro, as I thought I must, I was going to be
+  blocked from using Tailwind plugins. I had the idea that I'd use twin.macro so I'd have styled-components and Tailwind
+  for best of both worlds!
+</Warning>
+
+I ended up working from [Josh W. Comeau's "The Quest for the Perfect Dark Mode"](https://www.joshwcomeau.com/react/dark-mode/)
+
+### Turn on the dark in Tailwind Config
+
+In `tailwind.config.js` the default for `darkMode` is false. My plan was to set a class of either light or dark as high up on the site as I could. So my first step was to set darkMode to `class`.
+
+```js:title=/tailwind.config.js {3}
+module.exports = {
+  purge: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class', // or 'media' or 'class'
+  theme: {
+    extend: {},
+  },
+  variants: {},
+  plugins: [],
+}
+```
+
+### Develop the pre-Gatsby script
+
+As Josh pointed out in his post, dark mode truly was nasty tough to do in Gatsby. The script needs to run before Gatsby starts hydrating. His goal was the same as mine which was helpful! I wanted to know what the user wanted before the home page displayed.
+
+What the user wanted was actually defined by Josh, and I agreed:
+
+- user can click a toggle to switch
+- user's preference should be saved
+- color scheme should default to OS setting
+- if all else fails, go with light mode
+
+Josh had a couple of other requirements that I didn't think of or realize would be an issue:
+
+- no flicker on first load ⁉
+- site should **never** show the wrong toggle state (well, yes, of course...why would it?)
+
+I followed Josh's steps, creating a ThemeContext and learning about React Context a bit.
+
+His function was called `getInitialColorMode` while mine is `getInitialTheme`. They both do the same thing in the long run but since Tailwind was going to handle the colors, I only had to set the theme as `light` or `dark` and set a class on the `body` element.
+
+<Info>This ends up in `gatsby-ssr.js`. Where it is at this moment in history is lost to me!</Info>
+
+```js:title=not-final-version.js {26-30}
+import * as React from 'react'
+
+const MagicScriptTag = () => {
+  const codeToRunOnClient = `
+    (function() {
+      function getInitialTheme() {
+        const persistedColorPreference = window.localStorage.getItem('color-mode')
+        const hasPersistedPreference = typeof persistedColorPreference === 'string'
+        // If the user has explicitly chosen light or dark,
+        // let's use it. Otherwise, this value will be null.
+        if (hasPersistedPreference) {
+          return persistedColorPreference
+        }
+        // If they haven't been explicit, let's check the media
+        // query
+        const mql = window.matchMedia('(prefers-color-scheme: dark)')
+        const hasMediaQueryPreference = typeof mql.matches === 'boolean'
+        if (hasMediaQueryPreference) {
+          return mql.matches ? 'dark' : 'light'
+        }
+        // If they are using a browser/OS that doesn't support
+        // color themes, let's default to 'light'.
+        return 'light'
+      }
+    
+      const theme = getInitialTheme()
+
+      const body = document.body
+
+      body.className = theme
+
+			const root = document.documentElement;
+			root.style.setProperty('--initial-theme', theme);
+    })()`
+
+  // eslint-disable-next-line react/no-danger
+  return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />
+}
+export const onRenderBody = ({ setPreBodyComponents }) => {
+  setPreBodyComponents(<MagicScriptTag />)
+}
+```
+
+### Dark Mode Toggle component
+
+I went extremely simple on the toggle component. I decided to just use 🌞 and 🌙 emojis. Some of the sites I looked at had **_much_** better looking ideas and perhaps someday mine will too. The DarkToggle component uses theme context so it can access the theme and set it when it updates. I almost understood it actually! I added that to my header component.
+
+### Color scheme
+
+Since there will be a light or dark class added to body, I can use CSS Variables to create `.light` and `.dark` styles that will live at the root and be available everywhere. I created Tailwind theme colors using those CSS variable names.
+
+After that, dark mode worked!
+
+<Info>
+  So, San Jose Sharks fan here... I decided on light and dark themes based on Sharks colors. Really, the teal and orange
+  ones mostly, although, their other colors are `#ffffff` and `#000000` and those make good surface colors!
+</Info>
+
+I thought since I'm going with teal for my primary color, perhaps the blue-gray Tailwind color pallette would do well instead of the standard gray. I ended up using hex codes initially instead of Tailwind codes, however, and at the current state of the project (here on 2021-01-14) I'm still not using Tailwind codes.
+
+# The Recipe
+
+1. set `darkMode = 'class'` in `tailwind.config.js`
+
+2. create Theme Provider component
+
+```js:title=src/components/ThemeProvider.js
+import * as React from 'react'
+import { useState, useEffect } from 'react'
+
+export const ThemeContext = React.createContext()
+
+export const ThemeProvider = ({ children }) => {
+  const [theme, rawSetTheme] = useState(undefined)
+  useEffect(() => {
+    const root = window.document.documentElement
+    const initialTheme = root.style.getPropertyValue('--initial-theme')
+    rawSetTheme(initialTheme)
+  }, [])
+
+  const setTheme = (value) => {
+    rawSetTheme(value)
+
+    window.localStorage.setItem('theme', value)
+    window.document.documentElement.className = value
+  }
+
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+}
+```
+
+3. create App component
+
+```js:title=src/components/App.js
+// Your App.js may live elsewhere of course. I haven't decided it should be as of now!
+import * as React from 'react'
+import { ThemeProvider } from './ThemeContext'
+
+const App = ({ children }) => {
+  return <ThemeProvider>{children}</ThemeProvider>
+}
+
+export default App
+```
+
+4. add App and Tailwind CSS to `gatsby-browser.js`
+
+```js:title=gatsby-browser.js
+import * as React from 'react'
+import App from './src/components/App'
+import './src/styles/global.css'
+
+export const wrapRootElement = ({ element }) => {
+  return <App>{element}</App>
+}
+```
+
+5. create `gatsby-ssr.js`
+
+```js:title=gatsby-ssr.js
+import * as React from 'react'
+import App from './src/components/App'
+
+const MagicScriptTag = () => {
+  const codeToRunOnClient = `
+    (function() {
+      function getInitialTheme() {
+        const persistedColorPreference = window.localStorage.getItem('theme')
+        const hasPersistedPreference = typeof persistedColorPreference === 'string'
+        // If the user has explicitly chosen light or dark,
+        // let's use it. Otherwise, this value will be null.
+        if (hasPersistedPreference) {
+          return persistedColorPreference
+        }
+        // If they haven't been explicit, let's check the media
+        // query
+        const mql = window.matchMedia('(prefers-color-scheme: dark)')
+        const hasMediaQueryPreference = typeof mql.matches === 'boolean'
+        if (hasMediaQueryPreference) {
+          return mql.matches ? 'dark' : 'light'
+        }
+        // If they are using a browser/OS that doesn't support
+        // color themes, let's default to 'light'.
+        return 'light'
+      }
+    
+      const theme = getInitialTheme()
+      
+      const root = document.documentElement
+      root.className = theme      
+      root.style.setProperty('--initial-theme', theme)
+    })()`
+
+  // eslint-disable-next-line react/no-danger
+  return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />
+}
+export const onRenderBody = ({ setPreBodyComponents }) => {
+  setPreBodyComponents(<MagicScriptTag />)
+}
+
+export const wrapPageElement = ({ element }) => {
+  return <App>{element}</App>
+}
+```
+
+6. create DarkToggle component
+
+```js:title=src/components/DarkToggle.js
+import * as React from 'react'
+import { useContext } from 'react'
+
+import { ThemeContext } from './ThemeContext'
+
+const DarkToggle = () => {
+  const { theme, setTheme } = useContext(ThemeContext)
+
+  if (!theme) {
+    return null
+  }
+
+  return (
+    <button
+      type='button'
+      onClick={() => {
+        setTheme(theme === 'light' ? 'dark' : 'light')
+      }}
+      className='block'
+    >
+      {`${theme === 'light' ? '🌙' : '🌞'}`}
+    </button>
+  )
+}
+
+export default DarkToggle
+```
+
+7. add DarkToggle to Header Component and add some Tailwind to test it out.
+
+```js:title=src/components/Header.js
+import { Link } from 'gatsby'
+import PropTypes from 'prop-types'
+import * as React from 'react'
+
+import DarkToggle from './DarkToggle'
+
+const Header = ({ siteTitle }) => (
+  <header className='bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-200 p-4 flex justify-between items-center'>
+    <h1 className='text-gray-900 dark:text-gray-200 no-underline m-0'>
+      <Link to='/'>{siteTitle}</Link>
+    </h1>
+    <DarkToggle />
+  </header>
+)
+
+Header.propTypes = {
+  siteTitle: PropTypes.string,
+}
+
+Header.defaultProps = {
+  siteTitle: ``,
+}
+
+export default Header
+```
+
+8. add color scheme to Global CSS
+
+```css:title=/src/styles/global.css {5-29}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.light {
+  --primary: #007889;
+  --background: #e5e7eb;
+  --surface: #ffffff;
+  --container: #d1d5db;
+  --branded-surface: #d1d5db;
+  --text: #1f2937;
+  --text-header: #09090a;
+  --link: #007889;
+  --muted: #4b5563;
+  --text-disabled: #6b7280;
+}
+
+.dark {
+  --primary: #f4901e;
+  --background: #1f2937;
+  --surface: #000000;
+  --container: #111827;
+  --branded-surface: #111a1c;
+  --text: #e5e7eb;
+  --text-header: #f3f4f6;
+  --link: #f4901e;
+  --muted: #9ca3af;
+  --text-disabled: #6b7280;
+}
+```
+
+9. add color scheme to Tailwind CSS
+
+```js:title=tailwind.config.js {6-17}
+module.exports = {
+  purge: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class', // or 'media' or 'class'
+  theme: {
+    extend: {
+      colors: {
+        primary: 'var(--primary)',
+        background: 'var(--background)',
+        surface: 'var(--surface)',
+        container: 'var(--container)',
+        brandedSurface: 'var(--branded-surface)',
+        body: 'var(--text)',
+        header: 'var(--text-header)',
+        link: 'var(--link)',
+        muted: 'var(--muted)',
+        disabled: 'var(--text-disabled)',
+      },
+    },
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+At this point, my recipe is at an end. There were a few nice _extra_ ideas in Josh's post but I decided against them, for now. I tried implementing the minification process he describes using [Terser](https://www.npmjs.com/package/terser) but I had too many problems for too little joy. I also decided to skip the situation when there is no JavaScript.
+
+#### Acknowledgements
+
+- [The Complete Guide to the Dark Mode Toggle](https://ryanfeigenbaum.com/dark-mode/)
+
+- [How To Add Dark Mode To Your Gridsome Blog With Tailwind CSS](https://mannes.tech/gridsome-tailwind-dark-mode/)
+
+- [theming-tailwind-demo](https://github.com/adamwathan/theming-tailwind-demo)
+
+- [A Dark Mode Toggle with React and ThemeProvider](https://css-tricks.com/a-dark-mode-toggle-with-react-and-themeprovider/)
+
+- [A Simple Guide to Dark Mode with Gatsby.js](https://victorzhou.com/blog/dark-mode-gatsby/)
+
+  <Primary>Sharks win 3-2 in OT against the Coyotes</Primary>
+
+##### Attributions
+
+Photo by [Ken Feliciano (Me!)](https:koamar.com)
