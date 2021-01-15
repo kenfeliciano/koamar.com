@@ -2,7 +2,7 @@ import * as React from 'react'
 import { App } from './src/components'
 import { MDXProvider } from '@mdx-js/react'
 import { preToCodeBlock } from 'mdx-utils'
-import { Table, Code, MarkdownLink } from './src/components'
+import { Table, Code, MarkdownLink, Primary, Danger, Warning, Success, Info } from './src/components'
 import './src/styles/global.css'
 import './src/styles/code-layout.css'
 
@@ -17,6 +17,11 @@ const components = {
   },
   a: (props) => <MarkdownLink {...props} />,
   wrapper: ({ children }) => <>{children}</>,
+  Primary,
+  Danger,
+  Warning,
+  Success,
+  Info,
 }
 
 export const wrapRootElement = ({ element }) => {
