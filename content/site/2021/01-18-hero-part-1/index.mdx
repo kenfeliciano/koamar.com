@@ -1,0 +1,107 @@
+---
+title: Hero - Part I
+slug: hero-part-one
+date: 2021-01-18
+coverImage: ./ola-mishchenko-XqYlvd5DGKA-unsplash.jpg
+excerpt: Add a very simple "Hero"
+tags: [hero]
+implementation: 2020-12-13
+---
+
+## What is a hero?
+
+I seriously thought it would be an acronym. But it's not. I planned on having something prominent and graphical at some point. It turns out that is a hero! My hero at this point was early on in its origin story: awkward, bumping into things, and making mistakes. But the general idea was there.
+
+## What is my hero going to say?
+
+I wanted my hero to reflect what this site would be about and that meant who I am.
+
+- Lifelong learner
+
+- Musician
+
+- Retired Guy
+
+- Some sort of coding type
+
+### Lifelong learner
+
+I was not a good student in college. I was not a lifelong learner at that point! Since then, I've enjoyed learning more and more. It's often just for the sake of learning something new. I hope to write about new things I've learned in case they are enjoyable to others. Or, at the least, I can look at them in the future and say, "Hey! I did learn something once!"
+
+### Musician
+
+I should have put this one first. If you ask me what I am, I say musician before any other thought. I've been playing music since I was 8. I play piano and keyboards _mostly_. I play jazz _mostly_. I've written and arranged music in the past and during the 2020 pandemic, I wrote a lot more. It wasn't planned. It just happened. I plan on copyrighting my recent stuff (with a few older pieces) and putting them up on the site. _If_ we ever play again in public, perhaps a calendar or at least some pictures or videos of live performances.
+
+### Retired Guy
+
+I've recently retired from local government IT department work! I did that for 19 years. Prior to that, I evolved into an IT guy for an environmental consulting company. Since retirement, I took a year and helped my lovely wife out with her job as a middle school music teacher (6th thru 8th grade). After she retired in 2019, well, we all know what happened. Anyway, as someone that is retired, I may have a different perspective on somethings. We'll see about that!
+
+### Some sort of coding type
+
+I should apologize for being nebulous here. I've always had problems describing myself. I suppose I could say I'm really good at imposter syndrome! I've always considered myself a **_really_** good end user. I've always been good at making due with whatever tool set I happen to have. In ancient times, we had Visual Basic (for DOS mind you) and Lotus 1-2-3. I made that work and did what I could to make life better for my co-workers. Later, I worked with Advanced Revelation (anyone remember this?), Microsoft Access (my crutch for a long time), and then eventually supported systems using Oracle Databases. All the while, never really a web programmer, which seemed the most interesting to me!
+
+## Hero Implementation
+
+This was quite a quick feature to implement (or was it?!), hence, more of a chatty technical post. I added some text like, "Welcome to KoaMar in 2020, home of Ken Feliciano" and threw in the bullet points from above. When I made the browser window mobile sized, the text was much too busy. I made use of some Tailwind set points to make the text responsive in size and in content.
+
+```html
+<p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight sm:text-2xl text-body">
+  <span className="hidden sm:inline">Lifelong learner</span>
+  <span className="sm:hidden">Learner</span>, musician<span className="md:hidden">, coder</span>
+  <span className="hidden sm:inline">, retired guy</span>
+  <span className="hidden md:inline">, some sort of coding type</span>
+</p>
+```
+
+The way Tailwind works, anything without `sm:` or `md:` in front of it is what is applied in mobile and above. Anything with `sm:` is for slightly bigger screens (640px or larger). And finally, for `md:` it is 768px or larger. There are more breakpoints but these were all I needed for this little experiment.
+
+### Responsive Text
+
+To look good at a mobile size, less words were better. I made it say "Learner" and only add "Lifelong" if the screen was a bit larger. I did the same for the other bullet points: "some sort of coding type" became just "coder" and "retired guy" just went away on the tiny screen. With less words, the font could actually be a tiny bit bigger. Looking at it now, as I write this, it looks a bit hard to understand. I remember it worked but there was probably a better way to do it. Still, it was for fun!
+
+## Greeting Implementation
+
+I liked how some of my favorite coding celebrities have their catch phrases, at least for greetings and good-byes. You know, things like, "Hello Friends" and "Peace". I chatted with my wife about what she used to say to her kids when they came into class. I remember it being very appropriate and well thought out. She said she used to say, "Good morning everyone." Well, it was more complicated in my memory! But, I liked it and I asked if I could steal it. My initial idea was to have it say "Good {time of day} everyone!" depending on what time of day it was for the user that is looking at the site.
+
+I hoped it would be so easy to do this with JavaScript, and it was!
+
+```js:title=greeting-message.js
+export const greetingMessage = () => {
+  const today = new Date()
+
+  // This should still give me the correct time in another country right?
+  // I want it to be in 24 hour mode
+  // Most of my nationality is Portuguese so I'm going with Portugal.
+  const currentHour = today.toLocaleTimeString('pt-PT').slice(0, 2)
+
+  // Starting with a simple implementation without regard to sunrise / sunset
+  // It would be nice if it took that into account (I had big plans...)
+  const timeOfDay = () => {
+    switch (true) {
+      case currentHour < '12':
+        return 'morning'
+      case currentHour < '18':
+        return 'afternoon'
+      case currentHour <= '24':
+        return 'evening'
+      default:
+        return 'night'
+    }
+  }
+
+  return `Good ${timeOfDay()} everyone,`
+}
+```
+
+I tried various ways of getting this to work, but, with Gatsby, it was not simple! Back to the article by Josh W. Comeau on [Dark Mode](https://www.joshwcomeau.com/react/dark-mode/), he talked about how hard it was to get the _theme_ ready to go before Gatsby displayed the page. He/I wanted the page to be in light or dark mode as appropriate without flashing if it was the wrong one!
+
+When I tried to do this simple JavaScript maneuver, that hearkened back to the time of cgi-bin and perl scripts, it worked, but the text would flash! I tried a few things but I couldn't get it to work without the flash. I really though I was on to something with a TimeOfDayProvider. I tried putting in my time of day checking code into the magic script that detects the theme and using React.Context rather like the ThemeProvider. It looked like it might work, but it didn't. I eventually gave up and decided, "Hi all!" was a better greeting for me.
+
+And just to complete the thought, and finish this post, I already had a good one for saying farewell.
+
+Be well!
+
+##### Attributions
+
+Photo by [Ola Mishchenko (@olamishchenko)](https://unsplash.com/@olamishchenko?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/hero-sandwich?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
