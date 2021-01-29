@@ -87,6 +87,10 @@ const StyledTextBlock = styled.div`
   /* These override the defaults based on the blockType */
   border-color: ${(props) => color[props.blockType]};
   background: ${(props) => (props.theme === 'light' ? bgColorLight[props.blockType] : bgColorDark[props.blockType])};
+
+  > :nth-child(2) {
+    margin-top: 0;
+  }
 `
 
 const StyledIconWrap = styled.div`

@@ -14,31 +14,197 @@ Me and write-good, using the [VS Code Write Good Linter](https://marketplace.vis
 Here's some example text hoping to get some suggestions from the write-good extension. Nothing? Okay, let's try something else. How about something wimpy? Really? Try not to use the word "really" as it is a wimpy word.
 
 <Warning>
-  Well, it doesn't like the word spelled R-E-A-L-L-Y as a whole sentence or a word apparently. I tried to use it as an
-  example, in quotation marks, but it still flagged it.
+
+
+# Wimpy Word Test level 1
+
+Well, it doesn't like the word spelled R-E-A-L-L-Y as a whole sentence or a <em>word</em>{' '}
+apparently. I tried to use it as an example, in quotation marks, but it still flagged it. I like some of my weasel
+words I don't want to give them up! Link color testing with [a link to Google](https://google.com).
+
 </Warning>
+
 
 It doesn't catch crazy grammar errors. Spelling errors? How am I supposed to write good if this doesn't help me?
 
 It took the ability to flag incorrect writing for me in certain situations. However...
 
-<Success>Checking for lexical illusions is is fun insofar as it works.</Success>
+<Success>
+
+
+## MD Test level 2
+
+- Yes
+- I want
+- Markdown here
+
+### Link Checking level 3
+
+Checking for lexical illusions is is fun insofar as it works. Link color testing with [a link to Google](https://google.com).
+
+</Success>
+
 
 There is something to be said for this. There are things to consider here. It must be a weasel word.
 
-<Info>I like some of my weasel words I don't want to give them up!</Info>
+<Info>
+
+
+### Text formatting level 3
+
+Text formatting works 🎉 inside these TextBlock components, but only using HTML elements. 😢 Oh wait, it works for heading as long as you put a bunch of blank lines after the start of the **text block!** Inline formatting too! Prettier will mess it up too if it is not at the left margin. If it is indented into the component like I would think it would be, it won't be interpreted as markdown.
+Link color testing with [a link to Google](https://google.com).
+
+#### Extra stuff
+
+Just checking on spacing around multiple headers in a text block. And aha!
+
+</Info>
+
 
 I suppose I could configure it to stop warning me about weasel words and just let me know when I'm talking in passive too much. But isn't there a time for that even? Grammar Police? A little help here?
 
-<Danger>I can't spell!</Danger>
+<Danger>
+
+
+#### Danger level 4
+
+I can't spell! Need a spell checker like [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+. It's really no fun to write HTML in your _markdown-esque_ file but at least it just uses my link formatting without
+me doing anything special. Ewww, it's going to look bad if the color doesn't match well. A link on the Warning text block
+would look terrible in dark mode! Well, it's not that terrible.
+
+</Danger>
+
 
 Need a spell checker for markdown.
 
-Oh, I have one... [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker). I hadn't turned it on. Such embarrassment...
+Oh, I have one... [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker). I hadn't turned it on. **_Such embarrassment!_**
 
 Ah, and write-good does look at mdx files now that I've configured it.
 
-<Primary>Go Sharks!</Primary>
+<Primary>
+
+
+##### Go Sharks! level 5
+
+2020-2021 season not going so well. 3 wins, 5 losses so far. Link color testing with [a link to San Jose Sharks](https://www.nhl.com/sharks).
+
+</Primary>
+
+
+This is an info test for a text block with some markdown formatting but no header required.
+
+<Info>
+
+
+An informative item with **_markdown_** formatting (minor such that it is) to see what it looks like without a header. So, if I want any markdown formatting, I'd better have a header. I'm sure there is a CSS trick to make the margin-top go away for a paragraph but only when it is the first item in this container! Sounds an awful lot like :first-child but I couldn't get it to work. I'll keep trying.
+
+Just checking.
+
+Three paragraphs.
+
+Okay, nth-child(2)? **_Really?_** 😅 So, if the second child is a paragraph (it is 1-based), that means there is no header and I should scrap the margin-top on _this_ paragraph.
+
+</Info>
+
+
+Oh goodness, I get it actually! Oh it hurts! 🙂 Here's a peek at the code! I wish the CSS code looked better like in my editor.
+
+```javascript:title=src/components/TextBlock.js {18-27}
+/// an excerpt, the StyledTextBlock component
+const StyledTextBlock = styled.div`
+  position: relative;
+  border-left-width: 3px;
+  border-left-style: solid;
+  margin: 2rem 1rem;
+  border-radius: 5px;
+  padding: ${({ padding }) => padding};
+
+  /* These are defaults, used for primary */
+  border-color: var(--opposite);
+  background: var(--branded-surface);
+
+  /* These override the defaults based on the blockType */
+  border-color: ${(props) => color[props.blockType]};
+  background: ${(props) => (props.theme === 'light' ? bgColorLight[props.blockType] : bgColorDark[props.blockType])};
+
+  & h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-top: 0;
+  }
+  & p:nth-child(2) {
+    margin-top: 0;
+  }
+`
+```
+
+I added the highlighted region. I don't want/need a margin-top for any of the headers that are inside a TextBlock. I also don't want a margin-top for a paragraph that begins a TextBlock. It's really great rambling on like this. I noticed a bug in this design. I really don't want any nth-child(2) to have a margin-top! So is it this instead?
+
+```javascript:title=src/components/TextBlock.js {18-25}
+/// excerpt again
+const StyledTextBlock = styled.div`
+  position: relative;
+  border-left-width: 3px;
+  border-left-style: solid;
+  margin: 2rem 1rem;
+  border-radius: 5px;
+  padding: ${({ padding }) => padding};
+
+  /* These are defaults, used for primary */
+  border-color: var(--opposite);
+  background: var(--branded-surface);
+
+  /* These override the defaults based on the blockType */
+  border-color: ${(props) => color[props.blockType]};
+  background: ${(props) => (props.theme === 'light' ? bgColorLight[props.blockType] : bgColorDark[props.blockType])};
+
+  & h1:nth-child(2),
+  h2:nth-child(2),
+  h3:nth-child(2),
+  h4:nth-child(2),
+  h5:nth-child(2),
+  p:nth-child(2) {
+    margin-top: 0;
+  }
+`
+```
+
+Why can't I just say `nth-child(2)` in some generic way so whatever the second element is, it has no margin. Narrator: "You can Ken!"
+
+<Info>
+
+
+```css
+> :nth-child(2) {
+  margin-top: 0;
+}
+```
+
+Just did this in an Info TextBlock to see how code looks inside them! This style is applied on the container so now I can say the second child in the container should not have a margin-top!
+
+</Info>
+
+
+With a header, it looks much better. Even with a level 5 header!
+
+<Info>
+
+
+##### This time with header level 5
+
+An informative item with **_markdown_** formatting (minor such that it is) to reiterate that it looks good with a header.
+
+</Info>
+
+
+<Warning>
+  Last one, I promise. This time, it is just straight-up text without markdown. Looks lovely, just like I want it to
+  look!
+</Warning>
 
 ##### Attributions
 
