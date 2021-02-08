@@ -1,0 +1,154 @@
+---
+title: Global Styles I
+slug: initial-global-styles
+date: 2021-02-08
+coverImage: ./oscar-obians-QYN7N4sVC4c-unsplash.jpg
+excerpt: Pick and choose from Gatsby's layout.css
+tags: [css, styled-components, css-variables]
+implementation: 2020-12-18
+---
+
+Gatsby's default starter placed a lot of what I consider global style inside of `layout.css`. I knew I wanted my global styles to live at a higher level than this.
+
+## What happens if I remove layout.css?
+
+My first thought was to just remove `layout.css` and see what happens. My hypothesis was that it would look not-so-good. It did not! There were things in `layout.css` necessary for a somewhat pleasing site!
+
+## App is my highest point
+
+In my App component, I had the `ThemeProvider` component wrapping the whole site. To me, it made sense that App was where the global styles should live.
+
+<Info>
+
+
+### Keeping it DRY-er
+
+This had the added benefit of removing some code duplication! When working through the Skillthrive tutorial, [Gatsby JS: Build a Blog](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT), I ended up with duplicate code in `gatsby-ssr.js` and `gatsby-browser.js`. Using the App component in those two files allows the code to live only in one place.
+
+</Info>
+
+
+I did not want to try and convert all this CSS into Tailwind at this point since it was **mostly** already done. I knew I liked `styled-components` and I was somewhat familiar with using [createGlobalStyle](https://styled-components.com/docs/api#createglobalstyle) from styled-components. I decided to convert what I needed from layout.css into a GlobalStyles component.
+
+## Tailwind CSS considerations
+
+Even though I did not convert this to Tailwind CSS, I knew I was going to try and use it at some point so I nudged some values so they were Tailwind equivalents. For example, `1.45rem` became `1.5rem` which is equivalent to `m-6` in Tailwind. I did the best I could hoping it would be styled **okay**.
+
+## Margin Spacing
+
+<Warning>
+  Future me has read about trying to do without margin spacing at all! Present me had not read about it!
+</Warning>
+
+A lot of Gatsby's initial styling used margin-bottom to separate elements. I had planned on using margin-top. I had experience with it, and to quote something from [Adam Wathan's Tailwind CSS tutorial](https://youtu.be/5byxwJce6zc):
+
+> When you add a top margin to the element making that element move feels better to me than when you add a bottom margin to an element and that actually pushes away other content. I like the idea that the element I'm adding a class to actually changes.
+>
+> -- <cite>Adam Wathan</cite>
+
+I found another article that I enjoyed that made the case for top margin.
+
+- [CSS: margin top vs bottom (a layout trick you should know)](https://matthewjamestaylor.com/css-margin-top-vs-bottom)
+
+I set the first-child's margin-top to 0 for the h1, h2, and p elements.
+
+## CSS variables
+
+I started using CSS variables right away. I must say, they are quite handy and not just for implementing dark mode! At this point, I'm only using them for colors.
+
+## The current App component
+
+At this point, I've removed what I thought was unnecessary, tweaked values to more match Tailwind, and altered colors to use CSS variables.
+
+```javascript:title=src/components/App.js
+import * as React from 'react'
+import { ThemeProvider } from '../components'
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyles = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    font: 112.5%/1.5em georgia, serif, sans-serif;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--text-body);
+    font-family: georgia, serif;
+    font-weight: normal;
+    word-wrap: break-word;
+    font-kerning: normal;
+  }
+  h1 {
+    color: var(--text-header);
+    font-size: 2.25rem;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    margin-top: 1.5rem;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  h2 {
+    margin-top: 1.5rem;
+    color: var(--text-header);
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+      Helvetica Neue, sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1;    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  ul, ol {
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
+    list-style-position: outside;
+  }
+  ul {
+    list-style-type: disc;
+  }
+  p {
+    margin-top: 1.5rem;
+    color: var(--text-body);    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+`
+
+export const App = ({ children }) => {
+  return (
+    <ThemeProvider>
+      <GlobalStyles />
+      {children}
+    </ThemeProvider>
+  )
+}
+
+export default App
+```
+
+<Primary>
+
+
+### First game against the dreaded LA Kings tomorrow!
+
+I know it makes no sense but when in Sharks-fan-mode, I despise the LA Kings. I firmly believe that a King fan will despise the SJ Sharks as well. That's just the way it is! Meanwhile, they are both lovely teams with lovely people playing on them.
+
+- Sharks are 4-5-1 (next to last place in the West)
+- Kings are 3-6-2 (last place in the West)
+
+</Primary>
+
+
+##### Attributions
+
+Photo by [Oscar Obians (@prowhiz)](https://unsplash.com/@prowhiz?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/style?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)

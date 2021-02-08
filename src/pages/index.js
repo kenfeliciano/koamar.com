@@ -10,7 +10,7 @@ const IndexPage = () => (
       <Hero />
       <h1>Hi all!</h1>
       <p>Welcome to KoaMar, the virtual home of Ken Feliciano.</p>
-      <div className='bg-surface rounded-lg shadow-lg p-4'>
+      <div className='p-4 rounded-lg shadow-lg bg-surface'>
         <h2>Updates so far!</h2>
         <ul>
           <li key='upd1'>
@@ -40,8 +40,7 @@ const IndexPage = () => (
             by <ExternalLink href='https://dev.to/dailydevtips1'>Chris Bongers</ExternalLink>
           </li>
           <li key='upd8'>
-            <InternalLink href='/site/tailwind-install'>Site: Tailwind CSS install</InternalLink> - Second post in the
-            Site Development section is up!
+            <InternalLink href='/site'>Site Dev posts</InternalLink> - There are almost enough for pagination!
           </li>
         </ul>
       </div>
