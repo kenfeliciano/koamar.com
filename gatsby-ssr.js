@@ -60,7 +60,7 @@ const components = {
   Info,
 }
 
-export const wrapPageElement = ({ element }) => {
+export const wrapRootElement = ({ element }) => {
   return (
     <MDXProvider components={components}>
       <App>{element}</App>
