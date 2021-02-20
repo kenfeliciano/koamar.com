@@ -1,0 +1,121 @@
+---
+title: External Links
+slug: external-links
+date: 2021-02-19
+coverImage: ./kenny-luo-VVpIN609QtY-unsplash.jpg
+excerpt: Style external links and make them behave consistently
+tags: [tailwind, css, react]
+implementation: 2020-12-28
+---
+
+## My link criteria
+
+- external links open in a new tab
+- internal links open in the current tab
+- all inline links have a branded underline color
+
+### Open External Links in new tab
+
+I wanted to do this correctly! I did a bit of research and found that links that open a new tab to a site that is not yours should have a few keywords for the `rel` attribute I did not experience this back in my working days.
+
+- [noreferrer](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/noreferrer)
+- [noopener](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/noopener)
+- [nofollow](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#attr-nofollow)
+
+<Warning>
+  I must admit, even after reading all the docs, I'm still nogrok-ing this stuff. But, I see this as the way to do it
+  properly. Click on this external link and you are in a different world not connected to my site at all. That sounds
+  good!
+</Warning>
+
+### The React component
+
+Before working on the web site, I had worked out some of the styling with Tailwind in a mock-up. I had a component mostly done. _Foreshadowing!_ Even today, as I write this, I think it is confusing the way I ~~have~~ had it.
+
+```js:title=ExternalLink.js
+import * as React from 'react'
+
+const ExternalLink = ({ href, children }) => (
+  <a
+    href={href}
+    className='inline-link border-fadeaway border-primary border-b-2'
+    target='_blank'
+    rel='noreferrer noopener nofollow'
+  >
+    {children}
+  </a>
+)
+
+export default ExternalLink
+```
+
+<Info>That'd be the end of this post but, foreshadowing, remember?</Info>
+
+What's confusing about that I ask? I'm glad I asked! I've got a few classes in there don't I? Some are certainly Tailwind but some are certainly **_not_**! If I'm _not_ using Tailwind for the whole thing, why can't I just use a single class, like `inline-link` or at least two classes, `inline-link` and `border-fadeaway`?
+
+### The css
+
+Before jumping ahead to refactoring this thing, what's the CSS that is creating these lovely links?
+
+```css
+.border-fadeaway {
+  border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%, transparent 100%);
+  border-image-slice: 0 0 100 0;
+}
+
+.inline-link {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+```
+
+It sure looks like I could combine these, add `border-primary` and `border-b-2` from Tailwind and my React component would look a heck of a lot cleaner. After thinking about this for a bit, I decided I wanted to keep the two classes separate. With the two classes separate, I can apply the border style to something that is not a link. I was still able to add the Tailwind stuff to `border-fadeaway` though!
+
+```css {4,5}
+.border-fadeaway {
+  border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%, transparent 100%);
+  border-image-slice: 0 0 100 0;
+  border-color: var(--primary); /* Tailwind: border-primary */
+  border-bottom-width: 2px; /* Tailwind: border-b-2 */
+}
+```
+
+### The revised React component
+
+With `border-fadeaway` handling all the border styles and not worrying about Tailwind here, the React component looks cleaner. A nice task would be to make it a styled-component!
+
+```js
+import * as React from 'react'
+
+export const ExternalLink = ({ href, children }) => (
+  <a href={href} className='inline-link border-fadeaway' target='_blank' rel='noreferrer noopener nofollow'>
+    {children}
+  </a>
+)
+```
+
+## Border fadeaway on the header!
+
+I liked this fadeaway border so much I added it to the Header component!
+
+<Primary>
+
+
+#### Ahem, this is my theory... How to win the Stanley Cup
+
+I shout it at my TV a lot but I think I should document it here, in this rarely seen corner of the Internet, where no Sharks coach, GM, or player will probably ever see it.
+
+If the Sharks want to win the Stanley Cup. All they have to do is...Win every game! Easy! Never lose!
+
+🏒 Strategy!
+
+</Primary>
+
+
+##### Attributions
+
+Photo by [Kenny Luo (@kennyluoping)](https://unsplash.com/@prowhiz?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/link?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+Actual border styling **_heavily_** influenced by [Monica Powell](https://www.aboutmonica.com/). I tried my best to be influenced by her and not just out-and-out steal it.
