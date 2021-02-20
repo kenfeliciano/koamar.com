@@ -168,12 +168,14 @@ const GlobalStyles = createGlobalStyle`
   .border-fadeaway {
     border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%, transparent 100%);
     border-image-slice: 0 0 100 0;
+    border-color: var(--primary);
+    border-bottom-width: 2px;
   }
 
   .inline-link {
     color: inherit;
     font-weight: 700;
-    text-decoration: none; 
+    text-decoration: none;    
   }
 
   .standalone-link {

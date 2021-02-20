@@ -27,7 +27,7 @@ export const MarkdownLink = ({ href, ...rest }) => {
     <a
       data-link-external
       href={href}
-      className='inline-link border-fadeaway border-primary border-b-2'
+      className='inline-link border-fadeaway'
       target='_blank'
       rel='noopener noreferrer nofollow'
       {...rest}
