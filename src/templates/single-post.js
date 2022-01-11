@@ -53,7 +53,7 @@ const BlogPost = ({ data, pageContext }) => {
     <Layout>
       <SEO title={frontmatter.title} description={frontmatter.excerpt} />
       <CoverImage fluid={coverImage} />
-      <div className='flex items-center justify-between text-xs lg:items-start lg:text-sm text-muted mt-1 ml-2 lg:ml-0 mr-2 lg:mr-0'>
+      <div className='flex items-center justify-between mt-1 ml-2 mr-2 text-xs lg:items-start lg:text-sm text-muted lg:ml-0 lg:mr-0'>
         <InfoWrapper>
           <span>Posted </span>
           <InfoSeparator>:&nbsp;</InfoSeparator>
@@ -69,10 +69,11 @@ const BlogPost = ({ data, pageContext }) => {
       <Content>
         <h1>
           {frontmatter.draft && (
-            <span className='bg-opposite rounded-lg p-2 inline-block uppercase tracking-wide'>(Draft)</span>
+            <span className='inline-block p-2 tracking-wide uppercase rounded-lg bg-opposite'>(Draft)</span>
           )}{' '}
           {frontmatter.title}
         </h1>
+        {frontmatter.updated ? <p className='mt-1 text-sm text-muted'>Updated: {frontmatter.updated}</p> : null}
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
       </Content>
       <LinkEdges prevPage={prevPost} nextPage={nextPost} collection={collection} />
@@ -88,6 +89,7 @@ export const blogQuery = graphql`
       body
       frontmatter {
         date(formatString: "MM/DD/YYYY")
+        updated(formatString: "MM/DD/YYYY")
         excerpt
         slug
         title

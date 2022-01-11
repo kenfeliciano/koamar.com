@@ -7,9 +7,7 @@ import SEO from '../components/seo'
 import { Layout, CoverImage, Content, PostCard, Pagination } from '../components'
 
 const PostContainer = styled.div(
-  tw`
-    grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4
-  `
+  tw`grid  gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`
 )
 
 const postList = ({ pageContext, data }) => {
@@ -56,6 +54,7 @@ export const pageQuery = graphql`
             slug
             title
             date(formatString: "MMMM D, YYYY")
+            updated(formatString: "MMMM D, YYYY")
             excerpt
             coverImage {
               publicURL
