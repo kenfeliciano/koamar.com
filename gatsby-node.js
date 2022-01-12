@@ -1,3 +1,5 @@
+const graphql = require('gatsby').graphql
+
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNode, createNodeField } = actions
   if (node.internal.type === `MarkdownRemark` || node.internal.type === 'Mdx') {
