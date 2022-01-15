@@ -40,7 +40,8 @@ const IndexPage = () => (
             by <ExternalLink href='https://dev.to/dailydevtips1'>Chris Bongers</ExternalLink>
           </li>
           <li key='upd8'>
-            <InternalLink href='/site'>Site Dev posts</InternalLink> - There are almost enough for pagination!
+            <InternalLink href='/site'>Site Dev posts</InternalLink> - There are <b>now</b> enough for pagination! Is
+            this what is called a Devlog?
           </li>
         </ul>
       </div>
