@@ -1,0 +1,367 @@
+---
+title: Content
+slug: content
+date: 2022-01-18
+coverImage: ./niklas-ohlrogge-j-0olYcaihg-unsplash.jpg
+excerpt: The trials and tribulations of configuring for content
+tags: [gatsby]
+implementation: 2020-12-19
+---
+
+_This one didn't go as planned!_ Jump to the end [Decisions, Decisions](#decisions,-decisions) to see the sordid details!
+
+<Warning>
+
+
+This implementation happened in Gatsby 2 days. At the moment, the site is still in Gatsby 2.
+
+Also, I need a plugin so I can link to headings in a document which I have **_not_** installed as of yet! If you want to go to Decisions, Decisions, it's down there a bit...you'll find it!
+
+</Warning>
+
+
+## Content Configuration
+
+- Add folders for content/blog, content/project, and content/site
+- Add `filesystem` configuration in `gatsby-config.js` for these new areas
+- Install and configure Mdx support for Gatsby
+- Install and configure `gatsby-remark-images` as well. Some dependencies were already in there.
+- Brought in a synthesizer image as a placeholder if there is no specified cover image. Probably should have a default for music, coding, blog post, site post!
+
+### Mdx Support for Gatsby
+
+```bash
+npm install gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react mdx-utils
+# probably with filesystem at the same time
+npm install gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react gatsby-source-filesystem
+```
+
+```javascript:title=gatsby-config.js
+module.exports = {
+  plugins: [
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        extensions: [`.mdx`, `.md`],
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/posts`,
+        name: `posts`,
+      },
+    },
+  ],
+}
+```
+
+## Steal From a Tutorial
+
+Stealing from Skillthrive's [Gatsby JS: Build a Blog](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT) tutorial
+
+### Create Pages
+
+Add just enough code to gather slugs and ids to create pages.
+
+```jsx:title=gatsby-node.js
+exports.createPages = async ({ graphql, actions }) => {
+  const { data } = await graphql(`
+    query {
+      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+        edges {
+          node {
+            frontmatter {
+              slug
+            }
+            id
+          }
+        }
+      }
+    }
+  `)
+
+  // Create single blog posts
+  data.allMdx.edges.forEach((edge) => {
+    const slug = edge.node.frontmatter.slug
+    const id = edge.node.id
+    actions.createPage({
+      path: slug,
+      component: require.resolve('./src/templates/blog-post.js'),
+      context: { id },
+    })
+  })
+}
+```
+
+### Blog Post Template
+
+Create a template for all posts (like `singlePost.js`)
+
+```jsx:title=blog-post.js
+import * as React from 'react'
+import { graphql } from 'gatsby'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
+import SEO from '../components/seo'
+import { Layout, CoverImage } from '../components'
+
+const BlogPost = ({ data }) => {
+  const coverImage = data.mdx.frontmatter.coverImage.childImageSharp.fluid
+
+  return (
+    <Layout>
+      <SEO title={data.mdx.frontmatter.title} description={data.mdx.frontmatter.excerpt} />
+      <CoverImage fluid={coverImage} />
+      <h1>{data.mdx.frontmatter.title}</h1>
+      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+    </Layout>
+  )
+}
+
+export default BlogPost
+
+export const blogQuery = graphql`
+  query SinglePostQuery($id: String!) {
+    mdx(id: { eq: $id }) {
+      body
+      frontmatter {
+        date(formatString: "MM/DD/YYYY")
+        excerpt
+        slug
+        title
+        tags
+        coverImage {
+          publicURL
+          childImageSharp {
+            fluid {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
+      }
+      timeToRead
+    }
+  }
+`
+```
+
+### Create CoverImage Component
+
+Using a bit of Tailwind but not that much styling yet (like `FeatureImage.js`)
+
+```jsx:title=CoverImage.js
+import * as React from 'react'
+import Img from 'gatsby-image'
+import { useStaticQuery, graphql } from 'gatsby'
+
+export const CoverImage = ({ fluid }) => {
+  const data = useStaticQuery(graphql`
+    query {
+      imageSharp(fluid: { originalName: { eq: "steve-harvey-xWiXi6wRLGo-unsplash.jpg" } }) {
+        fluid {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+  `)
+
+  return (
+    <div className='overflow-hidden relative'>
+      <Img className='absolute top-0 left-0 w-full h-full' fluid={fluid ? fluid : data.imageSharp.fluid} />
+    </div>
+  )
+}
+```
+
+## Create Fake Content
+
+- Added a couple of fakes to blog
+- Added a very sparse fake to site and project, with no images!
+
+## Retrospective
+
+- [ ] Links in Mdx are not styled with `ExternalLink` component. It would be nice not to have to embed that as React component and have it automatically translate the link to it. Clicking on them now does not open a new tab either.
+- [x] If there is no `coverImage`, you're hosed!
+- [ ] Code tests look poor - as expected
+- [ ] Table test looks poor - as expected
+- [ ] Post is not styled that great - Heading 1 and 2 are valid, all other headings are the same.
+- [ ] Horizontal rules do not exist
+- [ ] Quotes aren't happening
+- [ ] Ordered lists have no numbers
+- [x] filenames are off the root instead of blog/first-fake, it is /first-fake. You can enter that in the slug but it would be better not to do that!
+  - in `gatsby-node.js` there is code that takes the slug and creates the path for the page
+  - I've got example code on creating a new Node Field that could be used (collection is a good name!)
+
+##### Attributions
+
+Photo by [Niklas Ohlrogge (@ohlrogge)](https://unsplash.com/@ohlrogge?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/content?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+## Decisions, Decisions
+
+<Info>
+
+
+## Optional reading
+
+Yes, I realize the whole site and in fact Internet is optional reading, but this really is! These are just some of the initial thoughts I went through when trying to figure out how to configure the site for content.
+
+</Info>
+
+
+[Back to the top!](#content-configuration)
+
+Here's all the thought process that went into starting this one!
+
+## Folder Structure
+
+After studying _**numerous**_ Gatsby Blog starters (3 or 4) I've decided on the following.
+
+`content` folder will live at the root with `src` and not in `src`.
+
+- content/blog - All the blog posts
+- content/project - All the music and coding projects
+- content/site - All the site design history
+
+What about `src/images`? It appears that is where site-wide images will go. Other images will go into the appropriate folder of the article.
+
+As for the content folders, I think I will go with a Year folder and then have a folder inside for each post in the format (adjusted a bit): `MM-DD - Blog Post Title`. First might be in content/site/2020/12-19 - It lives
+
+## Gatsby-source-filesystem Config
+
+With all that in mind, should there be one file system for `content` or should there be three—one for each type: blog, project, site.
+
+Looks like I should have three, one for each, according to a Stack Overflow [answer](https://stackoverflow.com/questions/50242492/gatsby-multiple-content-types). If each content type _could_ have different frontmatter structures, this would be smart. What follow are a couple of code examples.
+
+- You can create a file type based on the source name in `gatsby-node`
+
+```jsx:title=gatsby-node.js (excerpt)
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+  if (node.internal.type === `MarkdownRemark` || node.internal.type === `Mdx`) {
+    createNodeField({
+      name: `collection`,
+      node,
+      // This doesn't work (without getNode being passed - I forgot!
+      value: getNode(node.parent).sourceInstanceName
+    });
+  })
+};
+```
+
+- Then you can filter the graphql query for collection of contents based on type
+
+```graphql
+query postsOnly {
+  allMdx(filter: { collection: { eq: "posts" } }) {
+    edges {
+      node {
+        id
+        collection
+      }
+      frontmatter {
+        title
+      }
+    }
+  }
+}
+```
+
+## Even Better
+
+sourceInstanceName already exists, but you cannot filter on this with allMdx (allFile, yes). But, since I got collection working above, now I have duplicate paths to the same data.
+
+- Add to graphql query
+
+```graphql
+query {
+  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+    edges {
+      node {
+        id
+        frontmatter {
+          slug
+        }
+        parent {
+          ... on File {
+            sourceInstanceName
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+- Generate the path with it
+
+```jsx:title=gatsby-node.js (excerpt)
+// Create single blog posts
+data.allMdx.edges.forEach((edge) => {
+  const slug = edge.node.frontmatter.slug
+  const id = edge.node.id
+  const collection = edge.node.parent.sourceInstanceName
+
+  actions.createPage({
+    path: `${collection}/${slug}`,
+    component: require.resolve('./src/templates/blog-post.js'),
+    context: { id },
+  })
+})
+```
+
+## Final Answer
+
+Going with `onCreateNode` to add a collection field. It works for creating the path and it works for filtering later.
+
+- Final GraphQL query
+
+```graphql
+query {
+  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+    edges {
+      node {
+        id
+        frontmatter {
+          slug
+        }
+        fields {
+          collection
+        }
+      }
+    }
+  }
+}
+```
+
+## Displaying Content
+
+### On Home Page
+
+Home page should display feature content for blog and project. These will be sorted by featured field in frontmatter. If there is no featured field, the post/project will not appear.
+
+**Featured Blog Posts**
+
+- blah (1)
+- blah (2)
+- blah (3)
+
+**Featured Projects**
+
+- blah (1)
+- blah (2)
+- blah (3)
+
+### On the Main Page for Content Type
+
+For blog, project, and site main page, a reverse chronological list of posts.
+
+### On a Tag Page
+
+For each tag, a list of matching files of all content type with something that indicates the type. Perhaps a filter to include all or just a subset? These should be reverse chronological too.
+
+i.e. `gatsby` tag
+
+- Site: {Name of post}
+- Blog: {Name of post}
+- Project: {Name of project}
