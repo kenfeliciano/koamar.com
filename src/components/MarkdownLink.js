@@ -1,6 +1,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import { Link as GatsbyLink } from 'gatsby'
+import { InternalLink } from '.'
 
 // Checks against absolute URLs that share 👇 so we can still pass it along to Gatsby's internal link component
 const domainRegex = /http[s]*:\/\/[www.]*koamar\.com[/]?/
@@ -16,6 +17,11 @@ export const MarkdownLink = ({ href, ...rest }) => {
 
   if (href.startsWith('/')) {
     return <GatsbyLink data-link-internal to={href} {...rest} />
+  }
+
+  if (href.startsWith('#')) {
+    // return <a href={href} {...rest} />
+    return <InternalLink href={href} {...rest} />
   }
 
   // Treat urls that aren't web protocols as "normal" links
