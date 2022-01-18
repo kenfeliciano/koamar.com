@@ -16,6 +16,11 @@ const components = {
     return <pre {...preProps} />
   },
   a: (props) => <MarkdownLink {...props} />,
+  h2: (props) => (
+    <h2 id={props.children.replace(' ', '-').toLowerCase()}>
+      <a href={`#${props.children.replace(' ', '-').toLowerCase()}`}>{props.children}</a>
+    </h2>
+  ),
   wrapper: ({ children }) => <>{children}</>,
   Primary,
   Danger,

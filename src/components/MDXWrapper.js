@@ -17,6 +17,11 @@ const components = {
     // it's possible to have a pre without a code in it
     return <pre {...preProps} />
   },
+  h2: (props) => (
+    <h2 id={props.children.replace(' ', '-').toLowerCase()}>
+      <a href={`#${props.children.replace(' ', '-').toLowerCase()}`}>{props.children}</a>
+    </h2>
+  ),
   wrapper: ({ children }) => <>{children}</>,
 }
 export const MDXWrapper = ({ element }) => <MDXProvider components={components}>{element}</MDXProvider>
