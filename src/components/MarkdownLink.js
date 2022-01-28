@@ -19,7 +19,7 @@ export const MarkdownLink = ({ href, ...rest }) => {
     return <GatsbyLink data-link-internal to={href} {...rest} />
   }
 
-  if (href.startsWith('#')) {
+  if (href.startsWith('#') || href.startsWith('../') || href.startsWith('./')) {
     // return <a href={href} {...rest} />
     return <InternalLink href={href} {...rest} />
   }

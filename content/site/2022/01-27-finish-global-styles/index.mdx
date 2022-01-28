@@ -1,0 +1,49 @@
+---
+title: Finish Global Styles
+slug: finish-global-styles
+date: 2022-01-27
+coverImage: ./oscar-obians-Drtrwygp7co-unsplash.jpg
+excerpt: With some content comes great deficiencies
+tags: [css]
+implementation: 2020-12-20
+---
+
+Now that there is some content, it is easy to see the deficiencies in the Global Styles.
+
+- [x] Add acknowledgement for Skillthrive's [Gatsby JS: Build a Blog](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT) tutorial to README
+
+Went through Skillthrive code and made use of CSS in `TypographyElement` component and `PostElement` component.
+
+Found out about using comma delimited numbers for rgb so you can alter opacity in a theme.
+
+## Control Opacity in Theme
+
+It's a little bit of duplication but:
+
+1. Create a `css` variable that is a comma delimited set of numbers for your color (i.e. 0, 120, 137 — Shark's Teal)
+2. Now, you can use this variable and control opacity using `rgba`
+3. You can also set a variable for opacity per theme. Shark's Teal looks best at 0.5, Shark's Orange at 0.7 for `code` type text
+4. Even though this isn't being used in the KoaMar site, the primary color with code opacity works great for table header.
+
+```css
+--primary-rgb: 0, 120, 137;
+--code-opacity: 0.5;
+
+background-color: rgba(var(--primary-rgb), .5);
+background-color: rgba(var(--primary-rgb), var(--code-opacity);
+```
+
+## More content too!
+
+Added lots of samples to [first-fake](../../blog/first-fake)
+
+Was able to get outline styles to work in Mdx to one level. That's nice! It doesn't work in Notion 😉[^1]
+
+Added some extras like footnotes and definitions as well.
+
+[^1]: Look at the date, perhaps Notion does this now!
+
+##### Attributions
+
+Photo by [Oscar Obians (@prowhiz)](https://unsplash.com/@prowhiz?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/style?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
