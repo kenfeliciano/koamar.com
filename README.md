@@ -23,6 +23,7 @@ Menus, dark mode, landing pages for the different content sections, all done. Co
 - [Designing with Tailwind CSS - YouTube](https://youtu.be/21HuwjmuS7A) by [Adam Wathan](https://www.youtube.com/channel/UCy1H38XrN7hi7wHSClfXPqQ) Going through this tutorial really got me psyched about Tailwind CSS and I felt I had a better understanding of design too. Adam goes through some thought processes as he's designing the various examples and to me, that was invaluable.
 - [Responsive header in Tailwind CSS - DEV](https://dev.to/dailydevtips1/responsive-header-in-tailwind-css-2djn) by [Chris Bongers](https://dev.to/dailydevtips1) I thought this was a fun idea so I used it a bit!
 - [lekoarts](https://www.lekoarts.de/en/) So many things... code syntax highlighting, creating good draft support, probably more!
+- [Creating Linked Blog Post Headers using MDX on GatsbyJS. - Coner Murphy](https://conermurphy.com/blog/blog-post-linked-headers-mdx-gatsbyjs/) - not only did this work, but, I started thinking about doing more with the components for Mdx.
 
 ## Using
 
