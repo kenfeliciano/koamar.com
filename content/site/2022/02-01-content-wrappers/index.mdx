@@ -1,0 +1,131 @@
+---
+title: Content Wrappers
+slug: content-wrappers
+date: 2022-02-01
+coverImage: ./visual-stories-micheile-sclZndD-1HQ-unsplash.jpg
+excerpt: Stealing stuff like a great artist...uh-huh
+tags: [twin.macro, tailwind, gatsby]
+implementation: 2020-12-21
+---
+
+<Info>
+
+
+_Want to see what I stole?_
+
+Jump to [Look out behind you](#look-out-behind-you)
+
+</Info>
+
+
+## Implementation
+
+- [x] Work on site-wrapper feature
+- [ ] Work on content-wrapper feature (for posts). _Tried to do this with grid but didn't go well and perhaps didn't need it. I left the work in `content-grid` branch._
+
+## Site Wrapper
+
+This is where I'm going to bring in twin.macro to use with Tailwind. I really hope it works! _Seems to sort of!_
+
+- Install/config twin.macro
+
+  At this point, most everything is ready to go so here's all that is needed.
+
+```bash
+npm install twin.macro
+```
+
+<br />
+
+```json
+"babelMacros": {
+  "twin": {
+    "preset": "styled-components"
+  }
+},
+```
+
+In Skillthrive, he's putting all styled-components in an elements folder. I like the idea, if they are reusable, but in this case, the `SiteWrapper` is only used in the Layout component.
+
+`SiteWrapper` will have the basic screen sizing stuff and padding for the main content. There really isn't any CSS Grid or FlexBox going on at the moment. It's a pretty early 00's or 90's style home page 🙂
+
+```jsx
+import tw, { styled } from 'twin.macro'
+const SiteWrapper = styled.div(() => [tw`h-full m-auto max-w-screen-lg pt-0 px-4 pb-6 mt-6`])
+```
+
+## Content Wrapper
+
+This one may be involved. It's not really needed in the Layout at the moment, since the layout is so simple. And, with mt-6 moved into the `SiteWrapper`, the `main` element is now not styled! For blog, site, and product, perhaps they could use the same wrapper?! At least at first! So, most likely the first reusable style! But, why can't it just go into components? It's only going to be used in the Container component. This will not contain Nav or Footer.
+
+<Warning>
+
+
+Didn't go too well with CSS Grid like in the tutorial. Going to try to keep it simpler.
+
+</Warning>
+
+
+## Retrospective
+
+- [ ] Look for Tailwind ways to make the cover image look better and responsive. I want full bleed width but it isn't perfect.
+- [ ] Add more padding (at least on the X-axis) for content
+
+##### Attributions
+
+Photo by [Visual Stories || Micheile (@micheile)](https://unsplash.com/@micheile?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/wrapping-paper?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+## Look out behind you
+
+This is what I'll be stealing from!
+
+### Container
+
+Container Component (ContainerElement.ContainerWrapper) - a styled.div that defines 100% height, CSS grid, and breakpoints.
+
+He uses this to wrap that whole site really.
+
+- Container Component
+
+```jsx
+export const Container = ({ children }) => (
+  <ContainerWrapper>
+    <Nav />
+    {children}
+    <Footer />
+  </ContainerWrapper>
+)
+```
+
+- Used in allPosts
+
+```jsx
+<Container>
+  <Seo />
+  <FeatureImage />
+  <Content>// static content // maping of posts to a list</Content>
+  <Pagination /> // more to this but allows user to go from page to page
+</Container>
+```
+
+- Used in singlePost
+
+```jsx
+<Container>
+  <Seo title={data.mdx.frontmatter.title} image={seoImage} description={data.mdx.frontmatter.excerpt} />
+  <FeatureImage fluid={featureImage} />
+  <Post>
+    <H1 margin='0 0 2rem 0'>{data.mdx.frontmatter.title}</H1>
+    <MDXRenderer>{data.mdx.body}</MDXRenderer>
+  </Post>
+</Container>
+```
+
+Container equivalent for my site is Layout component. It will eventually have a Nav and Footer. Currently Layout has a header, a very basic footer, and a bit of junk. There is a `main` and it only has a margin-top defined. There is a wrapping `div` after title that doesn't do a whole lot. That's a good spot for a grid definition if that's what is going to happen.
+
+### Content
+
+Content Component just wraps the `{children}`
+
+Content Component (ContentElement.ContentWrapper) - a styled.main that defines the location on the CSS grid, background-color, padding, box-shadow, and breakpoints. Also z-index…
