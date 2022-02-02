@@ -1,9 +1,15 @@
 import { Link } from 'gatsby'
 import * as React from 'react'
 import { useContext } from 'react'
+import styled from 'styled-components'
 
 import { DarkToggle, MenuContext, MenuItem } from '.'
 import { Logo, Hamburger, X } from '../svgs'
+
+const LogoWrapper = styled.div`
+  height: 45px;
+  width: 155.45px;
+`
 
 export const Header = ({ siteTitle }) => {
   const { menuOpen, setMenuOpen } = useContext(MenuContext)
@@ -12,7 +18,9 @@ export const Header = ({ siteTitle }) => {
       <div className='flex items-center justify-between px-4 py-3 sm:p-0'>
         <h1>
           <Link to='/'>
-            <Logo siteTitle={siteTitle} />
+            <LogoWrapper>
+              <Logo siteTitle={siteTitle} />
+            </LogoWrapper>
           </Link>
         </h1>
         <div className='sm:hidden'>
