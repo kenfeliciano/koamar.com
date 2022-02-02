@@ -18,8 +18,8 @@ const components = {
     return <pre {...preProps} />
   },
   h2: (props) => (
-    <h2 id={props.children.replace(' ', '-').toLowerCase()}>
-      <a href={`#${props.children.replace(' ', '-').toLowerCase()}`}>{props.children}</a>
+    <h2 id={props.children.replace(/\s/g, '-').toLowerCase()}>
+      <a href={`#${props.children.replace(/\s/g, '-').toLowerCase()}`}>{props.children}</a>
     </h2>
   ),
   wrapper: ({ children }) => <>{children}</>,
