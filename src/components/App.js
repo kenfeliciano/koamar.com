@@ -141,12 +141,12 @@ const GlobalStyles = createGlobalStyle`
     background-color: rgba(var(--primary-rgb), var(--th-opacity));
   }
 
-  svg {
+  /* svg {
     width: 100%;
     height: auto;
     fill: currentColor;
     pointer-events: none;
-  }
+  } */
 
   /* Footnotes */
   .footnote-ref {
