@@ -4,7 +4,7 @@ import { Image } from '../components'
 export const Hero = () => (
   <>
     <div className='relative h-64 m-0 overflow-hidden rounded-lg bg-brandedSurface dark:bg-opposite'>
-      <div className='absolute z-30 flex w-full h-full items-center'>
+      <div className='absolute z-30 flex items-center w-full h-full'>
         <div className='relative z-30 w-5/6 px-6 py-8 text-body md:py-6 md:w-1/2'>
           <div className='hidden md:inline'>
             <h2 className='text-3xl lg:text-5xl'>
@@ -31,8 +31,8 @@ export const Hero = () => (
           <span></span>
         </div>
         <div className='absolute top-0 right-0 flex w-full h-full'>
-          <div className='sm:w-1/3 w-14 h-full bg-brandedSurface dark:bg-opposite transition-all'></div>
-          <div className='relative w-1/3'>
+          <div className='h-full transition-all sm:w-1/3 w-14 bg-brandedSurface dark:bg-opposite'></div>
+          <div className='relative w-1/3 w-288 h-288'>
             <svg
               fill='currentColor'
               viewBox='0 0 100 100'
@@ -51,7 +51,10 @@ export const Hero = () => (
         </div>
       </div>
       <div className='absolute top-0 right-0 block w-8/12 h-full'>
-        <Image className='object-cover min-w-full h-full' alt='Synthesizer - photo by Steve Harvey @ Unsplash' />
+        <Image
+          className='object-cover h-full min-w-full'
+          alt='Synthesizer - photo by Steve Harvey @ Unsplash'
+        />
       </div>
     </div>
   </>
