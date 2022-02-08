@@ -135,7 +135,13 @@ const Code = ({ codeString, language, metastring, ...props }) => {
   const shouldHighlightLine = calculateLinesToHighlight(metastring)
 
   return (
-    <Highlight {...defaultProps} code={codeString} language={language} theme={theme} {...props}>
+    <Highlight
+      {...defaultProps}
+      code={codeString}
+      language={language}
+      theme={theme}
+      {...props}
+    >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <div className='gatsby-highlight' data-language={language}>
           <pre className={className} style={style}>
@@ -167,14 +173,15 @@ export default Code
 
 - Apparently RE means RegEx. I got it but when I originally saw this variable again after months (year?) I thought, "What is RE?" I do see that what is assigned to it is RegEx but still!
 - The goal is to accept any or all of the following (I've indicated which of these are working after the initial code):
-  - [x] language - a language that `prism-react-render` understands
-  - [x] highlighted lines - specified in curly braces like {5-7,10} (highlight lines 5 thru 7 as well as 10)
-  - [x] tab - tab on the code block showing the language in each languages chosen color (starting with javascript, js, html, and css)
-  - [ ] title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)
-  - [ ] copy code button - something that makes it easy to copy the code block to the clipboard
-  - [ ] react-live - if specified, will use the react-live renderer
-  - [ ] line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified
-  - [ ] diff - Display like a language of `diff` so + lines are added color and - lines are deleted color, but with syntax highlighting. For language diff, `prism` renders all text as a single color for a + or - line.
+
+  ✅ language - a language that `prism-react-render` understands<br />
+  ✅ highlighted lines - specified in curly braces like {5-7,10} (highlight lines 5 thru 7 as well as 10)<br />
+  ✅ tab - tab on the code block showing the language in each languages chosen color (starting with javascript, js, html, and css)<br />
+  ⬜ title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)<br />
+  ⬜ copy code button - something that makes it easy to copy the code block to the clipboard<br />
+  ⬜ react-live - if specified, will use the react-live renderer<br />
+  ⬜ line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified<br />
+  ⬜ diff - Display like a language of `diff` so + lines are added color and - lines are deleted color, but with syntax highlighting. For language diff, `prism` renders all text as a single color for a + or - line.<br />
 
 ## Configure the Layout
 
@@ -374,7 +381,7 @@ export const TitleContainer = styled.div`
 
 `TitleContainer` turns out to be a styled-component
 
-- [x] title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)
+✅ title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)
 
 <Success>
 
@@ -473,7 +480,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
 }
 ```
 
-- [x] copy code button - something that makes it easy to copy the code block to the clipboard
+✅ copy code button - something that makes it easy to copy the code block to the clipboard
 
 ## Leave Out the Line Numbers
 
@@ -499,7 +506,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
 	)
 ```
 
-- [x] line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified
+✅ line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified
 
 ## Implementing React-live
 
@@ -525,7 +532,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
   //...
 ```
 
-- [x] react-live - if specified, will use the react-live renderer
+✅ react-live - if specified, will use the react-live renderer
 
 ## Final version of Code.js
 
@@ -569,7 +576,13 @@ const getParams = (language = ``) => {
   )
 }
 
-export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
+export const Code = ({
+  codeString,
+  noLineNumbers = false,
+  language,
+  metastring,
+  ...props
+}) => {
   const { theme } = useContext(ThemeContext)
   const shouldHighlightLine = calculateLinesToHighlight(metastring)
   const hasLineNumbers = !noLineNumbers && language !== `noLineNumbers`
@@ -649,7 +662,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
 
 My dream of having diff with syntax highlighting has not come true yet. I've seem to have gotten close on occasion, but as of today, 2022-02-07, I haven't done it. I haven't really tried since way back when but still. I've not received any magical incite.
 
-- [ ] diff - Display like a language of `diff` so + lines are added color and - lines are deleted color, but with syntax highlighting. For language diff, `prism` renders all text as a single color for a + or - line.
+❌ diff - Display like a language of `diff` so + lines are added color and - lines are deleted color, but with syntax highlighting. For language diff, `prism` renders all text as a single color for a + or - line.
 
 ##### References
 
