@@ -1,0 +1,663 @@
+---
+title: Creating a Code System for Gatsby
+slug: create-code-system
+date: 2022-02-07
+coverImage: ./sean-lim-NPlv2pkYoUA-unsplash.jpg
+excerpt: How I created the code system for my blog
+tags: [css, mdx, react, gatsby]
+---
+
+<Warning>
+
+
+## Gatsby 2 warning
+
+This was done some time ago and it was Gatsby 2 at the time. I haven't updated my blog yet so I'm not sure what if anything would be required.
+
+</Warning>
+
+
+My goal was to create a system for code examples that supports everything [Lekoarts](https://www.lekoarts.de/) has done in a way that I can understand and control. I know I've added bits to this system on my blog but so much of it is what was in the original Code.js file. I must acknowledge how awesome that was!
+
+I started with a new basic gatsby site using the hello-world starter, installed dependencies for MDX support, and code rendering.
+
+```bash noLineNumbers
+npx gatsby new code-test https://github.com/gatsbyjs/gatsby-starter-hello-world
+npm install gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react
+npm install mdx-utils
+npm install prism-react-renderer react-live
+npm install typeface-open-sans # a font for fun? Why am I doing this?!
+```
+
+## Create the JavaScript Files That Will Run the System
+
+```jsx:title=/wrap-root-element.js
+import React from 'react'
+import { MDXProvider } from '@mdx-js/react'
+import { preToCodeBlock } from 'mdx-utils'
+import Code from './src/components/Code'
+
+// components is its own object outside of render so that the references to
+// components are stable
+const components = {
+  pre: (preProps) => {
+    const props = preToCodeBlock(preProps)
+    // if there's a codeString and some props, we passed the test
+    if (props) {
+      return <Code {...props} />
+    }
+    // it's possible to have a pre without a code in it
+    return <pre {...preProps} />
+  },
+  wrapper: ({ children }) => <>{children}</>,
+}
+export const wrapRootElement = ({ element }) => (
+  <MDXProvider components={components}>{element}</MDXProvider>
+)
+```
+
+- Create a CSS file for the language tabs
+
+```css:title=/language-tabs.css
+.gatsby-highlight {
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+.gatsby-highlight pre[class*='language-'] {
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem 0.75rem;
+  border-radius: 0.25rem;
+}
+.gatsby-highlight pre[class*='language-']::before {
+  background: black;
+  border-radius: 0 0 0.25rem 0.25rem;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 0.025rem;
+  padding: 0.1rem 0.5rem;
+  position: absolute;
+  right: 1rem;
+  text-align: right;
+  text-transform: uppercase;
+  top: 0;
+}
+.gatsby-highlight pre[class~='language-javascript']::before {
+  content: 'js';
+  background: #f7df1e;
+  color: black;
+}
+.gatsby-highlight pre[class~='language-js']::before {
+  content: 'js';
+  background: #f7df1e;
+  color: black;
+}
+
+.gatsby-highlight pre[class~='language-html']::before {
+  content: 'html';
+  background: #005a9c;
+  color: white;
+}
+
+.gatsby-highlight pre[class~='language-css']::before {
+  content: 'css';
+  background: #ff9800;
+  color: white;
+}
+```
+
+- Create a Code component (steal more like it!)
+
+```jsx:title=src/components/Code.js
+import React from 'react'
+import Highlight, { defaultProps } from 'prism-react-renderer'
+import theme from 'prism-react-renderer/themes/nightOwl'
+// import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
+
+const RE = /{([\d,-]+)}/
+
+const calculateLinesToHighlight = (meta) => {
+  if (!RE.test(meta)) {
+    return () => false
+  }
+  const lineNumbers = RE.exec(meta)[1]
+    .split(`,`)
+    .map((v) => v.split(`-`).map((x) => parseInt(x, 10)))
+  return (index) => {
+    const lineNumber = index + 1
+    const inRange = lineNumbers.some(([start, end]) =>
+      end ? lineNumber >= start && lineNumber <= end : lineNumber === start
+    )
+    return inRange
+  }
+}
+
+const Code = ({ codeString, language, metastring, ...props }) => {
+  const shouldHighlightLine = calculateLinesToHighlight(metastring)
+
+  return (
+    <Highlight {...defaultProps} code={codeString} language={language} theme={theme} {...props}>
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <div className='gatsby-highlight' data-language={language}>
+          <pre className={className} style={style}>
+            {tokens.map((line, i) => {
+              const lineProps = getLineProps({ line, key: i })
+
+              if (shouldHighlightLine(i)) {
+                lineProps.className = `${lineProps.className} highlight-line`
+              }
+
+              return (
+                <div {...lineProps}>
+                  <span className='line-number-style'>{i + 1}</span>
+                  {line.map((token, key) => (
+                    <span {...getTokenProps({ token, key })} />
+                  ))}
+                </div>
+              )
+            })}
+          </pre>
+        </div>
+      )}
+    </Highlight>
+  )
+}
+
+export default Code
+```
+
+- Apparently RE means RegEx. I got it but when I originally saw this variable again after months (year?) I thought, "What is RE?" I do see that what is assigned to it is RegEx but still!
+- The goal is to accept any or all of the following (I've indicated which of these are working after the initial code):
+  - [x] language - a language that `prism-react-render` understands
+  - [x] highlighted lines - specified in curly braces like {5-7,10} (highlight lines 5 thru 7 as well as 10)
+  - [x] tab - tab on the code block showing the language in each languages chosen color (starting with javascript, js, html, and css)
+  - [ ] title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)
+  - [ ] copy code button - something that makes it easy to copy the code block to the clipboard
+  - [ ] react-live - if specified, will use the react-live renderer
+  - [ ] line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified
+  - [ ] diff - Display like a language of `diff` so + lines are added color and - lines are deleted color, but with syntax highlighting. For language diff, `prism` renders all text as a single color for a + or - line.
+
+## Configure the Layout
+
+- Create Layout files
+
+```jsx:title=src/components/layout.js
+import React from 'react'
+import { MDXProvider } from '@mdx-js/react'
+import { preToCodeBlock } from 'mdx-utils'
+import Code from './Code'
+import './layout.css'
+
+const components = {
+  pre: (preProps) => {
+    const props = preToCodeBlock(preProps)
+    if (props) {
+      return <Code {...props} />
+    } else {
+      return <pre {...preProps} />
+    }
+  },
+}
+
+const Layout = ({ children }) => (
+  <MDXProvider components={components}>
+    <div style={{ margin: `0 auto`, maxWidth: 960, padding: `2rem` }}>{children}</div>
+  </MDXProvider>
+)
+
+export default Layout
+```
+
+```css:title=src/components/layout.css
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+.prism-code {
+  font-size: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+  background-color: transparent;
+  overflow: auto;
+}
+
+.token {
+  display: inline-block;
+}
+
+p > code,
+li > code {
+  background: rgb(1, 22, 39);
+  color: rgb(214, 222, 235);
+  padding: 0.4em 0.3rem;
+}
+
+.gatsby-highlight {
+  font-size: 1rem;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  overflow: auto;
+}
+
+gatsby-highlight > code[class*='language-'],
+.gatsby-highlight > pre[class*='language-'] {
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+}
+
+.line-number-style {
+  display: inline-block;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 1.2em;
+  user-select: none;
+  opacity: 0.3;
+  text-align: center;
+  position: relative;
+}
+
+.highlight-line {
+  background-color: rgb(2, 55, 81);
+  border-left: 4px solid rgb(2, 155, 206);
+}
+
+.highlight-line .line-number-style {
+  opacity: 0.5;
+  width: calc(1.2em - 4px);
+  left: -2px;
+}
+```
+
+I did add `overflow: auto;` to `.prism-code` in the CSS so the long lines wouldn't head off to the edge of the world.
+
+## Make it Work
+
+- Configure `/gatsby-browser.js`
+- Configure `/gatsby-ssr.js`
+
+```jsx
+import 'typeface-open-sans'
+import './language-tabs.css'
+
+import { wrapRootElement as wrap } from './wrap-root-element'
+
+export const wrapRootElement = wrap
+```
+
+Both files are the same!
+
+Install the `gatsby-source-filesystem` plugin so I can have something to test
+
+```bash noLineNumbers
+npm install gatsby-source-filesystem
+```
+
+```javascript:title=/gatsby-config.js
+module.exports = {
+  plugins: [
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'post',
+        path: `${__dirname}/blog`,
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        defaultLayouts: {
+          default: require.resolve('./src/components/layout.js'),
+        },
+      },
+    },
+  ],
+}
+```
+
+## Test Data
+
+- Create blog post `blog/code-test.mdx` to try this all out.
+- Put anything you want in there but I did copy the original tests from [Language Tabs for Markdown & MDX Code Blocks | Lennart Jörgens (lekoarts.de)](https://www.lekoarts.de/garden/language-tabs-for-markdown-and-mdx-code-blocks).
+
+## Titles
+
+I found some code to split the language into language and title (if they exist)
+
+- Add to `Code.js`
+
+```jsx noLineNumbers
+const getParams = (language = ``) => {
+  const [lang = ``, params = ``] = language.split(`:`)
+  return [lang.split(`language-`).pop().split(`{`).shift()].concat(
+    params.split(`&`).reduce((merged, param) => {
+      const [key, value] = param.split(`=`)
+      merged[key] = value
+      return merged
+    }, {})
+  )
+}
+
+const Code = ({ codeString, language, metastring, ...props }) => {
+	//...
+	const [lang, { title = `` }] = getParams(language)
+	//...
+	return (
+	  <>
+	    {title && <TitleContainer>{title}</TitleContainer>}
+	    ...
+	  </>
+	)
+```
+
+```jsx:title=TitleContainer Definition
+export const TitleContainer = styled.div`
+  background-color: var(--code-title-background);
+  color: var(--code-title-text);
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem 0.4rem 0 0;
+  font-size: 0.9rem;
+  margin-top: 0.8rem;
+`
+```
+
+`TitleContainer` turns out to be a styled-component
+
+- [x] title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)
+
+<Success>
+
+
+To include spaces, use a non-breaking space `&nbsp;` like the good 'ole days!
+
+</Success>
+
+
+## Copy Code Button
+
+- Add `utils/copy-to-clipboard.js` - I got it from [a Gatsby GitHub location that no longer exists](https://github.com/gatsbyjs/gatsby/blob/master/www/src/utils/copy-to-clipboard.js), but I'm sure it's findable. Oh, here it is…
+
+```javascript:title=src/utils/copy-to-clipboard.js
+// https://github.com/gatsbyjs/gatsby/blob/master/www/src/utils/copy-to-clipboard.js
+
+const copyToClipboard = (str) => {
+  const clipboard = window.navigator.clipboard
+  /*
+   * fallback to older browsers (including Safari)
+   * if clipboard API not supported
+   */
+  if (!clipboard || typeof clipboard.writeText !== `function`) {
+    const textarea = document.createElement(`textarea`)
+    textarea.value = str
+    textarea.setAttribute(`readonly`, true)
+    textarea.setAttribute(`contenteditable`, true)
+    textarea.style.position = `absolute`
+    textarea.style.left = `-9999px`
+    document.body.appendChild(textarea)
+    textarea.select()
+    const range = document.createRange()
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
+    textarea.setSelectionRange(0, textarea.value.length)
+    document.execCommand(`copy`)
+    document.body.removeChild(textarea)
+
+    return Promise.resolve(true)
+  }
+
+  return clipboard.writeText(str)
+}
+
+export default copyToClipboard
+```
+
+- Used a styled-component for this
+
+```jsx:title=CopyCode Definition
+export const CopyCode = styled.button`
+  background-color: var(--code-title-background);
+  color: var(--code-title-text);
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 0;
+  border-radius: 3px;
+  margin: 0.5em;
+  opacity: 0.5;
+  padding: 0.2rem;
+  &:hover {
+    opacity: 1;
+  }
+`
+```
+
+<Warning>
+
+
+### Code.js is newer!
+
+All the following is slightly different code because it is from a different codebase. I didn't get all the features working in my test project, but in my blog, they work&mdash;mostly.
+
+</Warning>
+
+
+```jsx:title=Updated Code.js noLineNumbers
+// Add import
+import copyToClipboard from '../utils/copy-to-clipboard.js'
+...
+export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
+	//...
+	const handleClick = () => {
+	    copyToClipboard(codeString)
+	}
+	//...
+	return (
+		//...
+		<pre className={className} style={style}>
+		  <CopyCode onClick={handleClick}>Copy</CopyCode>
+		  //...
+		</pre>
+	)
+}
+```
+
+- [x] copy code button - something that makes it easy to copy the code block to the clipboard
+
+## Leave Out the Line Numbers
+
+Sometimes, we don't need the line numbers. I mean, really, if it's a simple bash example of an npm or yarn install, do you need it to say, "This is line 1?"
+
+```jsx:title=Updated Code.js noLineNumbers
+export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
+	//...
+	const hasLineNumbers = !noLineNumbers && language !== `noLineNumbers`
+	// Later in the return()
+	//...
+	return (
+		//...
+				return (
+                  <div {...lineProps}>
+                    {hasLineNumbers && <span className='line-number-style'>{i + 1}</span>}
+                    {line.map((token, key) => (
+                      <span key={key} {...getTokenProps({ token, key })} />
+                    ))}
+                  </div>
+				)
+		//...
+	)
+```
+
+- [x] line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified
+
+## Implementing React-live
+
+```jsx:title=Updated Code.js noLineNumbers
+// Add react-live import
+import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live'
+
+// If react-live is specfied, then use it
+export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
+  //...
+  if (props['react-live']) {
+    return (
+      <>
+        {title && <TitleContainer>{title}</TitleContainer>}
+        <LiveProvider code={codeString} noInline={true} theme={theme === 'dark' ? nightOwl : nightOwlLight}>
+          <LiveEditor />
+          <LiveError />
+          <LivePreview />
+        </LiveProvider>
+      </>
+    )
+  }
+  //...
+```
+
+- [x] react-live - if specified, will use the react-live renderer
+
+## Final version of Code.js
+
+It doesn't have all the code, but it's currently what's in GitHub for this site so you can go and look at anything that is imported and not described.
+
+```jsx
+import * as React from 'react'
+import { useContext } from 'react'
+import Highlight, { defaultProps } from 'prism-react-renderer'
+import nightOwl from 'prism-react-renderer/themes/nightOwl'
+import nightOwlLight from 'prism-react-renderer/themes/nightOwlLight'
+import { TitleContainer, CopyCode, ThemeContext } from '../components'
+import copyToClipboard from '../utils/copy-to-clipboard.js'
+import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live'
+
+const calculateLinesToHighlight = (meta) => {
+  const LINE_NUMBERS_TEST = /{([\d,-]+)}/
+  if (!LINE_NUMBERS_TEST.test(meta)) {
+    return () => false
+  }
+  const lineNumbers = LINE_NUMBERS_TEST.exec(meta)[1]
+    .split(`,`)
+    .map((v) => v.split(`-`).map((x) => parseInt(x, 10)))
+  return (index) => {
+    const lineNumber = index + 1
+    const inRange = lineNumbers.some(([start, end]) =>
+      end ? lineNumber >= start && lineNumber <= end : lineNumber === start
+    )
+    return inRange
+  }
+}
+
+const getParams = (language = ``) => {
+  const [lang = ``, params = ``] = language.split(`:`)
+  return [lang.split(`language-`).pop().split(`{`).shift()].concat(
+    params.split(`&`).reduce((merged, param) => {
+      const [key, value] = param.split(`=`)
+      merged[key] = value
+      return merged
+    }, {})
+  )
+}
+
+export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
+  const { theme } = useContext(ThemeContext)
+  const shouldHighlightLine = calculateLinesToHighlight(metastring)
+  const hasLineNumbers = !noLineNumbers && language !== `noLineNumbers`
+  const [lang, { title = `` }] = getParams(language)
+  const hasDiff = lang.slice(0, 5) === 'diff-'
+  const handleClick = () => {
+    copyToClipboard(codeString)
+  }
+  if (props['react-live']) {
+    return (
+      <>
+        {title && <TitleContainer>{title}</TitleContainer>}
+        <LiveProvider
+          code={codeString}
+          noInline={true}
+          theme={theme === 'dark' ? nightOwl : nightOwlLight}
+        >
+          <LiveEditor />
+          <LiveError />
+          <LivePreview />
+        </LiveProvider>
+      </>
+    )
+  }
+
+  const langType = hasDiff ? lang.slice(5) : lang
+
+  return (
+    <>
+      {title && <TitleContainer>{title}</TitleContainer>}
+      <Highlight
+        {...defaultProps}
+        code={codeString}
+        language={langType}
+        theme={theme === 'dark' ? nightOwl : nightOwlLight}
+        {...props}
+      >
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <div className='gatsby-highlight' data-language={langType}>
+            <pre className={className} style={style}>
+              <CopyCode onClick={handleClick}>Copy</CopyCode>
+              {tokens.map((line, i) => {
+                const lineProps = getLineProps({ line, key: i })
+                if (shouldHighlightLine(i)) {
+                  lineProps.className = `${lineProps.className} highlight-line`
+                }
+
+                if (
+                  hasDiff &&
+                  !shouldHighlightLine.length &&
+                  (line[1].content === '+' || line[1].content === '-')
+                ) {
+                  lineProps.className = `${lineProps.className} ${
+                    line[1].content === '+' ? 'diff-line-add' : 'diff-line-sub'
+                  }`
+                }
+
+                return (
+                  <div {...lineProps}>
+                    {hasLineNumbers && <span className='line-number-style'>{i + 1}</span>}
+                    {line.map((token, key) => (
+                      <span key={key} {...getTokenProps({ token, key })} />
+                    ))}
+                  </div>
+                )
+              })}
+            </pre>
+          </div>
+        )}
+      </Highlight>
+    </>
+  )
+}
+```
+
+## No Diff with Syntax yet
+
+My dream of having diff with syntax highlighting has not come true yet. I've seem to have gotten close on occasion, but as of today, 2022-02-07, I haven't done it. I haven't really tried since way back when but still. I've not received any magical incite.
+
+- [ ] diff - Display like a language of `diff` so + lines are added color and - lines are deleted color, but with syntax highlighting. For language diff, `prism` renders all text as a single color for a + or - line.
+
+##### References
+
+- [Free & Open Source Gatsby Themes by LekoArts](https://themes.lekoarts.de/) and perusing the GitHub repo
+- [Language Tabs for Markdown & MDX Code Blocks | Lennart Jörgens (lekoarts.de)](https://www.lekoarts.de/garden/language-tabs-for-markdown-and-mdx-code-blocks)
+- [Adding Line Numbers and Code Highlighting to MDX | Lennart Jörgens (lekoarts.de)](https://www.lekoarts.de/garden/adding-line-numbers-and-code-highlighting-to-mdx)
+
+##### Attributions
+
+Photo by [Sean Lim (@seanlimm)](https://unsplash.com/@seanlimm?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/code?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
