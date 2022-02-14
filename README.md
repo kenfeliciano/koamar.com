@@ -24,6 +24,7 @@ Menus, dark mode, landing pages for the different content sections, all done. Co
 - [Responsive header in Tailwind CSS - DEV](https://dev.to/dailydevtips1/responsive-header-in-tailwind-css-2djn) by [Chris Bongers](https://dev.to/dailydevtips1) I thought this was a fun idea so I used it a bit!
 - [lekoarts](https://www.lekoarts.de/en/) So many things... code syntax highlighting, creating good draft support, probably more!
 - [Creating Linked Blog Post Headers using MDX on GatsbyJS. - Coner Murphy](https://conermurphy.com/blog/blog-post-linked-headers-mdx-gatsbyjs/) - not only did this work, but, I started thinking about doing more with the components for Mdx.
+- [Styling External Links with an Icon in CSS](https://christianoliff.com/blog/styling-external-links-with-an-icon-in-css/) by [Christian Oliff](https://christianoliff.com/)
 
 ## Using
 
