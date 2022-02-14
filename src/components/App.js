@@ -184,9 +184,7 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
-  .standalone-link:hover {
-    color: var(--primary);
-  }
+  .standalone-link:hover,
   .standalone-link:focus {
     color: var(--primary);
   }  
