@@ -1,0 +1,36 @@
+---
+title: Syntax Highlighting
+slug: syntax-highlighting
+date: 2022-02-14
+coverImage: ./syntax-highlighting-example.png
+excerpt: Implementation of Code System in Blog
+tags: [css, mdx, react, gatsby]
+implementation: 2022-02-14
+---
+
+I had implemented syntax highlighting with Gatsby in a test project already. Not only in the Skillthrive course, but I experimented and wrote everything up in [Creating a Code System for Gatsby](https://koamar.com/blog/create-code-system).
+
+## Differences
+
+- installed `mdx-utils` as the rest of the Mdx stuff was already there
+- created `language-tabs.css` inside of `styles` folder
+- create an App component for all `layout.css` code
+- tried to add language-tabs to `global.css` with `@language-tabs;` at the end but gave up
+- mofied `CodeElements` to use twin.macro
+
+## Issues
+
+Since I'm already doing some `wrapRootElement`, I'm finding it not obvious how to add _**more**_ to it. My initial attempts resulted in a blank web site.
+
+- Copy button for code is appearing in the header! (forgot code-layout.css)
+- Copy button looks okay in dark mode but not so much in light mode
+- Dark mode filenames look good but it should probably be teal, hopefully something like that can be done in light mode. Light teal background with black text?
+- font-size of `1rem` look rather large. `0.9rem` is looking better…maybe even `0.8rem`?
+
+## Changes for KoaMar Site
+
+- .highlight-line is some border color that is not really specified. The rest of the highlight works with the nightOwl theme
+
+##### Attributes
+
+Used [Raycast](https://ray.so) to toss up some syntax for the cover image!
