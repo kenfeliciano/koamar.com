@@ -16,7 +16,14 @@ export const MarkdownLink = ({ href, ...rest }) => {
   }
 
   if (href.startsWith('/')) {
-    return <GatsbyLink data-link-internal to={href} {...rest} />
+    return (
+      <GatsbyLink
+        className='font-semibold rounded hover:bg-opposite'
+        data-link-internal
+        to={href}
+        {...rest}
+      />
+    )
   }
 
   if (href.startsWith('#') || href.startsWith('../') || href.startsWith('./')) {
