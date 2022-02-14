@@ -15,18 +15,12 @@ export const MarkdownLink = ({ href, ...rest }) => {
     href = href.replace(domainRegex, '/')
   }
 
-  if (href.startsWith('/')) {
-    return (
-      <GatsbyLink
-        className='font-semibold rounded hover:bg-opposite'
-        data-link-internal
-        to={href}
-        {...rest}
-      />
-    )
-  }
-
-  if (href.startsWith('#') || href.startsWith('../') || href.startsWith('./')) {
+  if (
+    href.startsWith('#') ||
+    href.startsWith('../') ||
+    href.startsWith('./') ||
+    href.startsWith('/')
+  ) {
     // return <a href={href} {...rest} />
     return <InternalLink href={href} {...rest} />
   }
