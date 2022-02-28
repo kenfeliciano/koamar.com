@@ -10,10 +10,10 @@ export const DoubleChevronLeft = () => (
   >
     <g
       fill='none'
-      fill-rule='evenodd'
+      fillRule='evenodd'
       stroke='var(--text-body)'
-      stroke-linecap='round'
-      stroke-linejoin='round'
+      strokeLinecap='round'
+      strokeLinejoin='round'
       transform='translate(5 6)'
     >
       <path d='m8.5 8.5-4-4 4-4' />
@@ -32,10 +32,10 @@ export const DoubleChevronRight = () => (
   >
     <g
       fill='none'
-      fill-rule='evenodd'
+      fillRule='evenodd'
       stroke='var(--text-body)'
-      stroke-linecap='round'
-      stroke-linejoin='round'
+      strokeLinecap='round'
+      strokeLinejoin='round'
       transform='translate(7 6)'
     >
       <path d='m.5 8.5 4-4-4-4' />

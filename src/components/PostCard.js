@@ -7,13 +7,16 @@ export const LinkWrapper = tw(Link)`
   rounded-lg mt-4 hover:(ring-2 ring-primary)
 `
 
-export const updatedWrapper = tw.p`
+export const UpdatedWrapper = tw.p`
   m-0
 `
 
 export const PostCard = ({ post, collection }) => (
   <LinkWrapper to={`/${collection}/${post.node.frontmatter.slug}`}>
-    <div key={post.node.id} className='flex flex-col h-full p-4 rounded-lg shadow-lg sm:flex-row bg-surface'>
+    <div
+      key={post.node.id}
+      className='flex flex-col h-full p-4 rounded-lg shadow-lg sm:flex-row bg-surface'
+    >
       {post.node.frontmatter.coverImage ? (
         <Img
           className='absolute top-0 left-0 flex-none w-auto h-auto sm:w-36 sm:h-24'
@@ -29,7 +32,9 @@ export const PostCard = ({ post, collection }) => (
         </div>
         <p className='text-sm text-muted'>{post.node.frontmatter.date}</p>
         {post.node.frontmatter.updated ? (
-          <updatedWrapper className='text-sm text-muted'>Updated: {post.node.frontmatter.updated}</updatedWrapper>
+          <UpdatedWrapper className='text-sm text-muted'>
+            Updated: {post.node.frontmatter.updated}
+          </UpdatedWrapper>
         ) : null}
       </div>
     </div>
