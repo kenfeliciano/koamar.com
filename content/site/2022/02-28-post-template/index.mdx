@@ -1,0 +1,89 @@
+---
+title: Post Template
+slug: post-template
+date: 2022-02-28
+coverImage: ./green-chameleon-s9CC2SKySJM-unsplash.jpg
+excerpt: Creating a template for blog, site, and project posts
+tags: [gatsby]
+implementation: 2020-12-24
+---
+
+## Implementation
+
+Given all the thoughts below, it seemed like a single template would work. Currently, there is one called blog-post. Perhaps it could be called single-post in preparation for having all-posts (paged layout) later.
+
+- rename: `blog-post.js` to `single-post.js`
+
+<Success>
+
+
+Wow, quickest, smallest commit in the whole thing! Probably what most commits should be!
+
+</Success>
+
+
+### Front Matter Updates
+
+- Added implementation, created, and createdCirca frontmatter for date information
+- Added some info to the PostTemplate to use this new frontmatter
+  - **Left** Posted: {date}
+  - **Center**: {time to read}
+  - **Right**: Implemented: {implementation} | Written on: {created} | Written during: {createdCirca}
+
+<Info>
+
+
+This is all easily visible on every post.
+
+</Info>
+
+
+### Updates on cover images
+
+- At this point, the images were not as crisp as wanted them to me. I tried setting picture quality to 100 but that did not work.
+- I changed `coverImage` to auto-size (instead of less tall) when screen is smaller. That looks better to me.
+
+##### Attributions
+
+Photo by [Visual Stories || Green Chameleon (@craftedbygc)](https://unsplash.com/@craftedbygc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/post?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+## Thoughts on Templates and Front Matter
+
+The three Templates for my site are:
+
+- blog
+- site
+- project
+
+**tl;dr**: All of these look about the same and I only need one template!
+
+### Template Differences
+
+- Site can have an implementation date
+- Projects can have a created date, circa date, or date range
+- Each one should have its own default coverImage
+
+## Front Matter
+
+I went through each type of post and made a list of required front matter. My original idea was each type of post would be different enough to warrant its own template but really, what's going to be _that_ different?
+
+| Field          | Type        | Optional | Comments                                                            |
+| -------------- | ----------- | -------- | ------------------------------------------------------------------- |
+| title          | text        | No       |                                                                     |
+| slug           | text        | No       |                                                                     |
+| date           | date        | No       |                                                                     |
+| featured       | int         | Yes      | Will display on main page if featured                               |
+| coverImage     | text        | Yes      | Path to coverImage, uses default if none specified                  |
+| excerpt        | text        | Yes      | Will use default if not specified                                   |
+| tags           | array[text] | Yes      |                                                                     |
+| implementation | date        | Yes      | Only for Site                                                       |
+| createdCirca   | text        | Yes      | Only for projects. Circa created/composed date, could be date range |
+| created        | date        | Yes      | When you know the date. Should override createdCirca                |
+| updated        | date        | Yes      | Include if post is ever updated (just the latest)                   |
+
+Other ideas that I threw away. These can all be done with tags!
+
+- Music: style
+- Music: instrumentation (tag featured instrument if there is one otherwise, big band, wind band, etc.)
+- Non-Music Project: Area
