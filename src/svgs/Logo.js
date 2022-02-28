@@ -19,11 +19,11 @@ export const Logo = ({ siteTitle }) => (
       <text
         x='.094'
         y='8.977'
-        stroke-width='.265'
-        font-family='Lato'
-        font-size='10.583'
-        font-weight='400'
-        class='text-header'
+        strokeWidth='.265'
+        fontFamily='Lato'
+        fontSize='10.583'
+        fontWeight='400'
+        className='text-header'
         style={{
           lineHeight: 1.25,
           fontVariantLigatures: 'normal',

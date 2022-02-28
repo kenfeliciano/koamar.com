@@ -28,7 +28,7 @@ const postList = ({ pageContext, data }) => {
         {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
         <PostContainer>
           {posts.map((post) => (
-            <PostCard post={post} collection={collection} key={post.id} />
+            <PostCard post={post} collection={collection} key={post.node.id} />
           ))}
         </PostContainer>
       </Content>
