@@ -6,15 +6,14 @@ import tw, { styled } from 'twin.macro'
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, PostCard, Pagination } from '../components'
 
-const PostContainer = styled.div(
-  tw`grid  gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`
-)
+const PostContainer = styled.div(tw`grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`)
 
 const postList = ({ pageContext, data }) => {
   const { currentPage, numPages, collection } = pageContext
   const isFirst = currentPage === 1
   const isLast = currentPage === numPages
-  const prevPage = currentPage - 1 === 1 ? `/${collection}` : `/${collection}/${currentPage - 1}`
+  const prevPage =
+    currentPage - 1 === 1 ? `/${collection}` : `/${collection}/${currentPage - 1}`
   const nextPage = `/${collection}/${currentPage + 1}`
 
   const posts = data.allMdx.edges
@@ -29,11 +28,16 @@ const postList = ({ pageContext, data }) => {
         {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
         <PostContainer>
           {posts.map((post) => (
-            <PostCard post={post} collection={collection} />
+            <PostCard post={post} collection={collection} key={post.id} />
           ))}
         </PostContainer>
       </Content>
-      <Pagination isFirst={isFirst} isLast={isLast} prevPage={prevPage} nextPage={nextPage} />
+      <Pagination
+        isFirst={isFirst}
+        isLast={isLast}
+        prevPage={prevPage}
+        nextPage={nextPage}
+      />
     </Layout>
   )
 }
@@ -44,7 +48,10 @@ export const pageQuery = graphql`
   query AllPostsQuery($skip: Int!, $limit: Int!, $collection: String!) {
     allMdx(
       sort: { fields: frontmatter___date, order: DESC }
-      filter: { fields: { collection: { eq: $collection } }, frontmatter: { draft: { eq: false } } }
+      filter: {
+        fields: { collection: { eq: $collection } }
+        frontmatter: { draft: { eq: false } }
+      }
       skip: $skip
       limit: $limit
     ) {
