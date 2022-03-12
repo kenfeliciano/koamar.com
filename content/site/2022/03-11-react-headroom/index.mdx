@@ -1,0 +1,50 @@
+---
+title: Need some room, at the top
+slug: react-headroom
+date: 2022-03-11
+coverImage: ./jiroe-qAahMC9xLmA-unsplash.jpg
+excerpt: So tired of scrolling to top of page.
+tags: [react]
+implementation: 2020-12-26
+---
+
+## Pain Point
+
+I found myself constantly scrolling up to the top of the page to toggle the dark mode toggle for testing. I finally had enough content to try React Headroom so I did. It was quite simple to add and configure.
+
+It was a tool I had learned about while ~hoarding~ collecting knowledge. I collect a lot of information and tools that I don't have a reason for using but just the act of collecting them seems to help me. It's not always [The Collector's Fallacy](https://zettelkasten.de/posts/collectors-fallacy/) in play! Well, it mostly is, but not this time!
+
+## Installation
+
+```bash
+npm install react-headroom
+```
+
+## My Usage
+
+```jsx:title=Layout.js (excerpt) {8-10}
+import Headroom from 'react-headroom'
+
+// Then later, I just Wrapped the header component with it.
+// I'm not sure why I didn't put it in the header component...hmmm
+return (
+    <>
+      <MenuProvider>
+        <Headroom>
+          <Header siteTitle={data.site.siteMetadata?.title || `Title`}
+        </Headroom>
+        <SiteWrapper>
+        //...
+        </SiteWrapper>
+      </MenuProvider>
+    </>
+  )
+
+```
+
+[React Headroom](https://kyleamathews.github.io/react-headroom/) added to README
+
+##### Attributions
+
+Photo by [Jiroe (@iamjiroe)](https://unsplash.com/@iamjiroe?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/vu-meter?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
