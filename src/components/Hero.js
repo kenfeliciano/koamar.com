@@ -1,5 +1,13 @@
 import * as React from 'react'
-import { Image } from '../components'
+import { StaticImage } from 'gatsby-plugin-image'
+
+const Moog = () => (
+  <StaticImage
+    src='../images/steve-harvey-xWiXi6wRLGo-unsplash.jpg'
+    alt='MOOG Modular Synthesizer - photo by Steve Harvey @ Unsplash'
+    className='object-cover h-full min-w-full'
+  />
+)
 
 export const Hero = () => (
   <>
@@ -51,10 +59,7 @@ export const Hero = () => (
         </div>
       </div>
       <div className='absolute top-0 right-0 block w-8/12 h-full'>
-        <Image
-          className='object-cover h-full min-w-full'
-          alt='Synthesizer - photo by Steve Harvey @ Unsplash'
-        />
+        <Moog />
       </div>
     </div>
   </>

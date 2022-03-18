@@ -22,7 +22,7 @@ const postList = ({ pageContext, data }) => {
   return (
     <Layout>
       <SEO />
-      <CoverImage fluid={site.frontmatter.coverImage.childImageSharp.fluid} />
+      <CoverImage fluid={site.frontmatter.coverImage.childImageSharp.gatsbyImageData} />
       <Content>
         <h1>{site.frontmatter.title}</h1>
         {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
@@ -39,57 +39,49 @@ const postList = ({ pageContext, data }) => {
         nextPage={nextPage}
       />
     </Layout>
-  )
+  );
 }
 
 export default postList
 
-export const pageQuery = graphql`
-  query AllPostsQuery($skip: Int!, $limit: Int!, $collection: String!) {
-    allMdx(
-      sort: { fields: frontmatter___date, order: DESC }
-      filter: {
-        fields: { collection: { eq: $collection } }
-        frontmatter: { draft: { eq: false } }
-      }
-      skip: $skip
-      limit: $limit
-    ) {
-      edges {
-        node {
-          frontmatter {
-            slug
-            title
-            date(formatString: "MMMM D, YYYY")
-            updated(formatString: "MMMM D, YYYY")
-            excerpt
-            coverImage {
-              publicURL
-              childImageSharp {
-                fluid {
-                  ...GatsbyImageSharpFluid
-                }
-              }
+export const pageQuery = graphql`query AllPostsQuery($skip: Int!, $limit: Int!, $collection: String!) {
+  allMdx(
+    sort: {fields: frontmatter___date, order: DESC}
+    filter: {fields: {collection: {eq: $collection}}, frontmatter: {draft: {eq: false}}}
+    skip: $skip
+    limit: $limit
+  ) {
+    edges {
+      node {
+        frontmatter {
+          slug
+          title
+          date(formatString: "MMMM D, YYYY")
+          updated(formatString: "MMMM D, YYYY")
+          excerpt
+          coverImage {
+            publicURL
+            childImageSharp {
+              gatsbyImageData(layout: FULL_WIDTH)
             }
           }
-          id
-          excerpt
         }
+        id
+        excerpt
       }
     }
-    mdx(frontmatter: { name: { eq: $collection } }) {
-      body
-      frontmatter {
-        title
-        coverImage {
-          publicURL
-          childImageSharp {
-            fluid {
-              ...GatsbyImageSharpFluid
-            }
-          }
+  }
+  mdx(frontmatter: {name: {eq: $collection}}) {
+    body
+    frontmatter {
+      title
+      coverImage {
+        publicURL
+        childImageSharp {
+          gatsbyImageData(layout: FULL_WIDTH)
         }
       }
     }
   }
+}
 `

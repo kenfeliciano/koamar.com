@@ -43,7 +43,7 @@ const getThirdField = ({ implementation, created, createdCirca, date }) => {
 
 const BlogPost = ({ data, pageContext }) => {
   const frontmatter = data.mdx.frontmatter
-  const coverImage = frontmatter.coverImage ? frontmatter.coverImage.childImageSharp.fluid : null
+  const coverImage = frontmatter.coverImage ? frontmatter.coverImage.childImageSharp.gatsbyImageData : null
   const thirdField = getThirdField(frontmatter)
   const collection = data.mdx.fields.collection
   const nextPost = pageContext.next
@@ -83,34 +83,31 @@ const BlogPost = ({ data, pageContext }) => {
 
 export default BlogPost
 
-export const blogQuery = graphql`
-  query SinglePostQuery($id: String!) {
-    mdx(id: { eq: $id }) {
-      body
-      frontmatter {
-        date(formatString: "MM/DD/YYYY")
-        updated(formatString: "MM/DD/YYYY")
-        excerpt
-        slug
-        title
-        tags
-        draft
-        implementation(formatString: "MM/DD/YYYY")
-        created(formatString: "MM/DD/YYYY")
-        createdCirca
-        coverImage {
-          publicURL
-          childImageSharp {
-            fluid {
-              ...GatsbyImageSharpFluid
-            }
-          }
+export const blogQuery = graphql`query SinglePostQuery($id: String!) {
+  mdx(id: {eq: $id}) {
+    body
+    frontmatter {
+      date(formatString: "MM/DD/YYYY")
+      updated(formatString: "MM/DD/YYYY")
+      excerpt
+      slug
+      title
+      tags
+      draft
+      implementation(formatString: "MM/DD/YYYY")
+      created(formatString: "MM/DD/YYYY")
+      createdCirca
+      coverImage {
+        publicURL
+        childImageSharp {
+          gatsbyImageData(layout: FULL_WIDTH)
         }
       }
-      timeToRead
-      fields {
-        collection
-      }
+    }
+    timeToRead
+    fields {
+      collection
     }
   }
+}
 `

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
-import Img from 'gatsby-image'
+import { GatsbyImage } from 'gatsby-plugin-image'
 import tw from 'twin.macro'
 
-export const LinkWrapper = tw(Link)`
+export const PostWrapper = tw(Link)`
   rounded-lg mt-4 hover:(ring-2 ring-primary)
 `
 
@@ -12,15 +12,15 @@ export const UpdatedWrapper = tw.p`
 `
 
 export const PostCard = ({ post, collection }) => (
-  <LinkWrapper to={`/${collection}/${post.node.frontmatter.slug}`}>
+  <PostWrapper to={`/${collection}/${post.node.frontmatter.slug}`}>
     <div
       key={post.node.id}
       className='flex flex-col h-full p-4 rounded-lg shadow-lg sm:flex-row bg-surface'
     >
       {post.node.frontmatter.coverImage ? (
-        <Img
-          className='absolute top-0 left-0 flex-none w-auto h-auto sm:w-36 sm:h-24'
-          fluid={post.node.frontmatter.coverImage.childImageSharp.fluid}
+        <GatsbyImage
+          image={post.node.frontmatter.coverImage.childImageSharp.gatsbyImageData}
+          className='top-0 left-0 flex-none w-auto h-auto sm:w-36 sm:h-24'
         />
       ) : (
         <div className='bg-brandedSurface sm:w-36 sm:h-24'></div>
@@ -38,5 +38,5 @@ export const PostCard = ({ post, collection }) => (
         ) : null}
       </div>
     </div>
-  </LinkWrapper>
+  </PostWrapper>
 )
