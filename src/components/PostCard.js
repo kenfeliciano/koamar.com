@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import tw from 'twin.macro'
 
-export const LinkWrapper = tw(Link)`
+export const PostWrapper = tw(Link)`
   rounded-lg mt-4 hover:(ring-2 ring-primary)
 `
 
@@ -12,7 +12,7 @@ export const UpdatedWrapper = tw.p`
 `
 
 export const PostCard = ({ post, collection }) => (
-  <LinkWrapper to={`/${collection}/${post.node.frontmatter.slug}`}>
+  <PostWrapper to={`/${collection}/${post.node.frontmatter.slug}`}>
     <div
       key={post.node.id}
       className='flex flex-col h-full p-4 rounded-lg shadow-lg sm:flex-row bg-surface'
@@ -38,5 +38,5 @@ export const PostCard = ({ post, collection }) => (
         ) : null}
       </div>
     </div>
-  </LinkWrapper>
+  </PostWrapper>
 )
