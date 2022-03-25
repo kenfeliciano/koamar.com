@@ -1,0 +1,184 @@
+---
+title: Post List Page
+slug: post-list-page
+date: 2022-03-25
+coverImage: ./kelly-sikkema--1_RZL8BGBM-unsplash.jpg
+excerpt: The landing page of each section of the site.
+tags: [gatsby, react]
+implementation: 2020-12-30
+---
+
+<Warning>
+
+This implementation happened in Gatsby 2 days.
+
+</Warning>
+
+## Initial Requirements
+
+- When use clicks on one of the navigation links, they go to a list of posts related to that section.
+- Six posts per page seems like a good fit (can always change right?)
+- Initial version should just be a simple list entry for each post
+- Advanced version should allow the user to switch to tile view to see a more picturesque view
+
+## Collection Specific
+
+- Site section will include implementation date
+- CoverImage for this page is collection based
+  - /blog - ?.jpg
+  - /site - ?.jpg
+  - /project -?.jpg (for now, the Moog picture)
+
+### Site Picture - Construction Site
+
+```html
+<span
+  >Photo by
+  <a
+    href="<https://unsplash.com/@tuannguyenminh?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText>"
+    >Tuân Nguyễn Minh</a
+  >
+  on
+  <a
+    href="<https://unsplash.com/s/photos/site?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText>"
+    >Unsplash</a
+  ></span
+>
+```
+
+Or in Markdown as it eventually exists...
+
+```markdown
+Photo by [Tuân Nguyễn Minh (@tuannguyenminh)](https://unsplash.com/@tuannguyenminh?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/site?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+```
+
+## Basic Look
+
+Stealing the basic look from narative's [novela theme](https://www.narative.co/products/novela). It won't be this exactly though. I think I'd like a featured flag somewhere.
+
+- CoverImage, title, excerpt, publish date, time to read
+
+## Implementation
+
+Using code from Skillthrive tutorial to make paginated pages. But, it has to be for each section, so there is that! Ooo it's difficult-ish. Suddenly, I'm supposed to really know JavaScript 😂
+
+Used [repl.it](http://repl.it) to work through some things. See my little [GatsbySectionPages](https://replit.com/@kenfeliciano/GatsbySectionPages) to see what I came up with.
+
+```jsx:title=coverImage Query
+export const coverImage = graphql`
+  query CoverImageQuery($coverImage: String!) {
+    imageSharp(fluid: { originalName: { eq: $coverImage } }) {
+      fluid {
+        ...GatsbyImageSharpFluid
+      }
+    }
+  }
+`
+```
+
+I knew I wanted to have three pages, one for each type of content: blog, site, & project. I also knew I wanted to have a limited amount of posts per page so I'd need pagination.
+
+I had seen how to do pagination in the Skillthrive tutorial, but, I wanted pages for each type of post. I could see how to do this in other languages I've used but not JavaScript.
+
+I want to go through the edges array returned from GraphQL. It is standard tutorial level Gatsby except I had added the collection to fields.
+
+```graphql
+query {
+  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+    edges {
+      node {
+        id
+        frontmatter {
+          slug
+        }
+        fields {
+          collection
+        }
+      }
+    }
+  }
+}
+```
+
+I landed on some articles and such about arrays, but never really got what I needed. Still, after getting bits and pieces from many articles, I was able to figure it out!
+
+Found this: [https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-70.php](https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-70.php)
+
+This got me to the base function that does the work, `collectionCount`.
+
+```jsx:title=gatsby-node.js snippet {4}
+// Create paginated pages for posts
+const postsPerPage = 6
+const edges = data.allMdx.edges
+const collectionCount = (arr, val) => arr.reduce((a, edge) => (edge.node.fields.collection === val ? a + 1 : a), 0)
+
+let groups = []
+
+groups.push({ groupName: 'blog', count: collectionCount(edges, 'blog') })
+groups.push({ groupName: 'project', count: collectionCount(edges, 'project') })
+groups.push({ groupName: 'site', count: collectionCount(edges, 'site') })
+
+groups.forEach(({ groupName, count }) => {
+  const numPages = Math.ceil(count / postsPerPage)
+  Array.from({ length: numPages }).forEach((_, i) => {
+    actions.createPage({
+      path: i === 0 ? `/${groupName}` : `/${groupName}/${i + 1}`,
+      component: require.resolve('./src/templates/post-list.js'),
+      context: {
+        limit: postsPerPage,
+        skip: i * postsPerPage,
+        numPages,
+        currentPage: i + 1,
+        collection: groupName,
+        coverImage: `${groupName}-cover.jpg`,
+      },
+    })
+  })
+})
+```
+
+I should explain it to myself!
+
+### Hey self...
+
+- Pass in an array (arr) and a value (val) which is the collection name (and probably should be renamed
+- Run reduce on the array and pass in the accumulator (a) and the current value (edge)
+- Function looks at the collection to see if it matches the value passed in and if so, adds one to the accumulator
+- Zero is the initial value so if the passed value isn't matched, it will return zero as it should
+
+The next bit of code looks like procedural code and could probably be expressed better. But, it is working. The groups array is filled with objects that has the count of entries for each section.
+
+The rest is plugging in the groupName and count into the Skillthrive code for creating pages based on number of posts and number of posts per page.
+
+### Post List Template
+
+Using some GraphQL from Skillthrive tutorial modified to filter by the collection passed in the pageContext from createPage(), I've got all the data needed to display a list of posts. As there are less than 6 posts currently, there is no pagination required so it has not been implemented yet. Sometimes I'm like that!
+
+I added some basic Tailwind styling so it isn't just text smashed together. Then, added a bit more work (late at night…should have been sleeping!) to get the cover image to show. I figured it would be easy.
+
+I ended up with the exact same image on two different posts which was expected. However, one post had more text in the excerpt and the base flexbox implementation started shrinking one of the pictures. It looked funny! I added flex-none on the image. After all, it was correctly sized enough for now.
+
+And sometimes, I'm not like that. I also added some default cover pictures for each section and have not used them yet.
+
+## Retrospective
+
+- Each section will get its own Mdx file in `src/sections/` directory.
+- Frontmatter will be simply title and coverImage. I don't think I should use excerpt because there is not one.
+- This may need to be put into a new component.
+
+### Tasks
+
+- [ ] coverImage should come from Mdx
+- [ ] Page content should come from Mdx
+
+## 2022 Retrospective
+
+- I did not make the list of posts be a simple list / switch to tile. I just went with tile.
+- I did not choose to put the implementation date in site. Or, more likely, I forgot until right now. Yes, I know it is years later!
+- `src/sections` turned out to be better as `content/collections`
+
+##### Attributions
+
+Photo by [Kelly Sikkema (@kellysikkema)](https://unsplash.com/@kellysikkema?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/post-list?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
