@@ -1,0 +1,47 @@
+---
+title: Section Content
+slug: section-content
+date: 2022-03-29
+coverImage: ./skye-studios-NDLLFxTELrU-unsplash.jpg
+excerpt: Wherein each section of the site gets content!
+tags: [gatsby, mdx]
+implementation: 2020-12-31
+---
+
+## Implementation
+
+- Add a new `gatsby-source-filesystem` entry for sections
+- Add the three `Mdx` files and cover images in there.
+- In order to query for the proper file, since I'm already using the `collection` field, I added a new piece of frontmatter, `name`, to get the proper file.
+- Just had to replace the existing static text with the title and body, and also pass the image to the CoverImage component.
+- After that, I realized I needed my Content component
+- After bringing that in, I realized my temporary formatting of posts was not going to hold up even as a temporary fix. Changing the background color from surface to container did enough of a trick for now.
+
+### Frontmatter
+
+**title**: string
+**coverImage**: path to image
+
+### Body
+
+The body will be the description of the section and will appear before links to posts in the section. It should be skipped when skipping to main content I think.
+
+### Retrospective
+
+- [ ] Add pagination component for when there are more than 6 entries
+- [ ] Need light side branded surface for when there is no cover image
+- [ ] Create Card components for posts and format them better, perhaps two columns for larger, one column for mobile.
+- **For Mobile**
+  - Picture full width of container
+  - Title
+  - Excerpt
+  - Date - with space before
+
+### Retrospective 2022
+
+I do not see any future write-up of adding pagination component, working on a light side branded surface, or making any card components (at all, or even just better) in my notes. At some point, I know I did these things though cause I see this _stuff_ on the site! I guess I sort of see some of this in the prior post. Sorry everyone! You know who you are!
+
+##### Attributions
+
+Photo by [Skye Studios (@skyestudios)](https://unsplash.com/@skyestudios?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/content?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
