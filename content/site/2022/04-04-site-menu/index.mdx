@@ -1,0 +1,129 @@
+---
+title: Menu
+slug: site-menu
+date: 2022-04-04
+coverImage: ./croissant-QIXmEEzgu-M-unsplash.jpg
+excerpt: Adding a menu to the site
+tags: [react, tailwind-css, svg]
+implementation: 2021-01-01
+---
+
+## Implementation
+
+- Steal a hamburger SVG from a Tailwind CSS tutorial
+- Steal some Tailwind CSS code from the navigation component [example](https://tailwindui.com/components/application-ui/navigation/navbars) as well as from the tutorial
+- To control things when the pop-up menu is open or closed, using a MenuProvider—fun!
+
+### MenuProvider
+
+- Defining
+
+```jsx
+import * as React from 'react'
+import { useState } from 'react'
+
+export const MenuContext = React.createContext()
+
+export const MenuProvider = ({ children }) => {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  return (
+    <MenuContext.Provider value={{ menuOpen, setMenuOpen }}>
+      {children}
+    </MenuContext.Provider>
+  )
+}
+```
+
+- Using
+
+```jsx
+import { useContext } from 'react'
+import { MenuContext } from '../components'
+
+export const Header = ({ siteTitle }) => {
+  const { menuOpen, setMenuOpen } = useContext(MenuContext)
+  // At this point, you can use menuOpen and setMenuOpen!
+  //...
+}
+```
+
+### Using Props with twin.macro Styled-component
+
+**ContentWrapper** - the styled component
+
+- The `mt-40` is going to have to be constantly updated if new menu items are added.
+- Added `menuShift` because for the landing pages and posts, it looks nice going over the picture.
+
+```jsx
+// menuOpen is passed from the main component
+// it can then be used to add more tailwind styles as needed
+const ContentWrapper = styled.div(({ menuOpen, menuShift }) => [
+  tw`p-4 mx-4 mt-6 bg-container rounded-lg shadow-lg`,
+  menuOpen && menuShift && tw`mt-40`,
+])
+```
+
+**Content** - the main component
+
+```jsx
+export const Content = ({ children }) => {
+  const { menuOpen } = useContext(MenuContext)
+  // Pass in a prop called menuOpen to the styled component
+  // I tried <ContentWrapper menuOpen> but that didn't work
+  return (
+    <ContentWrapper menuOpen={menuOpen} menuShift={menuShift}>
+      {children}
+    </ContentWrapper>
+  )
+}
+```
+
+### Scroll Bar Fun
+
+When the scroll bar is not needed and then becomes needed, the menus and dark toggle fidget about. There was some CSS code in the html element from the original layout.css that I did not bring over which fixed this.
+
+- `overflow-y: scroll;`
+
+### Menu Design
+
+Using the normal primary color (teal for light, orange for dark) did **not** look good for the menus. Created opposite colors for the theme. —primary is Sharks Teal, —opposite is Sharks Orange for light and vice versa for dark. This is how I had it in a mock-up and I think I like how it it looks. It does make me think the opposite color (secondary if you will) could be used more in the site.
+
+#### Popup Menu
+
+Originally, the idea was to have the theme toggle go away on a popup menu. However, I just realized now (as 2021 just started!) that this would make it impossible for mobile users to toggle the theme. I added the button as a flex container…a first for me. I thought to myself, why can't it be done? And it was done!
+
+##### Button as Flex
+
+I used spans for the text and icon but I probably could have used paragraphs, still, span sang to me for this. After all, these are just bits of the button.
+
+```jsx
+return (
+  <div className='hover:bg-opposite'>
+    <button
+      type='button'
+      onClick={() => {
+        setTheme(theme === 'light' ? 'dark' : 'light')
+      }}
+      className='sm:inline sm:ml-2 flex justify-between items-center w-full pr-6'
+    >
+      <span className='block sm:hidden px-2 py-1 font-semibold rounded hover:bg-opposite'>
+        {' '}
+        Toggle Theme{' '}
+      </span>
+      <span className='block'>{`${theme === 'light' ? '🌙' : '🌞'}`}</span>
+    </button>
+  </div>
+)
+```
+
+With this done, the button looks rather like any other menu item and reaches across the whole screen. A little padding on the right and the icon lines up pretty well with the menu button.
+
+### Final Tweaks
+
+After getting the mobile dark mode toggle in the menu looking perfect, it looked poor for the desktop. That took some tweaking and remembering that top padding and margins both do nothing when an element is inline! (ugh!)
+
+##### Attributions
+
+Photo by [Croissant (@getcroissant)](https://unsplash.com/@getcroissant?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/menu?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
