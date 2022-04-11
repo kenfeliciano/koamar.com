@@ -1,0 +1,126 @@
+---
+title: New Hero
+slug: new-hero
+date: 2022-04-11
+coverImage: ./gabriel-bassino-zEawlLdVloo-unsplash.jpg
+excerpt: A new hero (component) arrives
+tags: [gatsby, css, react]
+implementation: 2021-01-01
+---
+
+<Warning>
+
+This implementation happened in Gatsby 2 days.
+
+</Warning>
+
+## Implementation
+
+There was a bunch of placeholder text in the Hero component. I read an article on [DEV](https://dev.to/) that walked through creating a [responsive header in Tailwind CSS](https://dev.to/dailydevtips1/responsive-header-in-tailwind-css-2djn).
+
+I decided to use this technique, with the Moog Modular picture that I've got as a default.
+
+I had already mocked this up and mostly just copied the code over as-is. The colors were not correct and since it was a different font face in the mock-up, I had to adjust the font-size a bit.
+
+## Image Component
+
+<Warning>
+
+During the upgrade to Gatsby 4, I removed the Image component. It is much easier to just create a static image component on the page that is using it with Gatsby 4. Jump to [Static Image Component](#static-image-component) to view this.
+
+</Warning>
+
+I felt _**so**_ impressed with myself (at the time!). I looked at the built-in `image.js` file that comes with the Gatsby starter kit and wondered how I could use that as a component for _**any**_ image. It didn't seem that possible unless you were passing image related data in through pageContext (as I did with the section coverImages). A quick search lead me to a question by Wes Bos! Who else is on this thread but LekoArts, Kyle Mathews, and someone new to me, Baptiste Firket. Between Wes' idea and Baptiste's solution, I was able to convert `image.js` into my `Image.js` file.
+
+- [Using Variables in a StaticQuery · Gatsby](https://spectrum.chat/gatsby-js/general/using-variables-in-a-staticquery~abee4d1d-6bc4-4202-afb2-38326d91bd05)
+
+```jsx
+import * as React from 'react'
+import { StaticQuery, graphql } from 'gatsby'
+import Img from 'gatsby-image'
+
+export const Image = ({
+  fileName = 'steve-harvey-xWiXi6wRLGo-unsplash.jpg',
+  ...rest
+}) => (
+  <StaticQuery
+    query={graphql`
+      query {
+        allImageSharp {
+          edges {
+            node {
+              fluid(maxWidth: 2400) {
+                ...GatsbyImageSharpFluid
+                originalName
+              }
+            }
+          }
+        }
+      }
+    `}
+    render={(data) => {
+      const image = data.allImageSharp.edges.find(
+        (edge) => edge.node.fluid.originalName === fileName
+      )
+      if (!image) {
+        return null
+      }
+      return <Img fluid={image.node.fluid} {...rest} />
+    }}
+  />
+)
+```
+
+I also wanted to be able to pass in a maxWidth but I couldn't see a way to do that and it really wasn't that important to me. In fact, I just took that out!
+
+## Colors
+
+I started with the primary Sharks colors for the background. They seemed a bit bright.
+
+![Sharks Orange Version](hero-sharks-orange.png)
+
+![Sharks Teal Version](hero-sharks-teal.png)
+
+I decided to try this branded surface idea. For dark mode, this is a real thing I believe. I did not do anything official, just tossed my primary colors into [Convert a Color](http://convertacolor.com), lowered the lightness to 6% and I got a decent really dark teal. I did this for the Sharks orange color too and got a nice dark orange but that doesn't make sense for light mode. I tried 80% instead and got a very light orange.
+
+![Sharks Lighter Orange Version](hero-lighter-orange.png)
+
+![Sharks Darker Teal Version](hero-darker-teal.png)
+
+I'm really not sure which one I like better. I almost like the light orange and the original Sharks Teal best! Hmm, I can do that with Tailwind even though I'm using CSS variables.
+
+```jsx
+<div className='bg-brandedSurface dark:bg-opposite relative h-64 m-0 overflow-hidden rounded-lg'>
+```
+
+### Color Values
+
+```info
+#007889 - Sharks Teal
+#f4901e - Sharks Orange
+
+#111a1c - Original branded surface dark mode
+rgba(244, 144, 30, 0.9) - Original branded surface light mode
+
+#001B1F - dark mode branded surface, 6% lightness
+#facf9e - light mode branded surface, 80% lightness
+
+#1D1001 - light mode, 6% luminosity, useful for code title background
+```
+
+## Static Image Component
+
+```jsx
+const Moog = () => (
+  <StaticImage
+    src='../images/steve-harvey-xWiXi6wRLGo-unsplash.jpg'
+    alt='MOOG Modular Synthesizer - photo by Steve Harvey @ Unsplash'
+    className='object-cover h-full min-w-full'
+  />
+)
+```
+
+##### Attributions
+
+Photo by [Gabriel Bassino (@gabrielbassino)](https://unsplash.com/@gabrielbassino?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/hero?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
