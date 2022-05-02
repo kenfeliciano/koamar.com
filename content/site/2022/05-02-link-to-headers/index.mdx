@@ -1,0 +1,80 @@
+---
+title: Link to headers
+slug: link-to-headers
+date: 2022-05-02
+coverImage: ./teddy-bear-at-rehearsal.jpg
+excerpt: Navigation within a page via headers is cool
+tags: [mdx, gatsby, javascript]
+implementation: 2022-01-18
+---
+
+I thought it would _just work_! I thought I could just use something like this.
+
+```markdown noLineNumbers
+Jump to [Look out behind you](#look-out-behind-you)
+```
+
+Well, it did not _just work_!
+
+## This Works
+
+[Creating Linked Blog Post Headers using MDX on GatsbyJS. - Coner Murphy](https://conermurphy.com/blog/blog-post-linked-headers-mdx-gatsbyjs/)
+
+- For any header, add this to components in: `MdxWrapper.js`, `gatsby-ssr.js`, & `gatsby-browser.js`
+
+```jsx
+h2: (props) => (
+  <h2 id={props.children.replace(" ", "-").toLowerCase()}>
+    <a
+      href={`#${props.children.replace(" ", "-").toLowerCase()}`}
+    >
+      {props.children}
+    </a>
+  </h2>
+),
+```
+
+<Warning>
+  The code supplied will only catch the first space it finds. That works fine for two word
+  headers. What if you are a little silly and right a header like, oh, "Look out behind
+  you". It doesn't work there. Changed it to use RegEx (now I've got two bugs) 😆 Just
+  kidding RegEx!
+</Warning>
+
+**RegEx**: `/\s/g` - Match any whitespace character in the string globally. It will iteratively
+search the whole string and replace _every_ occurrence.
+
+```jsx {2,4}
+h2: (props) => (
+  <h2 id={props.children.replace(/\s/g, "-").toLowerCase()}>
+    <a
+      href={`#${props.children.replace(/\s/g, "-").toLowerCase()}`}
+    >
+      {props.children}
+    </a>
+  </h2>
+),
+```
+
+## Style These Links
+
+These are currently not handled by the `MarkdownLink` component. As they are internal links, they should look like an Internal link.
+
+```javascript
+// Not how I normally do this. I'd normally say ../components
+// and I'll probably fix that at some point.
+import { InternalLink } from '.'
+
+export const MarkdownLink = ({ href, ...rest }) {
+  ...
+  if (href.startsWith('#')) {
+    // return <a href={href} {...rest} />
+    return <InternalLink href={href} {...rest} />
+  }
+  ...
+}
+```
+
+##### Attributions
+
+Photo by [Me](https://koamar.com) during a rehearsal with [Nineteen](https://www.facebook.com/people/Nineteen/100065310347411/)
