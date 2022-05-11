@@ -1,0 +1,80 @@
+---
+title: Style Checkboxes
+slug: style-checkboxes
+date: 2022-05-11
+coverImage: ./brett-jordan-ehKaEaZ5VuU-unsplash.jpg
+excerpt: My first (or second) failure
+tags: [markdown, css]
+implementation: 2022-02-08
+---
+
+## I've failed
+
+Styling checkboxes is much more difficult than it should be in my opinion. In my early posts, I didn't know Markdown as well as I do now. I had the wrong syntax for checkboxes so they actually were not checkboxes! I've left them like that for _reasons_.
+
+## The problem
+
+When I first did my checkbox tests, they were not really checkboxes!
+
+```markdown
+Proper checkboxes
+
+- [ ] Pending
+- [x] Complete
+
+My original tests
+[ ] Pending
+[x] Complete
+```
+
+It looked **okay**. I mean, it was an `x` in between a couple of brackets. But it was not a checkbox. After I realized my mistake and started doing this correctly in newer content, I could see that my checkboxes looked terrible! There was no contrast between the background and foreground color and it was quite difficult to tell the different between done and pending. Also, there was a bullet for each checkbox which I'd rather not have.
+
+<Info>
+
+Perhaps because this is a static site, the checkboxes are all disabled. I guess that
+makes sense. It makes me wonder if more could be done to make these nicer. Even if
+static, I think three states are good: Done, Pending, Failed.
+
+</Info>
+
+## The Plan
+
+This is the exhaustive criteria for a successful update.
+
+- [ ] Checkbox colors look good when pending in light mode
+- [ ] Checkbox colors look good when pending in dark mode
+- [ ] Checkbox colors look good when complete in light mode
+- [ ] Checkbox colors look good when complete in dark mode
+
+### Color Ideas
+
+Idea 1: Use the same colors as the code titles
+
+- Background: var(--code-title-background)
+- Foreground: var(--code-title-text)
+
+The HTML element is `<input type="checkbox" disabled>`
+
+There were no more ideas.
+
+## But...Can't Style a Checkbox
+
+So, I should have known this, but, you cannot style a checkbox directly. You **_can_** remove it and replace it with something else.
+
+It is `li` in an unordered list, perhaps that can be translated in MDX component?
+
+The standard CSS tricks for doing this rely on having a label after every checkbox but as this is MDX (MD at this point) that is being converted into HTML, I'll have to delve into how to insert labels when needed.
+
+## Nothing Went Easy with This
+
+I decided to just give up since I'm not meaning for this to be interactive and go _new school_ with emojis.
+
+✅ for done
+🔲 for pending
+❌ for failed
+
+All of this looks _okay_ but it is certainly not branded like the rest of my site.
+
+##### Attributions
+
+Photo by [Photographer (@brett_jordan)](https://unsplash.com/@brett_jordan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/failure?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
