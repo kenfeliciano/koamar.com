@@ -1,0 +1,135 @@
+---
+title: Update Dependencies - Fail
+slug: update-dependencies
+date: 2022-05-24
+coverImage: ./sarah-kilian-52jRtc2S_VE-unsplash.jpg
+excerpt: excerpt
+tags: [:array-of-tags]
+implementation: 2022-01-11
+---
+
+<Info>
+
+This is a prequel! But it leads right into the next post so, this is where it will appear.
+
+</Info>
+
+It had been a while since I've done anything with the website. I decided it was finally time to plug in a date when I got the official Copyright. This lead me to having an Updated YAML. And then, the dependency bot went nuts! Since most everything is tied to Gatsby, I thought it would be a good idea to update. Gatsby 4 is out and I'm still on 2 at this point!
+
+The documentation, [Migrating from v3 to v4 | Gatsby (gatsbyjs.com)](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v3-to-v4/), strongly suggests upgrading `gatsby` and all components to v3 before upgrading to v4. Okay.
+
+## Update Gatsby From 2.x to 3
+
+In package.json, change gatsby to ^3.0.0.
+
+Run: `npm install`
+
+Run: `npm outdated`
+
+Woohoo! So many files! So, the plan is to change all of them to the _wanted_ value listed in the outdated list. I figure since this is all based on Gatsby 3.x it should be safe. There were actually a few that weren't outdated! I'm shocked.
+
+Time passes…
+
+I don't trust my `node_modules` folder at this point. How can I be sure of what's being used if are outdated files everywhere.
+
+```bash
+rm -r node_modules
+npm install
+gatsby clean
+gatsby develop
+```
+
+### Errors Abound
+
+There was much too much in the error department for me!
+
+```
+home/blah/blah/blah/node_modules/yoga-layout-prebuilt/yoga-layout/build/Release/nbind.js:53
+        throw ex;
+        ^
+Error: Cannot find module 'webpack'
+Require stack:
+many things!
+
+Node.js v17.3.1
+The terminal process "/bin/zsh '-c', 'npm run develop'" terminated with exit code: 7.
+```
+
+## Try Updating to Latest of Everything
+
+First, rollback and make sure it works.
+
+```bash
+# rolled back to last working version
+# started a new branch
+rm -r node_modules # still not trusting the node_modules
+npm install
+gatsby clean
+gatsby develop
+```
+
+This should work right? It doesn't! Somehow, `node` is on v17.3.1 and there are lots of errors related to that. I've been using 16.x (LTS). I switched node to that version and now it should work right? It does! It's back to the way it was before I started _upgrading_.
+
+### Now Update
+
+My plan was to do `npm install package@latest` on everything. That did not work either. What do you do when you have critical errors on packages you don't control?
+
+#### Fix the Critical One!
+
+`xmlhttprequest-ssl` is the critical issue. It is not something I have in my `package.json`. Why is it there? Here's my first learning about npm beyond the basics. Those of you reading may thing, but this is basic too Ken, well, it wasn't for me!
+
+```bash
+npm ls xmlhttprequest-ssl
+```
+
+This tells me it is a dependency _only_ in gatsby@2.26.1. So, if I can get gatsby 2.x updated, perhaps that will be okay?
+
+```bash
+npm install gatsby --legacy-peer-deps
+```
+
+I'm hoping this will get me what I need! But, all it did was update `gatsby` from 2.26.1 -> 2.32.13. No peers were updated. But, if this worked, `xmlhttprequest-ssl` would have been updated from 1.5.5 -> 1.6.3 which would be safe!
+
+```bash
+nvm use --lts # node keeps switching to v17.
+gatsby clean
+gatsby develop
+```
+
+It shows the usual warnings but eventually works. This also seems to have fixed at least one of the other alerts.
+
+- lodash is now v4.17.21
+- tar@6.0.5 (needs to be >= 6.1.9) - used by gatsby-plugin-manifest (2.6.1 -> 2.12.1) This does not fix it!
+- ansi-html (there is no fix)
+- dns-packet (needs to be >=1.3.2) it is!
+- is-svg@3.0.0 (needs to be >=4.3.0) - major, used by gatsby
+- object-path (needs to be >= 0.11.8) it is!
+
+There are more, but the gist is, updating Gatsby 2.x fixed a lot of the vulnerabilities and the site seems to still work. The site loads not-so-good but it works. Starts off with KoaMar in huge letters and then everything sort of settles down and is normal.
+
+Now there are 8 high severity, 11 moderate severity, and 1 low severity vulnerabilities. Best I can do for now!
+
+| Severity | Package       | Current | Required       | Dependent of                     |
+| -------- | ------------- | ------- | -------------- | -------------------------------- |
+| high     | trim-newlines | 1.0.0   | 3.0.1          | gatsby-plugin-sharp              |
+| high     | ansi-html     | 0.0.7   | None Available | gatsby                           |
+| high     | tar           | 6.0.5   | 6.1.9          | gatsby-plugin-sharp              |
+| high     | is-svg        | 3.0.0   | 4.3.0          | gatsby                           |
+| high     | trim          | 0.0.1   | 0.0.3          | @mdx-js, gatsby-plugin-mdx       |
+| high     | glob-parent   | 5.1.1   | 5.1.2          | gatsby-source-filesystem, gatsby |
+| high     | glob-parent   | 3.1.0   | 5.1.2          | gatsby                           |
+| high     | ssri          | 7.1.0   | 7.1.1          | gatsby                           |
+| high     | ssri          | 6.0.1   | 7.1.1          | gatsby                           |
+| high     | y18n          | 4.0.0   | 4.0.1          | gatsby                           |
+
+## Retrospective
+
+❌ Update from Gatsby 2 to Gatsby 4
+
+✅ Update enough to take care of the critical issue
+
+⬜ Learn more about upgrading to Gatsby 4 someday in the future!
+
+##### Attributions
+
+Photo by [Sarah Kilian (@rojekilian)](https://unsplash.com/@rojekilian?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/accident?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
