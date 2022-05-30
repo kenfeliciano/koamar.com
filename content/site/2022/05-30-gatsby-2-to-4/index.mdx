@@ -1,0 +1,229 @@
+---
+title: Update Gatsby 2 to 4
+slug: gatsby-2-to-4
+date: 2022-05-30
+coverImage: ./undraw_gatsbyjs_st4g.png
+excerpt: Updating Gatsby success story!
+tags: [gatsby, styled-components, npm]
+implementation: 2022-03-18
+---
+
+After watching the [GatsbyConf 2022](https://gatsbyconf.com/) presentation [Upgrading from Gatsby 2 to Gatsby 4—It's About Time](https://gatsbyconf.com/khaled-garbaya/#details), I don't feel much more ready but I'm ready to try again. One thing I noticed is [Khaled](https://khaledgarbaya.net/) _never_ did clear out `node_modules`.
+
+## Initial run of npm outdated
+
+Everything is Green under Wanted but going for Latest!
+
+| Package                         | Current | Wanted  | Latest | Location                                     |
+| ------------------------------- | ------- | ------- | ------ | -------------------------------------------- |
+| @mdx-js/mdx                     | 1.6.22  | 1.6.22  | 2.1.0  | node_modules/@mdx-js/mdx                     |
+| @mdx-js/react                   | 1.6.22  | 1.6.22  | 2.1.0  | node_modules/@mdx-js/react                   |
+| babel-plugin-styled-components  | 1.13.3  | 1.13.3  | 2.0.6  | node_modules/babel-plugin-styled-components  |
+| gatsby                          | 2.32.13 | 2.32.13 | 4.10.0 | node_modules/gatsby                          |
+| gatsby-image                    | 2.11.0  | 2.11.0  | 3.11.0 | node_modules/gatsby-image                    |
+| gatsby-plugin-manifest          | 2.12.1  | 2.12.1  | 4.10.0 | node_modules/gatsby-plugin-manifest          |
+| gatsby-plugin-mdx               | 1.10.1  | 1.10.1  | 3.10.0 | node_modules/gatsby-plugin-mdx               |
+| gatsby-plugin-offline           | 3.10.2  | 3.10.2  | 5.10.0 | node_modules/gatsby-plugin-offline           |
+| gatsby-plugin-postcss           | 3.7.0   | 3.7.0   | 5.10.0 | node_modules/gatsby-plugin-postcss           |
+| gatsby-plugin-react-helmet      | 3.10.0  | 3.10.0  | 5.10.0 | node_modules/gatsby-plugin-react-helmet      |
+| gatsby-plugin-sharp             | 2.14.4  | 2.14.4  | 4.10.0 | node_modules/gatsby-plugin-sharp             |
+| gatsby-plugin-styled-components | 3.10.0  | 3.10.0  | 5.10.0 | node_modules/gatsby-plugin-styled-components |
+| gatsby-remark-images            | 3.11.1  | 3.11.1  | 6.10.0 | node_modules/gatsby-remark-images            |
+| gatsby-source-filesystem        | 2.11.1  | 2.11.1  | 4.10.0 | node_modules/gatsby-source-filesystem        |
+| gatsby-transformer-sharp        | 2.12.1  | 2.12.1  | 4.10.0 | node_modules/gatsby-transformer-sharp        |
+| prettier                        | 2.1.2   | 2.1.2   | 2.6.0  | node_modules/prettier                        |
+| react                           | 16.14.0 | 16.14.0 | 17.0.2 | node_modules/react                           |
+| react-dom                       | 16.14.0 | 16.14.0 | 17.0.2 | node_modules/react-dom                       |
+| tailwindcss                     | 2.2.19  | 2.2.19  | 3.0.23 | node_modules/tailwindcss                     |
+
+## Update all the things
+
+`npm update --save` is not working for me like `yarn upgrade` did in the video. I expected everything to magically change to the newest versions. It's probably better in the long run. I headed back to the official Gatsby site migration articles.
+
+```bash
+git checkout -b update-to-gatsby-4
+npm install gatsby@latest --legacy-peer-deps # to 4.10.0
+npm install gatsby-image@latest # not a thing to do anymore!
+```
+
+### What changed?
+
+- `gatsby` is now 4.10.0 but that is it, with or without the `--legacy-peer-deps` flag
+- `gatsby-image` is deprecated and I should be using [gatsby-plugin-image](https://www.npmjs.com/package/gatsby-plugin-image)
+
+## Migrate gatsby-image to gatsby-plugin-image
+
+Again, off to the official documentation for this. This is the usual install, configure Gatsby plugin pattern with an added _running of the codemod_. That is new to me!
+
+- [Migrating from gatsby-image to gatsby-plugin-image | Gatsby (gatsbyjs.com)](https://www.gatsbyjs.com/docs/reference/release-notes/image-migration-guide/)
+
+```bash
+npm install gatsby-plugin-image gatsby-plugin-sharp@latest gatsby-transformer-sharp@latest --legacy-peer-deps
+```
+
+### Configure Plugins
+
+```javascript:title=gatsby-config.js
+module.exports = {
+  plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
+  ],
+}
+```
+
+### Run the codemod
+
+```bash
+npx gatsby-codemods gatsby-plugin-image <optional-path>
+```
+
+#### Message received (codemod)
+
+> It appears you're passing a variable to your image component. We haven't changed it, but we have updated it to use the new GatsbyImage component. Please check src/components/CoverImage.js manually.
+
+Lots of little things and I'm not sure if any of them worked. Mainly replacing `fluid { ...GatsbyImageSharpFluid}` with `gatsbyImageData(layout: FULL_WIDTH)` in graphql and then in how it is being used by `GatsbyImage` component, which automatically replaced `Img` component from old `gatsby-image`.
+
+In Image, I had originalName in the fluid {} and I just tried moving it out since I needed it. That's not going to work I bet!
+
+I was able to use `StaticImage` instead.
+
+#### Manual Changes (codemod)
+
+Not sure if I have any of this, if so, check the site
+
+- Images using static query
+- If using `src` for an SEO component, use `getSrc`
+
+### Finishing up migration
+
+Uninstall gatsby-image as it is no longer used. It is mentioned in a post but that's okay.
+
+```bash
+npm uninstall gatsby-image
+```
+
+All the changes, if any, to npm packages. I ran them all manually one at a time.
+
+```bash
+npm install gatsby-plugin-google-fonts@latest # no update
+npm install gatsby-plugin-manifest@latest # to 4.10.0
+npm install gatsby-plugin-mdx@latest # to 3.10.0
+npm install gatsby-plugin-offline@latest # to 5.10.0
+npm install gatsby-plugin-postcss@latest # to 5.10.0
+npm install gatsby-plugin-react-helmet@latest # to 5.10.0
+npm install gatsby-plugin-styled-components@latest # to 5.10.0
+npm install gatsby-remark-images@latest # to 6.10.0
+npm install gatsby-source-filesystem@latest # to 4.10.0
+npm install mdx-utils@latest # no update
+npm install @mdx-js/mdx@latest --legacy-peer-deps #  to 2.1.0 (gatsby-plugin-mdx requires v1)
+npm install @mdx-js/react@latest --legacy-peer-deps # to 2.1.0 (gatsby-plugin-mdx requires v1)
+npm install @tailwindcss@latest # to 3.0.23
+npm install autoprefixer@latest # to 10.4.4
+npm install styled-components@latest # to 5.3.3
+npm install babel-plugin-styled-components@latest # to 2.0.6
+npm install postcss@latest # to 8.4.12
+npm install react@latest # to 17.0.2
+npm install react-dom@latest # to 17.0.2
+npm install prism-react-renderer@latest # to 1.3.1
+npm install prop-types@latest # to 15.8.1
+npm install react-headroom@latest # to 3.2.0
+npm install react-helmet@latest # no update
+npm install react-live@latest # to 2.4.1
+npm install twin.macro@latest # to 2.8.2
+npm install prettier@latest # to 2.6.0
+```
+
+<Info>
+
+I had to rollback @mdx-js/mdx and @mdx-js/react because gatsby-plugin-mdx requires v1 of those.
+
+</Info>
+
+## Somehow, everything is working?
+
+Yes, yes, I'm shocked! Besides all the `npm` installs, here's what I did.
+
+- **Removed** `gatsby-plugin-image` from gatsby-config.js
+- **Changed** `purge` to `content` in tailwind.config.js
+- **Removed** Image component as it was only used in Hero component / **Removed** from components/index.js
+
+- **Created** a Moog component that displays the main cover image inside of the Hero component
+
+```jsx:title=Hero.js excerpt
+import { StaticImage } from 'gatsby-plugin-image'
+
+const Moog = () => (
+  <StaticImage
+    src='../images/steve-harvey-xWiXi6wRLGo-unsplash.jpg'
+    alt='MOOG Modular Synthesizer - photo by Steve Harvey @ Unsplash'
+    className='object-cover h-full min-w-full'
+  />
+)
+```
+
+- **Removed** absolute in Img when converting to GatsbyImage in PostCard component
+
+### Final gatsby-image updates
+
+In: CoverImage.js, PostCard.js, single-post.js
+
+- **Convert** from _Img_ in `gatsby-image` to _GatsbyImage_ in `gatsby-plugin-image`
+
+```diff
+-fluid {
+-  ...GatsbyImageSharpFluid
+-}
++gatsbyImageData(layout: FULL_WIDTH)
+
+-<Img fluid=
++<GatsbyImage image=
+
+// In GraphQL
+childImageSharp {
+-  fluid {
+-    ...GatsbyImageSharpFluid
+-  }
++  gatsbyImageData(layout: FULL_WIDTH)
+}
+```
+
+### Final npm outdated run
+
+_These are fine, as mentioned previously, v1 is required by gatsby-plugin-mdx_
+
+| Package       | Current | Wanted | Latest | Location                   |
+| ------------- | ------- | ------ | ------ | -------------------------- |
+| @mdx-js/mdx   | 1.6.22  | 1.6.22 | 2.1.0  | node_modules/@mdx-js/mdx   |
+| @mdx-js/react | 1.6.22  | 1.6.22 | 2.1.0  | node_modules/@mdx-js/react |
+
+## Everything worked locally, but...
+
+When the Github Action ran, it failed! The error related to `styled-components`.
+
+<Danger>
+
+Can't resolve 'react-is' in '/home/runner/work/koamar.com/koamar.com/node_modules/styled-components/dist'
+
+</Danger>
+
+According to the [styled-components FAQ](https://styled-components.com/docs/faqs), styled-components now requires react-is@^16.8 (or higher hopefully). I updated that and started building again. That time, it was successful.
+
+<Info>
+
+**Local vs. Github**
+
+This all worked locally. I of course tested in `gatsby develop` but also with `gatsby build`. I never saw an error related to `styled-components`!
+
+</Info>
+
+##### Attributions
+
+Image by [unDraw](https://undraw.co/)
+
+##### References
+
+- [Migrating from v2 to v3 | Gatsby (gatsbyjs.com)](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v2-to-v3/)
+- [Migrating from v3 to v4 | Gatsby (gatsbyjs.com)](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v3-to-v4/)
+- [styled-components: FAQs](https://styled-components.com/docs/faqs)
