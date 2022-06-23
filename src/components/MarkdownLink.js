@@ -14,6 +14,10 @@ export const MarkdownLink = ({ href, ...rest }) => {
     href = href.replace(domainRegex, '/')
   }
 
+  if (href.startsWith('/charts/')) {
+    return <ExternalLink href={href} {...rest} />
+  }
+
   if (
     href.startsWith('#') ||
     href.startsWith('../') ||
