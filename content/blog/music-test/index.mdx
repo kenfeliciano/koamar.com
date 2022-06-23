@@ -1,0 +1,86 @@
+---
+title: Music Notation Test
+slug: music-test
+date: 2022-06-22
+coverImage:
+excerpt: abc tests for rendering music notation
+tags: [mdx, test, abc, music]
+---
+
+The goal is to be able to create a code block like this...
+
+````md
+```abc
+X:1
+T:Twelve Tone Idea
+C:Ken Feliciano
+S:Copyright 2019 - KoaMuse
+M:4/4
+L:1/8
+K:C
+G3 (F F) (_B B2)|c _d3 A3 (E|E2) D ^F3 (^D2|^D) (B B3) (_A A2)||
+```
+````
+
+and have it render as music notation.
+
+```abc
+X:1
+T:Twelve Tone Idea
+C:Ken Feliciano
+S:Copyright 2019 - KoaMuse
+M:4/4
+L:1/8
+K:C
+G3 (F F) (_B B2)|c _d3 A3 (E|E2) D ^F3 (^D2|D) (B B3) (_A A2)||
+```
+
+## Trying React Sheet Music again
+
+I found a [CodeSandbox](https://codesandbox.io/s/qrjj5?file=/src/Preview.js) that is doing what I want! It runs too unlike when I tried it locally. Now to make it work. It works! I took some of the ideas in the CodeSandbox, `Preview.js` specifically, and applied them to how things work in Gatsby. It even allows me to make changes in markdown and see the update!
+
+```jsx:title=Code.js snippet
+if (langType === 'abc') {
+    return <Music>{codeString}</Music>
+}
+```
+
+And the Music component will get updated to handle things like playback and dark mode.
+
+```jsx:title=Music.js
+import * as React from 'react'
+import { useContext } from 'react'
+import { ThemeContext } from '../components'
+import SheetMusic from '@slnsw/react-sheet-music'
+
+export const Music = ({ children }) => {
+  const { theme } = useContext(ThemeContext)
+
+  return <SheetMusic notation={children} />
+}
+```
+
+For styling, it might look best to just be _light mode_ like paper sheet music, but for now, it is respecting both light and dark modes with the following added to the global styles.
+
+```css:title=App.js snippet
+.sheet-music {
+  background-color: var(--surface);
+}
+
+.sheet-music svg,
+.sheet-music path {
+  fill: currentColor;
+}
+```
+
+## Using renderAbc() alone
+
+It works as a `TextBlock` but it is ugly in the source and it seems rather inflexible. I'd like to use a code block and have it detect the abc language and render it out. Something along the line of the `pre:` handling.
+
+renderAbc() is very fragile from a development standpoint. It does not handle hot reloading so you have to refresh the page after you make any change. The notation goes away.
+
+Also, when you browse away from the page, and come back to it, the notation is gone as well.
+
+## Using React Sheet Music
+
+[React Sheet Music](https://github.com/slnsw/react-sheet-music) looked promising but it was also a failure. The documentation wasn't correct on how to invoke it. There is an issue from Dec 2021 that is the same as what I'm getting. All of these libraries are forsook :) I know the feeling.

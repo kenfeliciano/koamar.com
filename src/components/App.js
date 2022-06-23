@@ -188,6 +188,15 @@ const GlobalStyles = createGlobalStyle`
   .standalone-link:focus {
     color: var(--primary);
   }  
+
+  .sheet-music {
+    background-color: var(--surface);           
+  }
+
+  .sheet-music svg,
+  .sheet-music path {
+    fill: currentColor;    
+  }
 `
 
 export const App = ({ children }) => {
