@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import Highlight, { defaultProps } from 'prism-react-renderer'
 import nightOwl from 'prism-react-renderer/themes/nightOwl'
 import nightOwlLight from 'prism-react-renderer/themes/nightOwlLight'
-import { TitleContainer, CopyCode, ThemeContext } from '../components'
+import { TitleContainer, CopyCode, ThemeContext, Music } from '../components'
 import copyToClipboard from '../utils/copy-to-clipboard.js'
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live'
 
@@ -35,7 +35,13 @@ const getParams = (language = ``) => {
   )
 }
 
-export const Code = ({ codeString, noLineNumbers = false, language, metastring, ...props }) => {
+export const Code = ({
+  codeString,
+  noLineNumbers = false,
+  language,
+  metastring,
+  ...props
+}) => {
   const { theme } = useContext(ThemeContext)
   const shouldHighlightLine = calculateLinesToHighlight(metastring)
   const hasLineNumbers = !noLineNumbers && language !== `noLineNumbers`
@@ -48,7 +54,11 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
     return (
       <>
         {title && <TitleContainer>{title}</TitleContainer>}
-        <LiveProvider code={codeString} noInline={true} theme={theme === 'dark' ? nightOwl : nightOwlLight}>
+        <LiveProvider
+          code={codeString}
+          noInline={true}
+          theme={theme === 'dark' ? nightOwl : nightOwlLight}
+        >
           <LiveEditor />
           <LiveError />
           <LivePreview />
@@ -58,6 +68,11 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
   }
 
   const langType = hasDiff ? lang.slice(5) : lang
+
+  if (langType === 'abc') {
+    console.log(langType)
+    return <Music>{codeString}</Music>
+  }
 
   return (
     <>
@@ -79,7 +94,11 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
                   lineProps.className = `${lineProps.className} highlight-line`
                 }
 
-                if (hasDiff && !shouldHighlightLine.length && (line[1].content === '+' || line[1].content === '-')) {
+                if (
+                  hasDiff &&
+                  !shouldHighlightLine.length &&
+                  (line[1].content === '+' || line[1].content === '-')
+                ) {
                   lineProps.className = `${lineProps.className} ${
                     line[1].content === '+' ? 'diff-line-add' : 'diff-line-sub'
                   }`
