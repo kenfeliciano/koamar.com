@@ -3,6 +3,7 @@ title: Code Tests
 slug: code-test
 date: 2020-12-22
 coverImage: ./nasa-Q1p7bh3SHj8-unsplash.jpg
+coverAlt: Part of the earth at night showing lit up cities and the aurora borealis can be seen
 excerpt: Code tests for rendering
 tags: [mdx, test, code, table]
 created: 2020-01-01
@@ -14,7 +15,12 @@ import SpotifyPlayer from './SpotifyPlayer'
 
 Imported React Component
 
-<SpotifyPlayer uri='spotify:user:bbcamerica:playlist:3w18u69NplCpXVG4fQG726' size='large' theme='black' view='list' />
+<SpotifyPlayer
+  uri='spotify:user:bbcamerica:playlist:3w18u69NplCpXVG4fQG726'
+  size='large'
+  theme='black'
+  view='list'
+/>
 
 Live Code Example with title
 
@@ -149,7 +155,10 @@ Some GraphQL
 
 ```graphql
 query SITE_INDEX_QUERY {
-  allMdx(sort: { fields: [frontmatter___date], order: DESC }, filter: { frontmatter: { published: { eq: true } } }) {
+  allMdx(
+    sort: { fields: [frontmatter___date], order: DESC }
+    filter: { frontmatter: { published: { eq: true } } }
+  ) {
     nodes {
       id
       excerpt(pruneLength: 250)

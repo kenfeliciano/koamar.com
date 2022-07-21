@@ -3,6 +3,7 @@ title: Content
 slug: content
 date: 2022-01-18
 coverImage: ./niklas-ohlrogge-j-0olYcaihg-unsplash.jpg
+coverAlt: A massive library of books with stairs all over. There are nice sitting areas to read on.
 excerpt: The trials and tribulations of configuring for content
 tags: [gatsby]
 implementation: 2020-12-19
@@ -12,13 +13,11 @@ _This one didn't go as planned!_ Jump to the end [Decisions, Decisions](#decisio
 
 <Warning>
 
-
 This implementation happened in Gatsby 2 days. At the moment, the site is still in Gatsby 2.
 
 Also, I need a plugin so I can link to headings in a document which I have **_not_** installed as of yet! If you want to go to Decisions, Decisions, it's down there a bit...you'll find it!
 
 </Warning>
-
 
 ## Content Configuration
 
@@ -180,17 +179,18 @@ export const CoverImage = ({ fluid }) => {
 
 ## Retrospective
 
-- [ ] Links in Mdx are not styled with `ExternalLink` component. It would be nice not to have to embed that as React component and have it automatically translate the link to it. Clicking on them now does not open a new tab either.
-- [x] If there is no `coverImage`, you're hosed!
-- [ ] Code tests look poor - as expected
-- [ ] Table test looks poor - as expected
-- [ ] Post is not styled that great - Heading 1 and 2 are valid, all other headings are the same.
-- [ ] Horizontal rules do not exist
-- [ ] Quotes aren't happening
-- [ ] Ordered lists have no numbers
-- [x] filenames are off the root instead of blog/first-fake, it is /first-fake. You can enter that in the slug but it would be better not to do that!
-  - in `gatsby-node.js` there is code that takes the slug and creates the path for the page
-  - I've got example code on creating a new Node Field that could be used (collection is a good name!)
+⬜ Links in Mdx are not styled with `ExternalLink` component. It would be nice not to have to embed that as React component and have it automatically translate the link to it. Clicking on them now does not open a new tab either.  
+✅ If there is no `coverImage`, you're hosed!  
+⬜ Code tests look poor - as expected  
+⬜ Table test looks poor - as expected  
+⬜ Post is not styled that great - Heading 1 and 2 are valid, all other headings are the same.  
+⬜ Horizontal rules do not exist  
+⬜ Quotes aren't happening  
+⬜ Ordered lists have no numbers  
+✅ filenames are off the root instead of blog/first-fake, it is /first-fake. You can enter that in the slug but it would be better not to do that!
+
+- in `gatsby-node.js` there is code that takes the slug and creates the path for the page
+- I've got example code on creating a new Node Field that could be used (collection is a good name!)
 
 ##### Attributions
 
@@ -201,13 +201,11 @@ on [Unsplash](https://unsplash.com/s/photos/content?utm_source=unsplash&utm_medi
 
 <Info>
 
-
 ## Optional reading
 
 Yes, I realize the whole site and in fact Internet is optional reading, but this really is! These are just some of the initial thoughts I went through when trying to figure out how to configure the site for content.
 
 </Info>
-
 
 [Back to the top!](#content-configuration)
 

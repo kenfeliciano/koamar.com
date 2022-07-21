@@ -43,7 +43,10 @@ const getThirdField = ({ implementation, created, createdCirca, date }) => {
 
 const BlogPost = ({ data, pageContext }) => {
   const frontmatter = data.mdx.frontmatter
-  const coverImage = frontmatter.coverImage ? frontmatter.coverImage.childImageSharp.gatsbyImageData : null
+  const coverImage = frontmatter.coverImage
+    ? frontmatter.coverImage.childImageSharp.gatsbyImageData
+    : null
+  const coverAlt = frontmatter.coverAlt
   const thirdField = getThirdField(frontmatter)
   const collection = data.mdx.fields.collection
   const nextPost = pageContext.next
@@ -52,7 +55,7 @@ const BlogPost = ({ data, pageContext }) => {
   return (
     <Layout>
       <SEO title={frontmatter.title} description={frontmatter.excerpt} />
-      <CoverImage fluid={coverImage} />
+      <CoverImage fluid={coverImage} alt={coverAlt} />
       <div className='flex items-center justify-between mt-1 ml-2 mr-2 text-xs lg:items-start lg:text-sm text-muted lg:ml-0 lg:mr-0'>
         <InfoWrapper>
           <span>Posted </span>
@@ -69,11 +72,15 @@ const BlogPost = ({ data, pageContext }) => {
       <Content>
         <h1>
           {frontmatter.draft && (
-            <span className='inline-block p-2 tracking-wide uppercase rounded-lg bg-opposite'>(Draft)</span>
+            <span className='inline-block p-2 tracking-wide uppercase rounded-lg bg-opposite'>
+              (Draft)
+            </span>
           )}{' '}
           {frontmatter.title}
         </h1>
-        {frontmatter.updated ? <p className='mt-1 text-sm text-muted'>Updated: {frontmatter.updated}</p> : null}
+        {frontmatter.updated ? (
+          <p className='mt-1 text-sm text-muted'>Updated: {frontmatter.updated}</p>
+        ) : null}
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
       </Content>
       <LinkEdges prevPage={prevPost} nextPage={nextPost} collection={collection} />
@@ -83,31 +90,33 @@ const BlogPost = ({ data, pageContext }) => {
 
 export default BlogPost
 
-export const blogQuery = graphql`query SinglePostQuery($id: String!) {
-  mdx(id: {eq: $id}) {
-    body
-    frontmatter {
-      date(formatString: "MM/DD/YYYY")
-      updated(formatString: "MM/DD/YYYY")
-      excerpt
-      slug
-      title
-      tags
-      draft
-      implementation(formatString: "MM/DD/YYYY")
-      created(formatString: "MM/DD/YYYY")
-      createdCirca
-      coverImage {
-        publicURL
-        childImageSharp {
-          gatsbyImageData(layout: FULL_WIDTH)
+export const blogQuery = graphql`
+  query SinglePostQuery($id: String!) {
+    mdx(id: { eq: $id }) {
+      body
+      frontmatter {
+        date(formatString: "MM/DD/YYYY")
+        updated(formatString: "MM/DD/YYYY")
+        excerpt
+        slug
+        title
+        tags
+        draft
+        implementation(formatString: "MM/DD/YYYY")
+        created(formatString: "MM/DD/YYYY")
+        createdCirca
+        coverAlt
+        coverImage {
+          publicURL
+          childImageSharp {
+            gatsbyImageData(layout: FULL_WIDTH)
+          }
         }
       }
-    }
-    timeToRead
-    fields {
-      collection
+      timeToRead
+      fields {
+        collection
+      }
     }
   }
-}
 `
