@@ -21,6 +21,7 @@ export const PostCard = ({ post, collection }) => (
         <GatsbyImage
           image={post.node.frontmatter.coverImage.childImageSharp.gatsbyImageData}
           className='top-0 left-0 flex-none w-auto h-auto sm:w-36 sm:h-24'
+          alt={post.node.frontmatter.coverAlt}
         />
       ) : (
         <div className='bg-brandedSurface sm:w-36 sm:h-24'></div>
