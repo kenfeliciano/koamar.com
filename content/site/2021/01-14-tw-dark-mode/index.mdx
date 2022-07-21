@@ -3,6 +3,7 @@ title: Tailwind - Dark Mode
 slug: tw-dark-mode
 date: 2021-01-14
 coverImage: ./sunset-in-maui.jpg
+coverAlt: Sunset over the ocean with palm tree and railing of lanai in foreground. Island in the background.
 excerpt: It's getting darker...
 tags: [tailwind, dark-mode]
 implementation: 2020-12-12
@@ -15,15 +16,16 @@ implementation: 2020-12-12
 I did a lot of research for implementing Dark Mode and I wanted to do it with Tailwind CSS. Tailwind has its own [implementation](https://tailwindcss.com/docs/dark-mode). I originally had the plan of implementing it like this. However, after researching how most developers were doing this, I saw benefit in using CSS Variables. All of this was new to me. I've never been a web designer and I haven't fully grokked CSS. See the Acknowledgements below for all the sites that gave me clues and information!
 
 <Info>
-  One of the main reasons I went with Tailwind CSS was due to the dark mode support  in 2.0. Ironically
-  (or perhaps not...not an expert on irony) I'm not normally using Tailwind's dark mode Still,
-  I'm enjoying a lot of Tailwind and there is plenty of normal CSS and some styled-components in the site as well!
+  One of the main reasons I went with Tailwind CSS was due to the dark mode support in
+  2.0. Ironically (or perhaps not...not an expert on irony) I'm not normally using
+  Tailwind's dark mode. Still, I'm enjoying a lot of Tailwind and there is plenty of
+  normal CSS and some styled-components in the site as well!
 </Info>
 
 <Warning>
-  One issue I kept running into was if I was using Tailwind with twin.macro, as I thought I must, I was going to be
-  blocked from using Tailwind plugins. I had the idea that I'd use twin.macro so I'd have styled-components and Tailwind
-  for best of both worlds!
+  One issue I kept running into was if I was using Tailwind with twin.macro, as I thought
+  I must, I was going to be blocked from using Tailwind plugins. I had the idea that I'd
+  use twin.macro so I'd have styled-components and Tailwind for best of both worlds!
 </Warning>
 
 I ended up working from [Josh W. Comeau's "The Quest for the Perfect Dark Mode"](https://www.joshwcomeau.com/react/dark-mode/)
@@ -64,7 +66,9 @@ I followed Josh's steps, creating a ThemeContext and learning about React Contex
 
 His function was called `getInitialColorMode` while mine is `getInitialTheme`. They both do the same thing in the long run but since Tailwind was going to handle the colors, I only had to set the theme as `light` or `dark` and set a class on the `body` element.
 
-<Info>This ends up in `gatsby-ssr.js`. Where it is at this moment in history is lost to me!</Info>
+<Info>
+  This ends up in `gatsby-ssr.js`. Where it is at this moment in history is lost to me!
+</Info>
 
 ```js:title=not-final-version.js {26-30}
 import * as React from 'react'
@@ -91,7 +95,7 @@ const MagicScriptTag = () => {
         // color themes, let's default to 'light'.
         return 'light'
       }
-    
+
       const theme = getInitialTheme()
 
       const body = document.body
@@ -121,8 +125,9 @@ Since there will be a light or dark class added to body, I can use CSS Variables
 After that, dark mode worked!
 
 <Info>
-  So, San Jose Sharks fan here... I decided on light and dark themes based on Sharks colors. Really, the teal and orange
-  ones mostly, although, their other colors are `#ffffff` and `#000000` and those make good surface colors!
+  So, San Jose Sharks fan here... I decided on light and dark themes based on Sharks
+  colors. Really, the teal and orange ones mostly, although, their other colors are
+  `#ffffff` and `#000000` and those make good surface colors!
 </Info>
 
 I thought since I'm going with teal for my primary color, perhaps the blue-gray Tailwind color pallette would do well instead of the standard gray. I ended up using hex codes initially instead of Tailwind codes, however, and at the current state of the project (here on 2021-01-14) I'm still not using Tailwind codes.
@@ -212,11 +217,11 @@ const MagicScriptTag = () => {
         // color themes, let's default to 'light'.
         return 'light'
       }
-    
+
       const theme = getInitialTheme()
-      
+
       const root = document.documentElement
-      root.className = theme      
+      root.className = theme
       root.style.setProperty('--initial-theme', theme)
     })()`
 

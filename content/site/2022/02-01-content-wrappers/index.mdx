@@ -3,6 +3,7 @@ title: Content Wrappers
 slug: content-wrappers
 date: 2022-02-01
 coverImage: ./visual-stories-micheile-sclZndD-1HQ-unsplash.jpg
+coverAlt: A wrapped package with ribbon, scissors, and decorative plants nearby
 excerpt: Stealing stuff like a great artist...uh-huh
 tags: [twin.macro, tailwind, gatsby]
 implementation: 2020-12-21
@@ -10,18 +11,16 @@ implementation: 2020-12-21
 
 <Info>
 
-
 _Want to see what I stole?_
 
 Jump to [Look out behind you](#look-out-behind-you)
 
 </Info>
 
-
 ## Implementation
 
-- [x] Work on site-wrapper feature
-- [ ] Work on content-wrapper feature (for posts). _Tried to do this with grid but didn't go well and perhaps didn't need it. I left the work in `content-grid` branch._
+✅ Work on site-wrapper feature  
+⬜ Work on content-wrapper feature (for posts). _Tried to do this with grid but didn't go well and perhaps didn't need it. I left the work in `content-grid` branch._
 
 ## Site Wrapper
 
@@ -51,7 +50,9 @@ In Skillthrive, he's putting all styled-components in an elements folder. I like
 
 ```jsx
 import tw, { styled } from 'twin.macro'
-const SiteWrapper = styled.div(() => [tw`h-full m-auto max-w-screen-lg pt-0 px-4 pb-6 mt-6`])
+const SiteWrapper = styled.div(() => [
+  tw`h-full m-auto max-w-screen-lg pt-0 px-4 pb-6 mt-6`,
+])
 ```
 
 ## Content Wrapper
@@ -60,16 +61,14 @@ This one may be involved. It's not really needed in the Layout at the moment, si
 
 <Warning>
 
-
 Didn't go too well with CSS Grid like in the tutorial. Going to try to keep it simpler.
 
 </Warning>
 
-
 ## Retrospective
 
-- [ ] Look for Tailwind ways to make the cover image look better and responsive. I want full bleed width but it isn't perfect.
-- [ ] Add more padding (at least on the X-axis) for content
+⬜ Look for Tailwind ways to make the cover image look better and responsive. I want full bleed width but it isn't perfect.  
+⬜ Add more padding (at least on the X-axis) for content
 
 ##### Attributions
 
@@ -113,7 +112,11 @@ export const Container = ({ children }) => (
 
 ```jsx
 <Container>
-  <Seo title={data.mdx.frontmatter.title} image={seoImage} description={data.mdx.frontmatter.excerpt} />
+  <Seo
+    title={data.mdx.frontmatter.title}
+    image={seoImage}
+    description={data.mdx.frontmatter.excerpt}
+  />
   <FeatureImage fluid={featureImage} />
   <Post>
     <H1 margin='0 0 2rem 0'>{data.mdx.frontmatter.title}</H1>

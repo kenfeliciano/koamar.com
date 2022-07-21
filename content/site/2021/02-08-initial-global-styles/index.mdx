@@ -3,6 +3,7 @@ title: Global Styles I
 slug: initial-global-styles
 date: 2021-02-08
 coverImage: ./oscar-obians-QYN7N4sVC4c-unsplash.jpg
+coverAlt: Stylish woman with multi-colored braids against a green forest background
 excerpt: Pick and choose from Gatsby's layout.css
 tags: [css, styled-components, css-variables]
 implementation: 2020-12-18
@@ -20,13 +21,11 @@ In my App component, I had the `ThemeProvider` component wrapping the whole site
 
 <Info>
 
-
 ### Keeping it DRY-er
 
 This had the added benefit of removing some code duplication! When working through the Skillthrive tutorial, [Gatsby JS: Build a Blog](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT), I ended up with duplicate code in `gatsby-ssr.js` and `gatsby-browser.js`. Using the App component in those two files allows the code to live only in one place.
 
 </Info>
-
 
 I did not want to try and convert all this CSS into Tailwind at this point since it was **mostly** already done. I knew I liked `styled-components` and I was somewhat familiar with using [createGlobalStyle](https://styled-components.com/docs/api#createglobalstyle) from styled-components. I decided to convert what I needed from layout.css into a GlobalStyles component.
 
@@ -37,7 +36,8 @@ Even though I did not convert this to Tailwind CSS, I knew I was going to try an
 ## Margin Spacing
 
 <Warning>
-  Future me has read about trying to do without margin spacing at all! Present me had not read about it!
+  Future me has read about trying to do without margin spacing at all! Present me had not
+  read about it!
 </Warning>
 
 A lot of Gatsby's initial styling used margin-bottom to separate elements. I had planned on using margin-top. I had experience with it, and to quote something from [Adam Wathan's Tailwind CSS tutorial](https://youtu.be/5byxwJce6zc):
@@ -101,7 +101,7 @@ const GlobalStyles = createGlobalStyle`
       Helvetica Neue, sans-serif;
     font-weight: bold;
     font-size: 1.5rem;
-    line-height: 1;    
+    line-height: 1;
     &:first-child {
       margin-top: 0;
     }
@@ -116,7 +116,7 @@ const GlobalStyles = createGlobalStyle`
   }
   p {
     margin-top: 1.5rem;
-    color: var(--text-body);    
+    color: var(--text-body);
     &:first-child {
       margin-top: 0;
     }
@@ -137,7 +137,6 @@ export default App
 
 <Primary>
 
-
 ### First game against the dreaded LA Kings tomorrow!
 
 I know it makes no sense but when in Sharks-fan-mode, I despise the LA Kings. I firmly believe that a King fan will despise the SJ Sharks as well. That's just the way it is! Meanwhile, they are both lovely teams with lovely people playing on them.
@@ -146,7 +145,6 @@ I know it makes no sense but when in Sharks-fan-mode, I despise the LA Kings. I 
 - Kings are 3-6-2 (last place in the West)
 
 </Primary>
-
 
 ##### Attributions
 

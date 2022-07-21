@@ -3,6 +3,7 @@ title: Post Card Component
 slug: post-card
 date: 2022-04-18
 coverImage: ./becky-phan-BVYRU3aFKsU-unsplash.jpg
+coverAlt: A pile of postcards that one would get while on vacation scattered and piled on a surface
 excerpt: Each post gets its own little card to shine
 tags: [tailwind-css]
 implementation: 2021-01-02
@@ -27,10 +28,10 @@ Instead of mapping over a bunch of HTML, extract out the div with all its childr
 ## Mobile Design
 
 _Current Design - Large Device_
-![Current Design](01-current-design.png)
+![Post object with example picture on the left and title, excerpt, and date on the right](01-current-design.png)
 
 _Current Design - Mobile_ with picture on the top
-![Mobile As-Is](02-mobile-as-is.png)
+![Post object shrunken to show how it would appear on mobile devices](02-mobile-as-is.png)
 
 ### Picture Adjustments
 
@@ -39,20 +40,20 @@ Picture needs to be larger at this point. It should fill the entire top of the c
 Instead of `flex-row`, which is fine for desktop, change to `flex-col` and use `sm:flex-row` for desktop sizes.
 
 The image will now be `w-auto h-auto` and `sm:w-36 sm:h-24`. So it fills the card nicely on mobile and still looks good on desktop.
-![Mobile Picture Larger](03-mobile-picture-larger.png)
+![Post object with picture sized to fill up the whole width ](03-mobile-picture-larger.png)
 
 Doing this for the placeholder does not go so well when it is not an image. However, it's not atrocious just having a card with no image for a mobile. Chances are, this will not happen.
-![Mobile with no picture](04-mobile-no-picture.png)
+![Post object when there is no picture on mobile device. It only shows title, excerpt, and date](04-mobile-no-picture.png)
 
 That may be a big large for a phone, although it does look okay when using responsive tools in Chrome.
 
 ### Typography Adjustment
 
 Most a pity, the other text like heading and such looks too large on a phone.
-![Mobile - Font Size Issues](05-mobile-galaxy-fold.png)
+![Post object displaying words that are too long](05-mobile-galaxy-fold.png)
 
 Granted this is a Galaxy Fold. All the other phone options look alright. But…
-![Mobile - Site development header](06-site-development-header-mobile.png)
+![Post object displaying header that is too long](06-site-development-header-mobile.png)
 
 Options are to lower the font size (probably need to do that) and perhaps remove or lessen the margin around the container.
 
@@ -62,7 +63,7 @@ Now that the second flex part is below the picture, the bit of left margin is no
 
 The text is too close to the picture now so it'll need a bit of top margin, only for mobile. Updating that to `mt-2 sm:mt-0`.
 
-![Mobile final fixed version](07-mobile-fixed.png)
+![Post object that has properly sized header and text](07-mobile-fixed.png)
 
 ## Make Whole Card Clickable
 

@@ -3,6 +3,7 @@ title: Hero I
 slug: hero-part-one
 date: 2021-01-18
 coverImage: ./ola-mishchenko-XqYlvd5DGKA-unsplash.jpg
+coverAlt: Two pieces of sandwich with thick bread, lettuce, cheese, meat, and something orange that is not cheese. A chili in the foreground and a glass of water partially in frame.
 excerpt: Add a very simple "Hero"
 tags: [hero]
 implementation: 2020-12-13
@@ -45,9 +46,13 @@ I should apologize for being nebulous here. I've always had problems describing 
 This was quite a quick feature to implement (or was it?!), hence, more of a chatty technical post. I added some text like, "Welcome to KoaMar in 2020, home of Ken Feliciano" and threw in the bullet points from above. When I made the browser window mobile sized, the text was much too busy. I made use of some Tailwind set points to make the text responsive in size and in content.
 
 ```html
-<p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight sm:text-2xl text-body">
+<p
+  className="mt-2 text-3xl leading-8 font-extrabold tracking-tight sm:text-2xl text-body"
+>
   <span className="hidden sm:inline">Lifelong learner</span>
-  <span className="sm:hidden">Learner</span>, musician<span className="md:hidden">, coder</span>
+  <span className="sm:hidden">Learner</span>, musician<span className="md:hidden"
+    >, coder</span
+  >
   <span className="hidden sm:inline">, retired guy</span>
   <span className="hidden md:inline">, some sort of coding type</span>
 </p>

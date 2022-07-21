@@ -3,6 +3,7 @@ title: External Links
 slug: external-links
 date: 2021-02-19
 coverImage: ./kenny-luo-VVpIN609QtY-unsplash.jpg
+coverAlt: Chain link fence with yellow flowers growing on it.
 excerpt: Style external links and make them behave consistently
 tags: [tailwind, css, react]
 implementation: 2020-12-18
@@ -23,9 +24,9 @@ I wanted to do this correctly! I did a bit of research and found that links that
 - [nofollow](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#attr-nofollow)
 
 <Warning>
-  I must admit, even after reading all the docs, I'm still nogrok-ing this stuff. But, I see this as the way to do it
-  properly. Click on this external link and you are in a different world not connected to my site at all. That sounds
-  good!
+  I must admit, even after reading all the docs, I'm still nogrok-ing this stuff. But, I
+  see this as the way to do it properly. Click on this external link and you are in a
+  different world not connected to my site at all. That sounds good!
 </Warning>
 
 ### The React component
@@ -59,7 +60,12 @@ Before jumping ahead to refactoring this thing, what's the CSS that is creating 
 
 ```css
 .border-fadeaway {
-  border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%, transparent 100%);
+  border-image-source: linear-gradient(
+    to right,
+    var(--primary) 0%,
+    var(--link) 76%,
+    transparent 100%
+  );
   border-image-slice: 0 0 100 0;
 }
 
@@ -74,7 +80,12 @@ It sure looks like I could combine these, add `border-primary` and `border-b-2` 
 
 ```css {4,5}
 .border-fadeaway {
-  border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%, transparent 100%);
+  border-image-source: linear-gradient(
+    to right,
+    var(--primary) 0%,
+    var(--link) 76%,
+    transparent 100%
+  );
   border-image-slice: 0 0 100 0;
   border-color: var(--primary); /* Tailwind: border-primary */
   border-bottom-width: 2px; /* Tailwind: border-b-2 */
@@ -89,7 +100,12 @@ With `border-fadeaway` handling all the border styles and not worrying about Tai
 import * as React from 'react'
 
 export const ExternalLink = ({ href, children }) => (
-  <a href={href} className='inline-link border-fadeaway' target='_blank' rel='noreferrer noopener nofollow'>
+  <a
+    href={href}
+    className='inline-link border-fadeaway'
+    target='_blank'
+    rel='noreferrer noopener nofollow'
+  >
     {children}
   </a>
 )
@@ -101,7 +117,6 @@ I liked this fadeaway border so much I added it to the Header component!
 
 <Primary>
 
-
 #### Ahem, this is my theory... How to win the Stanley Cup
 
 I shout it at my TV a lot but I think I should document it here, in this rarely seen corner of the Internet, where no Sharks coach, GM, or player will probably ever see it.
@@ -111,7 +126,6 @@ If the Sharks want to win the Stanley Cup. All they have to do is...Win every ga
 🏒 Strategy!
 
 </Primary>
-
 
 ##### Attributions
 
