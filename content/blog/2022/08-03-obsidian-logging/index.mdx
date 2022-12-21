@@ -2,6 +2,7 @@
 title: My logging system in Obsidian
 slug: obsidian-logging
 date: 2022-08-03
+updated: 2022-12-20
 coverImage: ./oliver-paaske-n1GGpnq_Bkk-unsplash.jpg
 coverAlt: logs head on with a dark background, like obsidian but probably not
 excerpt: Mostly painless logging system for Obsidian
@@ -12,7 +13,8 @@ tags: [obsidian]
 
 **tl;dr**
 
-Jump to the [Final code](#final-code)
+Jump to the [Final code](#final-code)  
+Jump to the [updated version](#refactored-note-query)
 
 </Info>
 
@@ -316,6 +318,56 @@ if (data.successful) {
   dv.table(['Date', 'Episodes'], output)
 }
 ```
+
+## Refactored note query
+
+As I started using this a lot, I noticed if I **_ever_** wanted to change the title of the note, I had to go and manually fix the title in the query. This smelled funny to me.
+
+I realized I was being very Obsidian-centric when this is just JavaScript code. I should have refactored to remove duplication of `<%tp.file.title%>` everywhere.
+
+I introduced a new variable for the note title.
+
+```js {1}
+const noteTitle = dv.current().file.name
+const data = await dv.query(`TABLE WITHOUT ID "📆 " + file.link, log-tv
+	FROM "10 Journal/11 Daily"
+	WHERE contains(log-tv, "[[<%tp.file.title%>]]")
+	SORT file.link desc
+	`)
+```
+
+Then I replaced all the hard coded spots with `noteTitle` using string interpolation.
+
+```js {4,11,18-19}
+const noteTitle = dv.current().file.name
+const data = await dv.query(`TABLE WITHOUT ID "📆 " + file.link, log-tv
+	FROM "10 Journal/11 Daily"
+	WHERE contains(log-tv, "[[${noteTitle}]]")
+	SORT file.link desc
+	`)
+
+let output = []
+data.value.values.forEach(function (e) {
+  if (typeof e[1] === 'string') {
+    output.push([e[0], Array(e[1].replace(`[[${noteTitle}]] -`, ''))])
+  } else if (typeof e[1] === 'object' && e[1].hasOwnProperty('path')) {
+    output.push([e[0], Array(e[1])])
+  } else {
+    output.push([
+      e[0],
+      e[1]
+        .filter((e) => e.contains(`[[${noteTitle}]]`))
+        .map((e) => e.replace(`[[${noteTitle}]] -`, '')),
+    ])
+  }
+})
+
+if (data.successful) {
+  dv.table(['Date', 'Episodes'], output)
+}
+```
+
+Now I can change titles without having to manually update _this_ query.
 
 Have fun!
 
