@@ -1,12 +1,9 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
-import tw, { styled } from 'twin.macro'
 
 import SEO from '../components/seo'
-import { Layout, CoverImage, Content, PostCard, Pagination } from '../components'
-
-const PostContainer = styled.div(tw`grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`)
+import { Layout, CoverImage, Content, Pagination, Posts } from '../components'
 
 const postList = ({ pageContext, data }) => {
   const { currentPage, numPages, collection } = pageContext
@@ -29,11 +26,7 @@ const postList = ({ pageContext, data }) => {
       <Content>
         <h1>{site.frontmatter.title}</h1>
         {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
-        <PostContainer>
-          {posts.map((post) => (
-            <PostCard post={post} collection={collection} key={post.node.id} />
-          ))}
-        </PostContainer>
+        <Posts posts={posts} />
       </Content>
       <Pagination
         isFirst={isFirst}
@@ -76,6 +69,9 @@ export const pageQuery = graphql`
           }
           id
           excerpt
+          fields {
+            collection
+          }
         }
       }
     }

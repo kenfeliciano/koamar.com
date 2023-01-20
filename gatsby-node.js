@@ -40,8 +40,29 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
 
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
-    query {
-      allMdx(sort: { fields: [fields___collection, frontmatter___date], order: [ASC, DESC] }) {
+    query CreatePagesQuery {
+      front: allMdx(
+        sort: { fields: [frontmatter___date], order: [DESC] }
+        filter: { frontmatter: { name: { eq: null }, draft: { eq: false } } }
+        limit: 6
+      ) {
+        edges {
+          node {
+            id
+            frontmatter {
+              slug
+              date
+              updated
+            }
+            fields {
+              collection
+            }
+          }
+        }
+      }
+      pages: allMdx(
+        sort: { fields: [fields___collection, frontmatter___date], order: [ASC, DESC] }
+      ) {
         edges {
           node {
             id
@@ -79,8 +100,9 @@ exports.createPages = async ({ graphql, actions }) => {
 
   // Create paginated pages for posts
   const postsPerPage = 6
-  const edges = data.allMdx.edges
-  const collectionCount = (arr, val) => arr.reduce((a, edge) => (edge.node.fields.collection === val ? a + 1 : a), 0)
+  const edges = data.pages.edges
+  const collectionCount = (arr, val) =>
+    arr.reduce((a, edge) => (edge.node.fields.collection === val ? a + 1 : a), 0)
 
   let groups = []
 
@@ -107,13 +129,17 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 
   // Create single blog posts
-  data.allMdx.edges.forEach((edge) => {
+  data.pages.edges.forEach((edge) => {
     const slug = edge.node.frontmatter.slug
     const id = edge.node.id
     const collection = edge.node.fields.collection
 
-    const prev = edge.previous && edge.previous.fields.collection === collection ? edge.previous : null
-    const next = edge.next && edge.next.fields.collection === collection ? edge.next : null
+    const prev =
+      edge.previous && edge.previous.fields.collection === collection
+        ? edge.previous
+        : null
+    const next =
+      edge.next && edge.next.fields.collection === collection ? edge.next : null
 
     if (collection !== 'collections') {
       actions.createPage({
