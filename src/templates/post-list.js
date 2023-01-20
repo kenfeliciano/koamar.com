@@ -26,7 +26,7 @@ const postList = ({ pageContext, data }) => {
       <Content>
         <h1>{site.frontmatter.title}</h1>
         {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
-        <Posts posts={posts} collection={collection} />
+        <Posts posts={posts} />
       </Content>
       <Pagination
         isFirst={isFirst}
@@ -69,6 +69,9 @@ export const pageQuery = graphql`
           }
           id
           excerpt
+          fields {
+            collection
+          }
         }
       }
     }
