@@ -26,11 +26,7 @@ const IndexPage = ({ data }) => {
         <h2>Most recent posts</h2>
         <PostContainer>
           {posts.map((post) => (
-            <PostCard
-              post={post}
-              collection={post.node.fields.collection}
-              key={post.node.id}
-            />
+            <PostCard post={post} collection={post.node.fields.collection} />
           ))}
         </PostContainer>
 
