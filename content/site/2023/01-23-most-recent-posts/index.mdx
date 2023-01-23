@@ -1,0 +1,226 @@
+---
+title: Most Recent Posts
+slug: most-recent-posts
+date: 2023-01-23
+coverImage: ./jason-leung-Xaanw0s0pMk-unsplash.jpg
+coverAlt: Selective focus photography of multicolored confetti lot
+excerpt: Show the six most recent posts on the front page
+tags: [gatsby]
+implementation: 2023-01-23
+---
+
+<Info>
+Last time I did anything regarding building the site was Jan or perhaps Feb 2022. I was hoping it wouldn't be too difficult to change not having looked at this code, or any programming really, since then.
+
+</Info>
+
+## Previously on koamar.com...
+
+The site's front page had a lovely Hero control but beyond that, it was just a blurb about what's happened so far on the site. Perhaps this stuff it was fun, silly, useful, but it didn't belong here! I want the front page to have a way to get to most recent posts, as one of a few ideas for the front page.
+
+## Requirements
+
+The `post-list.js` template displays all the posts for section of the site: project, blog, or site dev. That looks like a good first stab at what the front page component should be like. In a perfect world, I'd get a lot of the code that can be reused and put it into its own component.
+
+- ✅ Display the six most recent posts from any section (based on update then created)
+  - Currently, the default is two per row of grid, for the front page and that seems fine.
+- ❌ **_Could_** have `content/collections/front-page` for text that appears
+  - In that way, `front-page` could be a collection equivalent to the others
+  - At least for the moment, I'm not going to do this.
+- ❌ **_Could_** display which section the post is in on the front page
+  - Not going to do this right now either!
+- No need for pagination since there is always a fixed number of cards.
+
+## Update Steps
+
+1. Extract `Posts` to its own component so it can be reused in `index.js`
+2. Add 6 most recent posts to query in `gatsby-node.js` so I can access them on the front page, this requires stealing from `post-list.js` (don't worry, I realized I didn't need to do this)
+3. Delete or move the intro text about updates - moving them to the Site Development page
+4. Update `Posts` component so it works for both `post-list.js` and `index.js`
+
+### Extract Posts
+
+`post-list.js`, displays a list of six posts, which is exactly what I want on the front page. I decide to extract that to its own component, `Posts`, and use it for the front page. It did not work as-is. I ended up duplicating some code, _for now_. The six most recent posts can cross all the collections while the current code expects everything to be in one collection.
+
+```jsx:title=Posts.js initial extraction
+import * as React from 'react'
+import tw, { styled } from 'twin.macro'
+import { PostCard } from '../components'
+
+const PostContainer = styled.div(tw`grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`)
+
+export const Posts = ({ posts, collection }) => (
+  <PostContainer>
+    {posts.map((post) => (
+      <PostCard post={post} collection={collection} key={post.node.id} />
+    ))}
+  </PostContainer>
+)
+```
+
+```jsx:title=post-list.js {5}
+// ...
+      <Content>
+        <h1>{site.frontmatter.title}</h1>
+        {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
+        <Posts posts={posts} collection={collection} />
+      </Content>
+// ...
+```
+
+I feel this will eventually work for the front page, but it has to send the collection a different way.
+
+### Add query to gatsby-node.js for front page
+
+<Warning>
+I'm including this because this was a turning point for me. It may be obvious to some but:
+
+1. You don't need to create pages in Gatsby to use GraphQL **_if_** you already have a page!
+
+   - I have an `index.js` file that I want to populate with GraphQL
+   - I don't need to do anything other than add a query to this file
+
+2. A GraphQL query returns a `data` object!
+
+   - I haven't had much experience getting data from APIs so the magic of `data` was not known to me. In the GraphQL query editor, you can even see the `data` object being returned. Ah well...
+   - So, data just magically appears when you have a GraphQL query in a component.
+   - I'm not sure I get it yet, but that's one of the magical things about JavaScript I suppose, and, I don't know all of the JavaScript magic at the moment.
+   - I mean, seriously, it's just a function on the page. Nothing is running it. Perhaps it is Gatsby magic?
+
+</Warning>
+
+I want to have a slightly different query for most recent tasks.
+
+1. It's a fixed number so `limit` will always be 6
+2. It can cross all collections so I don't want to sort or filter by collection
+
+I want to access the current GraphQL query that drives everything, in `gatsby-node.js` but I'll need two queries. I try adding another query and get an error. This leads me to finding out if I want two `allMdx` queries, I'm going to have to alias them. So I figure that all out. It's rather easy, only needing to put the alias in front of that part of the query.
+
+```graphql
+query CreatePagesQuery {
+      front: allMdx(
+        sort: { fields: [frontmatter___date], order: [DESC] }
+        filter: { frontmatter: { name: { eq: null }, draft: { eq: false } } }
+        limit: 6
+      )
+        ...
+
+      pages: allMdx(
+        sort: { fields: [fields___collection, frontmatter___date], order: [ASC, DESC] }
+      )
+
+        ...
+```
+
+<Danger>
+At this point, why didn't I notice the signature of the query was different? Why didn't I notice that I got that query from a different file? Take off the blinders Ken!
+
+</Danger>
+
+Then change everywhere it says `data.allMdx` to `data.pages` and everything is working just fine. **[Yep, just peachy!]**
+
+Now, I want to access `data` on the `index.js` page but I don't see how. After cursing the magic for a bit, giving up, and trying again, I remembered I had queried things outside of `gatsby-node.js` before. Sure enough, I just had to include the new query in the `index.js` page and I could access the GraphQL data just fine!
+
+```graphql:title=index.js GraphQL Query
+export const query = graphql`
+  query recentPosts {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: [DESC] }
+      filter: { frontmatter: { name: { eq: null }, draft: { eq: false } } }
+      limit: 6
+    ) {
+      edges {
+        node {
+          frontmatter {
+            slug
+            title
+            date(formatString: "MMMM D, YYYY")
+            updated(formatString: "MMMM D, YYYY")
+            excerpt
+            coverAlt
+            coverImage {
+              publicURL
+              childImageSharp {
+                gatsbyImageData(layout: FULL_WIDTH)
+              }
+            }
+          }
+          id
+          excerpt
+          fields {
+            collection
+          }
+        }
+      }
+    }
+  }
+`
+```
+
+It's not magic, I just lack a bit of understanding of JavaScript and/or Gatsby.
+
+### Move intro text on updates to Site Dev page
+
+I didn't copy and paste! I rewrote them in Markdown just so I could feel them. I didn't change much so it wasn't one of those editing epiphanies we all enjoy (right?). Perhaps I enjoy typing, perhaps I like thinking about something again. I tend to not copy and paste stuff.[^1]
+
+### Update Posts component
+
+Posts is passed `posts` and `collection`. If I want to reuse it, it will need to get `collection` a different way. In the case of the post-list template, it is always going to be the same collection, hence I could pass that separately. On the front page, it's not necessarily so. I'll include the collection as part of the posts result and it will work in both situations. I already had to make this change for the front page to work.
+
+```jsx:title=Posts.js Final version
+import * as React from 'react'
+import tw, { styled } from 'twin.macro'
+import { PostCard } from '../components'
+
+const PostContainer = styled.div(tw`grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`)
+
+export const Posts = ({ posts }) => (
+  <PostContainer>
+    {posts.map((post) => (
+      <PostCard post={post} collection={post.node.fields.collection} key={post.node.id} />
+    ))}
+  </PostContainer>
+)
+```
+
+In the GraphQL for both `index.js` and `post-list.js` I added collection to the result site.
+
+```graphql:title=Updated GraphQL Query {20-22}
+) {
+  edges {
+    node {
+      frontmatter {
+        slug
+        title
+        date(formatString: "MMMM D, YYYY")
+        updated(formatString: "MMMM D, YYYY")
+        excerpt
+        coverAlt
+        coverImage {
+          publicURL
+          childImageSharp {
+            gatsbyImageData(layout: FULL_WIDTH)
+          }
+        }
+      }
+      id
+      excerpt
+      fields {
+        collection
+      }
+    }
+  }
+```
+
+## Git is awesome
+
+Most of my use of `git` is straight-forward, no issues, happy path, usage. Create a branch, work on it, commit, push it when done. I had committed a change to `gatsby-node.js` at one point, that I did not want anymore. At that point, I had made changes to other files. I reverted my prior commit and it only affected `gatsby-node.js` and not the other files I was working on. I didn't have to stash or anything (though i did back them up just in case). Learning is fun!
+
+##### Attributions
+
+Photo by [Jason Leung (@handle)](https://unsplash.com/@ninjason?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/new-post?orientation=landscape&utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+- Sometimes you see something on [unsplash](https://unsplash.com) that may not have anything to do with what you are searching for, but it feels right. There were some I spotted searching for a cover on this article that were like that. This search on `new post` got me some confetti.
+- I spotted `alt` text on the picture I'm using for the first time. I thought I should use that as well instead of making up my own.
+
+[^1]: You've copy and pasted **_so_** much on this article!
