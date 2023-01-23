@@ -41,25 +41,6 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query CreatePagesQuery {
-      front: allMdx(
-        sort: { fields: [frontmatter___date], order: [DESC] }
-        filter: { frontmatter: { name: { eq: null }, draft: { eq: false } } }
-        limit: 6
-      ) {
-        edges {
-          node {
-            id
-            frontmatter {
-              slug
-              date
-              updated
-            }
-            fields {
-              collection
-            }
-          }
-        }
-      }
       pages: allMdx(
         sort: { fields: [fields___collection, frontmatter___date], order: [ASC, DESC] }
       ) {
