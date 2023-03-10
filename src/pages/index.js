@@ -5,7 +5,8 @@ import SEO from '../components/seo'
 import { Layout, Hero, Content, Posts } from '../components'
 
 const IndexPage = ({ data }) => {
-  const posts = data.allMdx.edges
+  const recentPosts = data.mostRecent.edges
+  const featuredPosts = data.featured.edges
   return (
     <Layout>
       <SEO title='Home' />
@@ -13,8 +14,10 @@ const IndexPage = ({ data }) => {
         <Hero />
         <h1>Hi all!</h1>
         <p>Welcome to KoaMar, the virtual home of Ken Feliciano.</p>
+        <h2>Featured posts</h2>
+        <Posts posts={featuredPosts} />
         <h2>Most recent posts</h2>
-        <Posts posts={posts} />
+        <Posts posts={recentPosts} />
 
         <h2>Be well!</h2>
         <a rel='me' href='https://techhub.social/@kafeliciano'>
@@ -29,10 +32,41 @@ const IndexPage = ({ data }) => {
 export default IndexPage
 
 export const query = graphql`
-  query recentPosts {
-    allMdx(
+  query Posts {
+    mostRecent: allMdx(
       sort: { fields: [frontmatter___date], order: [DESC] }
       filter: { frontmatter: { name: { eq: null }, draft: { eq: false } } }
+      limit: 6
+    ) {
+      edges {
+        node {
+          frontmatter {
+            slug
+            title
+            date(formatString: "MMMM D, YYYY")
+            updated(formatString: "MMMM D, YYYY")
+            excerpt
+            coverAlt
+            coverImage {
+              publicURL
+              childImageSharp {
+                gatsbyImageData(layout: FULL_WIDTH)
+              }
+            }
+          }
+          id
+          excerpt
+          fields {
+            collection
+          }
+        }
+      }
+    }
+    featured: allMdx(
+      sort: { fields: [frontmatter___date], order: [DESC] }
+      filter: {
+        frontmatter: { name: { eq: null }, draft: { eq: false }, featured: { eq: true } }
+      }
       limit: 6
     ) {
       edges {
