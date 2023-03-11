@@ -1,0 +1,85 @@
+---
+title: Featured Posts
+slug: featured-posts
+date: 2023-03-10
+coverImage: ./gary-j-stearman-UM3hQduUXBQ-unsplash.jpg
+excerpt: Display some featured posts on landing page
+tags: [gatsby]
+featured: true
+implementation: 2023-03-10
+---
+
+Much like the prior feature where I implemented most recent posts, I was hopeful to reuse _something_! I figured it would look the same but have a different header and be a slightly different query and that's it. Hrm, can I even reuse most recent posts to do this?
+
+Looking at the main landing page, `index.js`, I saw that the concept of most recent posts is baked right into there. The concept I envisioned was exactly the same except I wanted to look into the frontmatter and pick out only posts with `featured: true`. Then sort those by most recent just like the most recent query.
+
+Here's my plan.
+
+- Create a `MostRecentPosts` component and move everything into it, keeping Posts as a separate component.
+- Create a `FeaturedPosts` component which is a copy of `MostRecentPosts`, make the change for featured, and it should work.
+- Combine both queries into a single component (named what? Names are hard!)
+  - FrontPagePosts
+- Add a `graphql` variable for `featured (bool)`
+- Call the Posts component with featured = false for most recent
+- Call the Posts component with featured = true for featured posts
+
+## Create MostRecentPosts component
+
+This should just work yes? No! You can't put `graphql` queries inside of pages that aren't getting created by Gatsby. Yes, that's how little I still know about Gatsby!
+
+## Duplicate code!
+
+Yes, finally, I get to copy and paste! I copy that whole `graphql` query so I have two queries on the main page. One is aliased with `mostRecent` and one is `featured`. Now I get two data sources for my landing page.
+
+```jsx:title=Landing page excerpt
+const IndexPage = ({ data }) => {
+  const recentPosts = data.mostRecent.edges
+  const featuredPosts = data.featured.edges
+
+  // later, they are displayed using the Posts component
+  <h2>Featured posts</h2>
+  <Posts posts={featuredPosts} />
+  <h2>Most recent posts</h2>
+  <Posts posts={recentPosts} />
+  //...
+}
+```
+
+### Now what?
+
+It works! Yes, there's a whole bunch of duplicate code. The whole query is duplicated minus one variable! So, how do I add a variable `$featured` that can be used in one query but not the other?
+
+## Add the featuredOnly variable
+
+If you pop open GraphiQL (http://localhost:8000/\_\_\_graphql), you can experiment! I know enough that to add a variable, you place it in the query _function_ name. Looks like a function! Then later, you can use it in your query.
+
+```graphql {1,4}
+query Posts($featuredOnly: Boolean) {
+  featured: allMdx(
+    sort: {fields: [frontmatter___date], order: [DESC]}
+    filter: {frontmatter: {name: {eq: null}, draft: {eq: false}, featured: {eq: $featuredOnly}}}
+    limit: 6
+  ) {
+  ...
+```
+
+My hope is that if I pass `true` I get the featured posts. If I pass `null` I get the most recent posts (that can include feature posts!).  
+✅ `featuredOnly` = true returns only (up to) 6 featured posts  
+❌ `featuredOnly` = null returns up to 6 posts featured or not (this leaves out the featured post)
+
+But, if I just leave out the variable...  
+✅ leaving out `featuredOnly` returns up to 6 posts featured or not
+
+So, instead of passing null, I just have to leave it out.
+
+## Implement it in code!
+
+Now I'm at a loss. I'm looking but not finding. Searching but not seeing. Blah blah but not uh-huh! I just want to know the syntax to pass `{ featuredOnly: true }` into the query and use the same query. I tried a few things but given that the landing page is not being created as a page by Gatsby, I'm not sure what to do. Duplicate code for the win! Maybe that's why the horse is so happy![^1]
+
+[^1]: If I ever change the cover picture for this post, that's going to be a confusing sentence!
+
+##### Attributions
+
+Photo by [Gary J Stearman (@picgaz_photography)](https://unsplash.com/@picgaz_photography?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/featured-post?orientation=landscape&utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+I have no idea what this picture has to do with "featured post" but it made me laugh!
