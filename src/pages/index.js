@@ -2,11 +2,12 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 
 import SEO from '../components/seo'
-import { Layout, Hero, Content, Posts } from '../components'
+import { Layout, Hero, Content, Posts, TagList } from '../components'
 
 const IndexPage = ({ data }) => {
   const recentPosts = data.mostRecent.edges
   const featuredPosts = data.featured.edges
+  const tags = data.tags.edges
   return (
     <Layout>
       <SEO title='Home' />
@@ -18,6 +19,8 @@ const IndexPage = ({ data }) => {
         <Posts posts={featuredPosts} />
         <h2>Most recent posts</h2>
         <Posts posts={recentPosts} />
+        <h2>Tags</h2>
+        <TagList tags={tags} />
 
         <h2>Be well!</h2>
         <a rel='me' href='https://techhub.social/@kafeliciano'>
@@ -87,6 +90,19 @@ export const query = graphql`
           }
           id
           excerpt
+          fields {
+            collection
+          }
+        }
+      }
+    }
+    tags: allMdx(filter: { fields: { collection: { ne: "collections" } } }) {
+      edges {
+        node {
+          frontmatter {
+            tags
+            slug
+          }
           fields {
             collection
           }
