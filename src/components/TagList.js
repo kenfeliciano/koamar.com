@@ -1,4 +1,3 @@
-import { array } from 'prop-types'
 import * as React from 'react'
 import tw, { styled } from 'twin.macro'
 
@@ -9,7 +8,6 @@ const TagContainer = styled.div(tw`pt-1 mt-0 text-sm`)
 export const TagList = ({ tags }) => {
   // const tagList = tags.map((e) => <p>{e.node.frontmatter.tags}</p>)
   const tagList = tagData(tags)
-  console.log(tagList)
   return (
     <TagListContainer>
       {tagList.map((tag) => (
@@ -17,18 +15,6 @@ export const TagList = ({ tags }) => {
           {tag[0]}&nbsp;({tag[1]})
         </TagContainer>
       ))}
-      {/* <p>mdx</p>
-      <p>music</p>
-      <p>test</p>
-      <p>abc</p>
-      <p>css</p>
-      <p>react</p>
-      <p>jazz</p>
-      <p>tihai</p>
-      <p>work</p>
-      <p>gatsby</p>
-      <p>tailwind</p>
-      <p>dark-mode</p> */}
     </TagListContainer>
   )
 }
