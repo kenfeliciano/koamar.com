@@ -1,28 +1,16 @@
 import * as React from 'react'
-import { graphql, Link } from 'gatsby'
-import { GatsbyImage } from 'gatsby-plugin-image'
-
+import { graphql } from 'gatsby'
 import SEO from '../components/seo'
-import { Layout, CoverImage, Content, Posts } from '../components'
-import tw, { styled } from 'twin.macro'
+import { Layout, Content, PostList } from '../components'
 
-const PostContainer = styled.div(tw`flex flex-row`)
-
-export const PostWrapper = tw(Link)`
-  rounded-lg mt-4 hover:(ring-2 ring-primary)
-`
 const tagPosts = ({ pageContext, data }) => {
   const posts = data.allMdx.edges
   return (
     <Layout>
       <SEO />
-      {/* <CoverImage
-        fluid={site.frontmatter.coverImage.childImageSharp.gatsbyImageData}
-        alt={site.frontmatter.coverAlt}
-      /> */}
       <Content>
         <h1>{pageContext.id}</h1>
-        <Posts posts={posts} />
+        <PostList posts={posts} />
       </Content>
     </Layout>
   )
@@ -42,6 +30,7 @@ export const pageQuery = graphql`
             collection
           }
           frontmatter {
+            tags
             slug
             title
             date(formatString: "MMMM D, YYYY")
