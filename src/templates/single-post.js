@@ -2,7 +2,7 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import SEO from '../components/seo'
-import { Layout, CoverImage, Content, LinkEdges } from '../components'
+import { Layout, CoverImage, Content, LinkEdges, TagLinks } from '../components'
 import tw from 'twin.macro'
 
 const InfoWrapper = tw.div`
@@ -69,6 +69,7 @@ const BlogPost = ({ data, pageContext }) => {
         </InfoWrapper>
         {thirdField}
       </div>
+      <TagLinks tags={frontmatter.tags} />
       <Content>
         <h1>
           {frontmatter.draft && (
