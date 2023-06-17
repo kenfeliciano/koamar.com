@@ -1,4 +1,5 @@
 const graphql = require('gatsby').graphql
+const tagData = require('./src/utils/tagData')
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNode, createNodeField } = actions
@@ -76,6 +77,19 @@ exports.createPages = async ({ graphql, actions }) => {
           }
         }
       }
+      tags: allMdx(filter: { fields: { collection: { ne: "collections" } } }) {
+        edges {
+          node {
+            frontmatter {
+              tags
+              slug
+            }
+            fields {
+              collection
+            }
+          }
+        }
+      }
     }
   `)
 
@@ -129,5 +143,16 @@ exports.createPages = async ({ graphql, actions }) => {
         context: { id, prev, next },
       })
     }
+  })
+
+  // Create single tag pages
+  const tags = tagData(data.tags.edges)
+  tags.forEach((tag) => {
+    const id = tag[0]
+    actions.createPage({
+      path: `tags/${id}`,
+      component: require.resolve('./src/templates/single-tag.js'),
+      context: { id },
+    })
   })
 }
