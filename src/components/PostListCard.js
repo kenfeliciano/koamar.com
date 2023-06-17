@@ -20,7 +20,9 @@ export const PostListCard = ({ post, collection }) => (
         )}
         <div className='relative flex flex-col justify-between mt-2 grow sm:ml-4 sm:mt-0'>
           <div>
-            <h2>{post.node.frontmatter.title}</h2>
+            <div className='flex flex-row justify-between'>
+              <h2>{post.node.frontmatter.title}</h2>
+            </div>
             <p className='mt-1'>{post.node.excerpt}</p>
           </div>
           <div className='flex flex-col justify-between sm:flex-row'>
@@ -32,6 +34,9 @@ export const PostListCard = ({ post, collection }) => (
             ) : null}
           </div>
         </div>
+        <p className='absolute mt-0 font-bold right-12 bg-surface sm:bg-transparent sm:static sm:origin-center sm:rotate-45 sm:-translate-x-4 sm:-translate-y-1 text-primary'>
+          {collection}
+        </p>
       </div>
     </PostWrapper>
     <TagLinks tags={post.node.frontmatter.tags} />
