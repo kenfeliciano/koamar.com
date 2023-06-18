@@ -1,0 +1,187 @@
+---
+title: Front Page Tags and More!
+slug: front-page-tags
+date: 2023-06-17
+coverImage: ./gary-butterfield-YG8rZ323UsU-unsplash.jpg
+coverAlt: white printer paper on glass wall with #becurious written on it
+excerpt: All the posts have tags but there was no way to get to them, now there is.
+tags: [javascript, gatsby, tailwind]
+implementation: 2023-06-17
+---
+
+Do I even **know** what I'm doing? 😀
+
+## Get a List of Tags
+
+- the tags are all in separate arrays in each post
+  - flatten them into one array `flattenTags()`
+  - sort all tags using `sortTags()`
+  - use reduce to create an object that has each distinct tag with the number of occurrences, from [Stack Overflow](https://stackoverflow.com/questions/5667888/counting-the-occurrences-frequency-of-array-elements)
+  - Convert it to an array using `Object.entries()`
+- add a grid container
+- map everything into it
+  See [tagData Function](#tagdata-function) below
+
+## Create Tags Template
+
+It's going to look an awful lot like the `post-list` template. Instead of showing all the posts, paginated, for a collection, it's going to show all of the posts, in a list, with a given tag.
+
+### Initial Version
+
+I'm going to start by stealing all the code from `post-list` and using a query that is almost the same. Shhhh!
+
+```graphql:title=single-tag.js query
+query SingleTagPostsQuery($id: [String]) {
+  allMdx(
+    sort: { fields: frontmatter___date, order: DESC }
+    filter: { frontmatter: { tags: { in: $id } } }
+  ) {
+    edges {
+      node {
+        fields {
+          collection
+        }
+        frontmatter {
+          tags
+          slug
+          title
+          date(formatString: "MMMM D, YYYY")
+          updated(formatString: "MMMM D, YYYY")
+          coverAlt
+          coverImage {
+            publicURL
+            childImageSharp {
+              gatsbyImageData(layout: FULL_WIDTH)
+            }
+          }
+        }
+        id
+        excerpt
+      }
+    }
+  }
+}
+```
+
+I'm passing the posts into the `Posts` component and it looks exactly the same as a collection list.
+
+### Next Version
+
+I want it to be shorter. I want one post per row. I want cover photo, Title, Excerpt, Date, Updated under date if it is there, and finally, under everything, a list of tags. I guess in hindsight, it is the same content the posts display in the sections except for adding the tags.
+
+### Specifications
+
+- Somewhere on the front page, there are the tags that are in use in the site.
+  - On desktop, they could _perhaps_ be on the right-hand side as I've seen on other sites. (nope)
+  - They wouldn't work there on mobile and would instead be at the bottom, or perhaps in the menu.
+  - A **Tags** section after **Most Recent Posts** might work out well. (yes)
+- Click on a tag and it takes you to a page for that tag
+  - That page displays all the posts with that tag
+  - To be different, the card could be smaller so more could fit on the page, or it could be more of a column thing.
+  - If column-like, or smaller, could contain all the tags on that page. Of course, that could also go on the main card too!
+  - **Or** it could be exactly like any other of my collections with 6 on a page and paging.
+  - At first thought, I like the idea of, small picture, title, date, and update, sorting by newest first.
+    - I'd really like to sort by `coalesce(update, date)` but I don't know how!
+
+### `tags` Query Development
+
+Snippet for all collection/slug (file path) with tags array. This can be added in `gatsby-node.js` in the `createPages` function.
+
+```graphql:title=gatsby-node.js tags query
+tags: allMdx(filter: { fields: { collection: { ne: "collections" } } }) {
+  edges {
+    node {
+      frontmatter {
+        tags
+        slug
+      }
+      fields {
+        collection
+      }
+    }
+  }
+}
+```
+
+There will be a record for each post with the slug, an array of tags, and the collection it belongs in. Do **_not_** ask me why collection is there! Perhaps that is extra or left over from defining the filter on it.
+
+## TagList Component
+
+First up, let's get a list of tags on the front page! I fiddled around with a grid and decided on some Tailwind styling to make it work well for large (5 columns), medium (4 columns), and small (2 columns) screens. The exciting part here is a bunch of JavaScript to create the `tagData`. I wanted to look through all the posts for each discrete tag and count up how many posts it is involved with. I'll end up with something like `gatsby (15)` when I'm done.
+
+## tagData Function
+
+```javascript
+function flattenTags(tags) {
+  let listOfTags = [,]
+  tags.forEach((f) => {
+    if (f.node.frontmatter.tags)
+      f.node.frontmatter.tags.forEach((t) => {
+        listOfTags.push(t)
+      })
+  })
+
+  return listOfTags
+}
+function sortTags(allTags) {
+  return allTags.sort()
+}
+function tagData(tags) {
+  const flatTags = sortTags(flattenTags(tags))
+
+  const tagSummary = flatTags.reduce(function (acc, curr) {
+    return acc[curr] ? ++acc[curr] : (acc[curr] = 1), acc
+  }, {})
+  return Object.entries(tagSummary)
+}
+
+module.exports = tagData
+```
+
+Take the array of all the tags, flatten them, add a count of how many times they are used, and sort them. If this were SQL, I'd probably think of group by tagName and Count(1) but it's not, so this is how I approached it. Hence, flatten, sort, summarize. Pop those in a link and I've got each tag with it's count as something that you can click on to get to a page of all posts that share that tag. Since I want to use this function in `gatsby-node.js` it has to use CommonJS modules. As I hoped, it is easy to `require` inside of React, instead of `import` as I normally do so I could use this in both environments.
+
+## Single-tag Template
+
+This template is more like the `post-list` template even though it is for a single tag. It's multiple posts per tag though. So it copies a lot of what was going on with the `post-list` template. I decided against a cover image. I figured I'd have to have either a cover image for each tag or a single all encompassing one. Neither excited me. I just feed the data to the Posts component like normal and I get my two column list of posts!
+
+### Add to Gatsby-node
+
+In `gatsby-node.js`, I added the new query defined above to the createPages graphQL. Then I could loop through that data to create all the pages for tags.
+
+## Change Posts to a List
+
+Instead of a two column list for the tagged posts, I wanted it all in a single list. I had envisioned more of a table but as I worked with it, it looked fine _mostly_ as-is. However, since it had a different look, I wanted to move away from `Posts` and towards `PostList`. Naming is hard! `PostList` is practically the same as `Posts` but with a different layout. Also, it will use `PostListCard` instead of `PostCard`. Not too exciting. `PostListCard` looks about the same as `PostCard` but it has a few stylistic changes. I could probably refactor this code to remove a bunch of duplication at some point.
+
+<Info>
+Getting tired?
+
+Why yes, I am getting tired. Apparently I've decided against adding code examples at this point. I'm tired of looking at it all I suppose!
+
+</Info>
+
+## Add Tags to the PostListCards
+
+Since everything is about tags now, I wanted to show all the tags in the file when listing them. Since I shot myself in the foot earlier by making the whole `card` a link so you can click anywhere on it, if I put the tags in there, they won't be clickable. So, I separated them out into a little Container of their own. I don't have any posts with that many tags, so I haven't seen a need to make a change for mobile yet. I imagine there will be a tradeoff between multiple columns and scrollable area. As I've never done a scrollable area, I may try that method!
+
+### Padding for Tags
+
+I used some guidance from a Scrimba course I did a while ago and used `px-2 py-1`, treating the tag as a button. It looks good! I was worried I was going to have to figure out how to do it with a style I didn't have to get the `.5em 1.25em` I was shooting for.
+
+## Add the Collection to the PostListCard
+
+Oh, I almost forgot! When there is a list of posts for a tag, they could be a part of any of the three collections: Blog, Project, or Site. I wanted to indicate that somewhere. I had this idea of doing something at an angle. So far, I'm doing that, without any background so it looks rather plain, unless it is very small screen, then it just overlays the picture a bit.
+
+### An Accident That I Liked
+
+When I added the `TagLinks` component to the Post, it came with the background color and shadow that looked good on the list but not so much on the Post. I tried to override it with a className. I tried removing the offending classes from the `TagLinks` component and adding them in with a className for the list. Turns out, I sort of like it better this way, so I left it alone. No background on the tags! This way the `text-xs` looks just fine instead of `text-sm`. I want it to be subtler.
+
+## And with All That Done!
+
+- If you're reading a post, you can click on a tag and see all the other posts with that tag.
+- If you want to just go straight to perusing tags, you can jump to the bottom of the site and pick one.
+
+##### Attributions
+
+I always liked "Be Curious", "Stay Curious", and the like so this picture hit me quickly as the one to use!
+
+Photo by [Gary Butterfield (@garybpt)](https://unsplash.com/@garybpt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/hashtag?orientation=landscape&license=free&utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
