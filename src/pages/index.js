@@ -21,12 +21,12 @@ const IndexPage = ({ data }) => {
         <Posts posts={recentPosts} />
         <h2>Tags</h2>
         <TagList tags={tags} />
-
         <h2>Be well!</h2>
         <a rel='me' href='https://techhub.social/@kafeliciano'>
-          I'm lurking on Mastodon (and haven't setup the social media footer thingy just
-          yet)
-        </a>
+          Mastodon
+        </a>{' '}
+        {` `}
+        <a href='https://bsky.app/profile/kafeliciano.bsky.social'>Bluesky</a>
       </Content>
     </Layout>
   )
