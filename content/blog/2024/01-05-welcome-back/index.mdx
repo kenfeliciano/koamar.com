@@ -1,0 +1,80 @@
+---
+title: Welcome back!
+slug: welcome-back-2025
+date: 2025-01-05
+coverImage: ./nick-fewings-bTRsbY5RLr4-unsplash.jpg
+coverAlt: a welcome back sign with a star, smiley face, and heart
+excerpt: After over a year of neglect, it's hard to get back to this website!
+tags: [node.js, npm, gatsby]
+---
+
+<Info>
+
+**tl;dr**
+
+- Make sure your GitHub Action has the correct node-version specified!
+- If it says 14.x and node.js is on 22.x, chances are, there will be issues at some point.
+
+</Info>
+
+The year was 2023. I started off with a post about [Finale](https://www.finalemusic.com/). Feel free to hop over there and read how Finale has ceased to be. I suppose more happened to them than to me! I did a couple of updates to the site in the summer but other than that, not a peep out of me here for over a year! Well, I've done something--sort of.
+
+During this time of nothing new, my friend, Dependabot was constantly telling me I had a problem with webpack or path-to-regexp or nanoid 🙄. If it looked harmless enough I accepted the pull request and the site would build. Now **so** much more secure! There were a lot of updates that were too major for me to give it the okay to do. I know if I'm going to do some major Gatsby upgrades, I'm going to have to do more than just upgrade packages! Speaking of which!
+
+## Let's upgrade packages!
+
+I thought it would be a good idea to try and get up to Gatsby 5 and the assorted plug-ins at some point. One of the first things I read in the [Migrating from v4 to v5 Gatsby Documentation](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v4-to-v5/) was upgrade Gatsby and all plugins to the latest v4 version.
+
+Sounds good!
+
+```bash
+npm upgrade --save
+
+# how'd it do?
+npm outdated
+```
+
+Nothing's outdated!
+
+Does it work in Development? Yep! Can I build it locally? Yes!
+
+## Gatsby 5 time
+
+I start trying to upgrade to Gatsby 5, React 18, blah blah blah, yadda yadda, and I see that I really have to upgrade `gatsby-plugin-mdx` from v3 to v4. I remember that was the thing that stopped me from working on this site last year!
+
+## Not Gatsby 5 time
+
+"At least I can push these upgraded packages," I think to myself. Off they go! But, the build fails in my GitHub Action! Here's the error bit...
+
+```output
+error "gatsby-plugin-mdx" threw an error while running the createSchemaCustomization lifecycle:
+
+Cannot read property 'setParserPlugins' of undefined
+
+
+  TypeError:Cannot read property 'setParserPlugins' of undefined
+```
+
+Research finds a bunch of articles about very old versions of `gatsby-plugin-mdx` that had a bug. Some articles are about how things aren't working in dev (or build, locally) due to programming bugs. I don't have any of those stopping the build.
+
+I try reverting to the prior commit that worked, it builds locally, but it still does not build in GitHub. I tried tweaking versions here and there and it still doesn't work. I'm freaking out. I'll never be able to update this site again!
+
+Finally, I find a [GitHub issue](https://github.com/Vagr9K/gatsby-advanced-starter/discussions/217) where [Ruben Harutyunyan](https://github.com/Vagr9K) casually mentions, "Since it works locally but fails on the server, I can only assume that your NodeJS/Yarn/npm versions on the server are what's causing the issue."
+
+Thanks Ruben!
+
+## I want to live again!
+
+My server is...somewhere in GitHub land. I remember setting up the GitHub action a long time ago. Did it mention something about `node` in there?
+
+Sure enough, in my `.yaml` file, it says:
+
+```yaml
+node-version: [14.x]
+```
+
+14?! I change it to 22.x and everything is working perfectly again! Now I can upload new content and stop procrastinating. Well, I can certainly upload this one new article!
+
+##### Attributions
+
+Photo by [Nick Fewings (@jannerboy62)](https://unsplash.com/@jannerboy62?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-welcome-back-sign-with-a-smiley-face-bTRsbY5RLr4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)>
