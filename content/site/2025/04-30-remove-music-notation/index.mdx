@@ -1,0 +1,47 @@
+---
+title: Remove Music Notation
+slug: remove-music-notation
+date: 2025-04-30
+coverImage: joshua-hoehne-Kqki4do_F78-unsplash.jpg
+excerpt: GitHub action was failing on build due to third-party music notation dependencies
+tags: [abc, music]
+implementation: 2025-04-30
+---
+
+I had tried to use a form of music notation that would work with source code control (not binary) and described it in [Music Notation Test](../../../blog/music-test). It didn't work well but I left the post and did try it for a few examples.
+
+Since then (2022), all these Dependabot updates came through and were just fine. But, starting last month (March 2025), they started failing during the build in the GitHub action. The log was a big pile of text I apparently didn't want to read.
+
+Today, I really looked at it and saw the following…
+
+```output {3} noLineNumbers
+npm error code 128
+npm error An unknown git error occurred
+npm error command git --no-replace-objects ls-remote ssh://git@github.com/paulrosen/MIDI.js.git
+npm error git@github.com: Permission denied (publickey).
+npm error fatal: Could not read from remote repository.
+```
+
+So, _something_ is trying to bring in this MIDI.js dependency from GitHub but whatever it is, no longer has access. It's not me—directly!
+
+I was trying to use the `react-sheet-music` package. Apparently, somewhere in there, it goes out to get `MIDI.js`, which I'm not even using, and that is causing my builds to fail.
+
+## Let's Get Rid of it All!
+
+As it is **much** easier to enter music in a dedicated music program, let's get rid of the `abc` stuff.
+
+1. Uninstall `react-sheet-music` package
+2. Remove Music component file and export in components/index.js
+3. Remove special handling of `abc` language in Code.js
+4. Remove all special `sheet-music` class styles
+5. Update all the instances of `abc` music blocks with images.
+
+### Did it Work?
+
+Why yes, it did!
+
+##### Attributions
+
+Photo by [Joshua Hoehne (@joshua_hoehne)](https://unsplash.com/@joshua_hoehne?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/white-and-gray-striped-textile-Kqki4do_F78?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
+
+This picture is not music notation but I like how it looks _like_ music notation but it's all been erased. If I saw this out in the real world, I might think to myself...music paper?
