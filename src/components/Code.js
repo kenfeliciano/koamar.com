@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import Highlight, { defaultProps } from 'prism-react-renderer'
 import nightOwl from 'prism-react-renderer/themes/nightOwl'
 import nightOwlLight from 'prism-react-renderer/themes/nightOwlLight'
-import { TitleContainer, CopyCode, ThemeContext, Music } from '../components'
+import { TitleContainer, CopyCode, ThemeContext } from '../components'
 import copyToClipboard from '../utils/copy-to-clipboard.js'
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live'
 
@@ -68,11 +68,6 @@ export const Code = ({
   }
 
   const langType = hasDiff ? lang.slice(5) : lang
-
-  if (langType === 'abc') {
-    console.log(langType)
-    return <Music>{codeString}</Music>
-  }
 
   return (
     <>
