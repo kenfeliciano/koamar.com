@@ -2,6 +2,7 @@
 title: Music Notation Test
 slug: music-test
 date: 2022-06-22
+updated: 2025-04-30
 coverImage:
 excerpt: abc tests for rendering music notation
 tags: [mdx, test, abc, music]
@@ -23,17 +24,7 @@ G3 (F F) (_B B2)|c _d3 A3 (E|E2) D ^F3 (^D2|^D) (B B3) (_A A2)||
 ````
 
 and have it render as music notation.
-
-```abc
-X:1
-T:Twelve Tone Idea
-C:Ken Feliciano
-S:Copyright 2019 - KoaMuse
-M:4/4
-L:1/8
-K:C
-G3 (F F) (_B B2)|c _d3 A3 (E|E2) D ^F3 (^D2|D) (B B3) (_A A2)||
-```
+![music displaying twelve tone idea](twelve-tone-idea.png)
 
 ## Trying React Sheet Music again
 
@@ -84,3 +75,7 @@ Also, when you browse away from the page, and come back to it, the notation is g
 ## Using React Sheet Music
 
 [React Sheet Music](https://github.com/slnsw/react-sheet-music) looked promising but it was also a failure. The documentation wasn't correct on how to invoke it. There is an issue from Dec 2021 that is the same as what I'm getting. All of these libraries are forsook :) I know the feeling.
+
+## Updated 2025-04
+
+No more `abc` or `react-sheet-music`. My builds are failing. The picture is now a screenshot and it will not change in dark mode!
