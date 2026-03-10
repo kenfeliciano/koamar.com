@@ -2,7 +2,7 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, LinkEdges, TagLinks } from '../components'
-import tw from 'twin.macro'
+import tw from 'tailwind-styled-components'
 
 const InfoWrapper = tw.div`
   flex flex-col items-center sm:flex-row

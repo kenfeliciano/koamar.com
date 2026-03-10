@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
-import tw from 'twin.macro'
+import tw from 'tailwind-styled-components'
 
 const TagWrapper = tw(Link)`
   rounded-lg hover:(ring-2 ring-primary) bg-opposite mr-2 px-2 py-1 cursor-pointer text-xs

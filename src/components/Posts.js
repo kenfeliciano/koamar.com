@@ -1,8 +1,8 @@
 import * as React from 'react'
-import tw, { styled } from 'twin.macro'
+import tw from 'tailwind-styled-components'
 import { PostCard } from '../components'
 
-const PostContainer = styled.div(tw`grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`)
+const PostContainer = tw.div`grid gap-y-0 lg:grid-cols-2 lg:gap-x-4 lg:pb-4`
 
 export const Posts = ({ posts }) => (
   <PostContainer>

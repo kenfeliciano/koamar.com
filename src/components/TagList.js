@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
-import tw, { styled } from 'twin.macro'
+import tw from 'tailwind-styled-components'
 
 const tagData = require('../utils/tagData')
 
-const TagListContainer = styled.div(
-  tw`grid grid-cols-2 gap-y-0 lg:grid-cols-5 lg:gap-x-2 lg:pb-2 md:grid-cols-4`
-)
+const TagListContainer = tw.div`grid grid-cols-2 gap-y-0 lg:grid-cols-5 lg:gap-x-2 lg:pb-2 md:grid-cols-4`
+
 const TagContainer = tw(
   Link
 )`pt-1 mt-0 text-sm focus:(ring-2 ring-primary) hover:(ring-2 ring-primary)`

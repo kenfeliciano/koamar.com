@@ -1,5 +1,5 @@
 import { Link } from 'gatsby'
-import tw from 'twin.macro'
+import tw from 'tailwind-styled-components'
 
 export const LinkWrapper = tw.div`
   py-12 px-0 flex items-center justify-between mx-4

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
-import tw from 'twin.macro'
+import tw from 'tailwind-styled-components'
 
 export const PostWrapper = tw(Link)`
   rounded-lg mt-4 hover:(ring-2 ring-primary)
