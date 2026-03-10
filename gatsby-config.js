@@ -1,4 +1,5 @@
 module.exports = {
+  trailingSlash: 'always',
   siteMetadata: {
     title: `KoaMar`,
     description: `KoaMar Site and Blog`,
