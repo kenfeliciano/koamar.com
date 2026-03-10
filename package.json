@@ -5,8 +5,7 @@
   "version": "0.2.0",
   "author": "Ken Feliciano <kafeliciano@gmail.com>",
   "dependencies": {
-    "@mdx-js/mdx": "^1.6.22",
-    "@mdx-js/react": "^1.6.22",
+    "@mdx-js/react": "^3.1.1",
     "autoprefixer": "^10.4.27",
     "babel-plugin-styled-components": "^2.1.4",
     "gatsby": "^5.16.1",
