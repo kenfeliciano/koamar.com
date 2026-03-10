@@ -1,5 +1,6 @@
 const graphql = require('gatsby').graphql
 const tagData = require('./src/utils/tagData')
+const path = require('path')
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNode, createNodeField } = actions
@@ -36,20 +37,19 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
     type Frontmatter {
       draft: Boolean @defaultFalse
     }
-    type MdxFields {
-      collection: String
   `)
 }
 
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query CreatePagesQuery {
-      pages: allMdx(sort: { fields: { collection: ASC }, frontmatter: { date: DESC } }) {
+      pages: allMdx {
         edges {
           node {
             id
             frontmatter {
               slug
+              date
             }
             fields {
               collection
@@ -96,14 +96,20 @@ exports.createPages = async ({ graphql, actions }) => {
   // Create paginated pages for posts
   const postsPerPage = 6
   const edges = data.pages.edges
+  const sorted = edges.slice().sort((a, b) => {
+    if (a.node.fields.collection < b.node.fields.collection) return -1
+    if (a.node.fields.collection > b.node.fields.collection) return 1
+
+    return new Date(b.node.frontmatter.date) - new Date(a.node.frontmatter.date)
+  })
   const collectionCount = (arr, val) =>
     arr.reduce((a, edge) => (edge.node.fields.collection === val ? a + 1 : a), 0)
 
   let groups = []
 
-  groups.push({ groupName: 'blog', count: collectionCount(edges, 'blog') })
-  groups.push({ groupName: 'project', count: collectionCount(edges, 'project') })
-  groups.push({ groupName: 'site', count: collectionCount(edges, 'site') })
+  groups.push({ groupName: 'blog', count: collectionCount(sorted, 'blog') })
+  groups.push({ groupName: 'project', count: collectionCount(sorted, 'project') })
+  groups.push({ groupName: 'site', count: collectionCount(sorted, 'site') })
 
   groups.forEach(({ groupName, count }) => {
     const numPages = Math.ceil(count / postsPerPage)
