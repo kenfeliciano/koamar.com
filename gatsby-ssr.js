@@ -2,7 +2,16 @@ import * as React from 'react'
 import { App } from './src/components'
 import { MDXProvider } from '@mdx-js/react'
 import { preToCodeBlock } from 'mdx-utils'
-import { Table, Code, MarkdownLink, Primary, Danger, Warning, Success, Info } from './src/components'
+import {
+  Table,
+  Code,
+  MarkdownLink,
+  Primary,
+  Danger,
+  Warning,
+  Success,
+  Info,
+} from './src/components'
 import './src/styles/code-layout.css'
 
 const MagicScriptTag = () => {
@@ -39,7 +48,7 @@ const MagicScriptTag = () => {
   return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />
 }
 export const onRenderBody = ({ setPreBodyComponents }) => {
-  setPreBodyComponents(<MagicScriptTag />)
+  setPreBodyComponents([<MagicScriptTag key='magic-script' />])
 }
 
 const components = {
@@ -54,7 +63,9 @@ const components = {
   a: (props) => <MarkdownLink {...props} />,
   h2: (props) => (
     <h2 id={props.children.replace(/\s/g, '-').toLowerCase()}>
-      <a href={`#${props.children.replace(/\s/g, '-').toLowerCase()}`}>{props.children}</a>
+      <a href={`#${props.children.replace(/\s/g, '-').toLowerCase()}`}>
+        {props.children}
+      </a>
     </h2>
   ),
   wrapper: ({ children }) => <>{children}</>,
