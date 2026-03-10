@@ -105,10 +105,12 @@ exports.createPages = async ({ graphql, actions }) => {
 
   groups.forEach(({ groupName, count }) => {
     const numPages = Math.ceil(count / postsPerPage)
+    const postTemplate = path.resolve('./src/templates/post-list.js')
+
     Array.from({ length: numPages }).forEach((_, i) => {
       actions.createPage({
         path: i === 0 ? `/${groupName}` : `/${groupName}/${i + 1}`,
-        component: require.resolve('./src/templates/post-list.js'),
+        component: `${postTemplate}?__contentFilePath=/${groupName}`,
         context: {
           limit: postsPerPage,
           skip: i * postsPerPage,
@@ -135,9 +137,10 @@ exports.createPages = async ({ graphql, actions }) => {
       edge.next && edge.next.fields.collection === collection ? edge.next : null
 
     if (collection !== 'collections') {
+      const postTemplate = path.resolve('./src/templates/single-post.js')
       actions.createPage({
         path: `${collection}/${slug}`,
-        component: require.resolve('./src/templates/single-post.js'),
+        component: `${postTemplate}?__contentFilePath=${collection}/${slug}`,
         context: { id, prev, next },
       })
     }
@@ -147,9 +150,10 @@ exports.createPages = async ({ graphql, actions }) => {
   const tags = tagData(data.tags.edges)
   tags.forEach((tag) => {
     const id = tag[0]
+    const postTemplate = path.resolve('./src/templates/single-tag.js')
     actions.createPage({
       path: `tags/${id}`,
-      component: require.resolve('./src/templates/single-tag.js'),
+      component: `${postTemplate}?__contentFilePath=tags/${id}`,
       context: { id },
     })
   })

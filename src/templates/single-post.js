@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, LinkEdges, TagLinks } from '../components'
 import tw from 'twin.macro'
@@ -41,7 +40,7 @@ const getThirdField = ({ implementation, created, createdCirca, date }) => {
   return <span className='invisible'>Posted {date}</span>
 }
 
-const BlogPost = ({ data, pageContext }) => {
+const BlogPost = ({ data, pageContext, children }) => {
   const frontmatter = data.mdx.frontmatter
   const coverImage = frontmatter.coverImage
     ? frontmatter.coverImage.childImageSharp.gatsbyImageData
@@ -82,7 +81,7 @@ const BlogPost = ({ data, pageContext }) => {
         {frontmatter.updated ? (
           <p className='mt-1 text-sm text-muted'>Updated: {frontmatter.updated}</p>
         ) : null}
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+        {children}
       </Content>
       <LinkEdges prevPage={prevPost} nextPage={nextPost} collection={collection} />
     </Layout>

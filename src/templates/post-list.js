@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, Pagination, Posts } from '../components'
 
-const postList = ({ pageContext, data }) => {
+const postList = ({ pageContext, data, children }) => {
   const { currentPage, numPages, collection } = pageContext
   const isFirst = currentPage === 1
   const isLast = currentPage === numPages
@@ -25,7 +24,7 @@ const postList = ({ pageContext, data }) => {
       />
       <Content>
         <h1>{site.frontmatter.title}</h1>
-        {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
+        {currentPage === 1 && { children }}
         <Posts posts={posts} />
       </Content>
       <Pagination
@@ -76,7 +75,6 @@ export const pageQuery = graphql`
       }
     }
     mdx(frontmatter: { name: { eq: $collection } }) {
-      body
       frontmatter {
         title
         coverAlt
