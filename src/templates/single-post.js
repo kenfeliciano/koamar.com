@@ -98,7 +98,6 @@ export const blogQuery = graphql`
         date(formatString: "MM/DD/YYYY")
         updated(formatString: "MM/DD/YYYY")
         excerpt
-        slug
         title
         tags
         draft
@@ -113,8 +112,9 @@ export const blogQuery = graphql`
           }
         }
       }
-      timeToRead
       fields {
+        timeToRead
+        slug
         collection
       }
     }
