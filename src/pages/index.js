@@ -37,7 +37,7 @@ export default IndexPage
 export const query = graphql`
   query Posts {
     mostRecent: allMdx(
-      sort: { fields: [frontmatter___date], order: [DESC] }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { name: { eq: null }, draft: { eq: false } } }
       limit: 6
     ) {
@@ -66,7 +66,7 @@ export const query = graphql`
       }
     }
     featured: allMdx(
-      sort: { fields: [frontmatter___date], order: [DESC] }
+      sort: { frontmatter: { date: DESC } }
       filter: {
         frontmatter: { name: { eq: null }, draft: { eq: false }, featured: { eq: true } }
       }

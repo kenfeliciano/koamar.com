@@ -21,7 +21,7 @@ export default tagPosts
 export const pageQuery = graphql`
   query SingleTagPostsQuery($id: [String]) {
     allMdx(
-      sort: { fields: frontmatter___date, order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { tags: { in: $id } } }
     ) {
       edges {

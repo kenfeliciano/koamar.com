@@ -67,7 +67,7 @@ Add just enough code to gather slugs and ids to create pages.
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query {
-      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+      allMdx(sort: { frontmatter: { date: DESC } }) {
         edges {
           node {
             frontmatter {
@@ -273,7 +273,7 @@ sourceInstanceName already exists, but you cannot filter on this with allMdx (al
 
 ```graphql
 query {
-  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+  allMdx(sort: { frontmatter: { date: DESC } }) {
     edges {
       node {
         id
@@ -316,7 +316,7 @@ Going with `onCreateNode` to add a collection field. It works for creating the p
 
 ```graphql
 query {
-  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+  allMdx(sort: { frontmatter: { date: DESC } }) {
     edges {
       node {
         id
