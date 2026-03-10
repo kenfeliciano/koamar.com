@@ -95,6 +95,7 @@ export const blogQuery = graphql`
     mdx(id: { eq: $id }) {
       body
       frontmatter {
+        slug
         date(formatString: "MM/DD/YYYY")
         updated(formatString: "MM/DD/YYYY")
         excerpt
@@ -113,8 +114,6 @@ export const blogQuery = graphql`
         }
       }
       fields {
-        timeToRead
-        slug
         collection
       }
     }
