@@ -1,6 +1,9 @@
 import * as React from 'react'
-import { ThemeProvider } from '../components'
-import { createGlobalStyle } from 'styled-components'
+import { ThemeProvider as CustomThemeProvider } from '../components'
+import {
+  ThemeProvider as StyledThemeProvider,
+  createGlobalStyle,
+} from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -192,10 +195,11 @@ const GlobalStyles = createGlobalStyle`
 
 export const App = ({ children }) => {
   return (
-    <ThemeProvider>
+    <StyledThemeProvider theme={{}}>
       <GlobalStyles />
-      {children}
-    </ThemeProvider>
+
+      <CustomThemeProvider>{children}</CustomThemeProvider>
+    </StyledThemeProvider>
   )
 }
 

@@ -7,5 +7,5 @@ export const LinkWrapper = tw.div`
 
 export const LinkButton = tw(Link)`
   text-body text-sm p-2 font-bold
-  bg-container hover:bg-brandedSurface dark:hover:bg-opposite
+  bg-container hover:bg-surface-main-branded dark:hover:bg-brand-opposite
 `

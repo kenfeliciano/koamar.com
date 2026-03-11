@@ -4,13 +4,14 @@ import { graphql } from 'gatsby'
 import SEO from '../components/seo'
 import { Layout, Hero, Content, Posts, TagList } from '../components'
 
+export const Head = () => <SEO title='Home' />
+
 const IndexPage = ({ data }) => {
   const recentPosts = data.mostRecent.edges
   const featuredPosts = data.featured.edges
   const tags = data.tags.edges
   return (
     <Layout>
-      <SEO title='Home' />
       <Content menuShift={true}>
         <Hero />
         <h1>Hi all!</h1>

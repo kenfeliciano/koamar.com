@@ -36,7 +36,7 @@ export const Layout = ({ children }) => {
         </Headroom>
         <SiteWrapper>
           <main>{children}</main>
-          <footer className='text-muted text-sm mt-6 px-4'>
+          <footer className='text-content-muted text-sm mt-6 px-4'>
             Built with
             {` `}
             <ExternalLink href='https://www.gatsbyjs.com'>Gatsby</ExternalLink> from 2020

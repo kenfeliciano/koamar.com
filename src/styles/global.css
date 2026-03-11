@@ -1,6 +1,35 @@
 @import 'tailwindcss';
 
-.light {
+@theme {
+  /* insert the default theme and then override with custom properties */
+
+  --color-brand: var(--primary);
+  --color-brand-opposite: var(--opposite);
+
+  --color-surface-main: var(--surface);
+  --color-surface-container: var(--container);
+  --color-surface-branded: var(--branded-surface);
+
+  --color-content-body: var(--text-body);
+  --color-content-header: var(--text-header);
+  --color-content-muted: var(--muted);
+  --color-content-disabled: var(--disabled);
+
+  --color-link: var(--link);
+
+  --color-code-title-container: var(--code-title-background);
+  --color-code-title: var(--code-title-text);
+}
+
+/* @import 'tailwindcss/preflight';
+@import 'tailwindcss/colors';
+@import 'tailwindcss/theme';
+@import 'tailwindcss/utilities'; */
+
+/* @import 'tailwindcss';
+@import 'tailwindcss/theme' theme; */
+
+html.light {
   --primary: #007889;
   --primary-rgb: 0, 120, 137;
   --opposite: #f4901e;
@@ -23,7 +52,7 @@
   --code-mark-sub: rgba(120, 35, 35, 1);
 }
 
-.dark {
+html.dark {
   --primary: #f4901e;
   --primary-rgb: 244, 144, 30;
   --opposite: #007889;

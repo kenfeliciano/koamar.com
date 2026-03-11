@@ -49,6 +49,7 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.md`, `.mdx`],
+        useGatsbyHead: false,
         mdxOptions: {
           gatsbyRemarkPlugins: [
             {
@@ -63,7 +64,12 @@ module.exports = {
         },
       },
     },
-    `gatsby-plugin-styled-components`,
+    {
+      resolve: `gatsby-plugin-styled-components`,
+      options: {
+        displayName: true,
+      },
+    },
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {

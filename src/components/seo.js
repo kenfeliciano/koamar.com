@@ -29,7 +29,6 @@ export default function SEO({ description, lang = 'en', meta = [], title }) {
 
   return (
     <>
-      <html lang={lang} />
       <title>{defaultTitle ? `${title} | ${defaultTitle}` : title}</title>
       <meta name='description' content={metaDescription} />
 

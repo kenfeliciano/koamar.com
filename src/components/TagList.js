@@ -8,12 +8,12 @@ const TagListContainer = tw.div`grid grid-cols-2 gap-y-0 lg:grid-cols-5 lg:gap-x
 
 const TagContainer = tw(
   Link
-)`pt-1 mt-0 text-sm focus:(ring-2 ring-primary) hover:(ring-2 ring-primary)`
+)`pt-1 mt-0 text-sm focus:(ring-2 ring-brand) hover:(ring-2 ring-brand)`
 
 export const TagList = ({ tags }) => {
   // const tagList = tags.map((e) => <p>{e.node.frontmatter.tags}</p>)
   const tagList = tagData(tags)
-  console.log(tagList)
+
   return (
     <TagListContainer>
       {tagList.map((tag) => (
