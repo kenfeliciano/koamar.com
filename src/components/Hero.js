@@ -40,7 +40,7 @@ export const Hero = () => (
         </div>
         <div className='absolute top-0 right-0 flex w-full h-full'>
           <div className='h-full transition-all sm:w-1/3 w-14 bg-surface-main-branded dark:bg-brand-opposite'></div>
-          <div className='relative w-1/3 w-288 h-288'>
+          <div className='relative w-1/3 w-6xl h-288'>
             <svg
               fill='currentColor'
               viewBox='0 0 100 100'

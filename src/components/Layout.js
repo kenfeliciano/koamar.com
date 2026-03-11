@@ -8,7 +8,7 @@ import Headroom from 'react-headroom'
 import { Header, ExternalLink, MenuProvider } from '.'
 
 const SiteWrapper = tw.div`
-  h-full m-auto max-w-screen-lg pt-0 px-0 pb-6 mt-0
+  h-full m-auto max-w-(--breakpoint-lg) pt-0 px-0 pb-6 mt-0
 `
 
 export const Layout = ({ children }) => {
