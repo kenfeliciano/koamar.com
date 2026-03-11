@@ -9,11 +9,7 @@ tags: [gatsby, css, react]
 implementation: 2021-01-01
 ---
 
-<Warning>
-
-This implementation happened in Gatsby 2 days.
-
-</Warning>
+<Warning>This implementation happened in Gatsby 2 days.</Warning>
 
 ## Implementation
 
@@ -26,9 +22,9 @@ I had already mocked this up and mostly just copied the code over as-is. The col
 ## Image Component
 
 <Warning>
-
-During the upgrade to Gatsby 4, I removed the Image component. It is much easier to just create a static image component on the page that is using it with Gatsby 4. Jump to [Static Image Component](#static-image-component) to view this.
-
+  During the upgrade to Gatsby 4, I removed the Image component. It is much easier to just
+  create a static image component on the page that is using it with Gatsby 4. Jump to
+  [Static Image Component](#static-image-component) to view this.
 </Warning>
 
 I felt _**so**_ impressed with myself (at the time!). I looked at the built-in `image.js` file that comes with the Gatsby starter kit and wondered how I could use that as a component for _**any**_ image. It didn't seem that possible unless you were passing image related data in through pageContext (as I did with the section coverImages). A quick search lead me to a question by Wes Bos! Who else is on this thread but LekoArts, Kyle Mathews, and someone new to me, Baptiste Firket. Between Wes' idea and Baptiste's solution, I was able to convert `image.js` into my `Image.js` file.

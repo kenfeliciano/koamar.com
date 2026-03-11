@@ -137,9 +137,8 @@ npm install prettier@latest # to 2.6.0
 ```
 
 <Info>
-
-I had to rollback @mdx-js/mdx and @mdx-js/react because gatsby-plugin-mdx requires v1 of those.
-
+  I had to rollback @mdx-js/mdx and @mdx-js/react because gatsby-plugin-mdx requires v1 of
+  those.
 </Info>
 
 ## Somehow, everything is working?
@@ -204,19 +203,20 @@ _These are fine, as mentioned previously, v1 is required by gatsby-plugin-mdx_
 When the Github Action ran, it failed! The error related to `styled-components`.
 
 <Danger>
-
-Can't resolve 'react-is' in '/home/runner/work/koamar.com/koamar.com/node_modules/styled-components/dist'
-
+  Can't resolve 'react-is' in
+  '/home/runner/work/koamar.com/koamar.com/node_modules/styled-components/dist'
 </Danger>
 
 According to the [styled-components FAQ](https://styled-components.com/docs/faqs), styled-components now requires react-is@^16.8 (or higher hopefully). I updated that and started building again. That time, it was successful.
 
 <Info>
-
-**Local vs. Github**
-
-This all worked locally. I of course tested in `gatsby develop` but also with `gatsby build`. I never saw an error related to `styled-components`!
-
+  <p>
+    <b>Local vs. Github</b>
+  </p>
+  <p>
+    This all worked locally. I of course tested in `gatsby develop` but also with `gatsby
+    build`. I never saw an error related to `styled-components`!
+  </p>
 </Info>
 
 ##### Attributions
