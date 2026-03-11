@@ -24,7 +24,7 @@ const postList = ({ pageContext, data, children }) => {
       />
       <Content>
         <h1>{site.frontmatter.title}</h1>
-        {currentPage === 1 && { children }}
+        {currentPage === 1 && children}
         <Posts posts={posts} />
       </Content>
       <Pagination

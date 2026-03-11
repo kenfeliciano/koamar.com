@@ -35,19 +35,39 @@ const TextBlock = ({ blockType, children, padding = '2rem 1.5rem' }) => {
 }
 
 export const Success = ({ children, padding }) => {
-  return <TextBlock blockType='success' children={children} padding={padding} />
+  return (
+    <TextBlock blockType='success' padding={padding}>
+      {children}
+    </TextBlock>
+  )
 }
 export const Warning = ({ children, padding }) => {
-  return <TextBlock blockType='warning' children={children} padding={padding} />
+  return (
+    <TextBlock blockType='warning' padding={padding}>
+      {children}
+    </TextBlock>
+  )
 }
 export const Danger = ({ children, padding }) => {
-  return <TextBlock blockType='danger' children={children} padding={padding} />
+  return (
+    <TextBlock blockType='danger' padding={padding}>
+      {children}
+    </TextBlock>
+  )
 }
 export const Info = ({ children, padding }) => {
-  return <TextBlock blockType='info' children={children} padding={padding} />
+  return (
+    <TextBlock blockType='info' padding={padding}>
+      {children}
+    </TextBlock>
+  )
 }
 export const Primary = ({ children, padding }) => {
-  return <TextBlock blockType='primary' children={children} padding={padding} />
+  return (
+    <TextBlock blockType='primary' padding={padding}>
+      {children}
+    </TextBlock>
+  )
 }
 
 // BlockTypeColors
@@ -86,7 +106,10 @@ const StyledTextBlock = styled.div`
 
   /* These override the defaults based on the blockType */
   border-color: ${(props) => color[props.blockType]};
-  background: ${(props) => (props.theme === 'light' ? bgColorLight[props.blockType] : bgColorDark[props.blockType])};
+  background: ${(props) =>
+    props.theme === 'light'
+      ? bgColorLight[props.blockType]
+      : bgColorDark[props.blockType]};
 
   > :nth-child(2) {
     margin-top: 0;
