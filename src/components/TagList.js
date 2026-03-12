@@ -1,23 +1,28 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
-import tw from 'tailwind-styled-components'
+import styled from 'styled-components'
 
 const tagData = require('../utils/tagData')
 
-const TagListContainer = tw.div`grid grid-cols-2 gap-y-0 lg:grid-cols-5 lg:gap-x-2 lg:pb-2 md:grid-cols-4`
+const TagListContainer = styled.div`
+  /* structure only */
+`
 
-const TagContainer = tw(
-  Link
-)`pt-1 mt-0 text-sm focus:(ring-2 ring-brand) hover:(ring-2 ring-brand)`
+const TagContainer = styled(Link)`
+  /* structure only */
+`
 
 export const TagList = ({ tags }) => {
   // const tagList = tags.map((e) => <p>{e.node.frontmatter.tags}</p>)
   const tagList = tagData(tags)
 
   return (
-    <TagListContainer>
+    <TagListContainer className='grid grid-cols-2 gap-y-0 lg:grid-cols-5 lg:gap-x-2 lg:pb-2 md:grid-cols-4'>
       {tagList.map((tag) => (
-        <TagContainer to={`/tags/${tag[0]}`}>
+        <TagContainer
+          className='pt-1 mt-0 text-sm focus:ring-2 focus:ring-primary hover:ring-2 hover:ring-primary'
+          to={`/tags/${tag[0]}`}
+        >
           {tag[0]}&nbsp;({tag[1]})
         </TagContainer>
       ))}

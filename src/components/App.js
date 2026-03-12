@@ -29,9 +29,14 @@ const GlobalStyles = createGlobalStyle`
     font-family: lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
     Helvetica Neue, sans-serif;
     margin-top: 1.5rem;
-    &:first-child {
-      margin-top: 0;
-    }
+  }
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  h5:first-child,
+  h6:first-child {
+    margin-top: 0;
   }
   h1 {    
     font-size: 2.25rem;
@@ -100,9 +105,9 @@ const GlobalStyles = createGlobalStyle`
   p {
     margin-top: 1.5rem;
     color: var(--text-body);
-    &:first-child {
-      margin-top: 0;
-    }
+  }
+  p:first-child {
+    margin-top: 0;
   }
   blockquote {
     margin: 1.5rem 3rem 0 3rem;    
@@ -150,12 +155,12 @@ const GlobalStyles = createGlobalStyle`
     margin-left: .25rem;
 
     font-size: .75rem;
-    &:before {
-      content: '[';
-    }
-    &:after {
-      content: ']';
-    }
+  }
+  footnote-ref::before {
+    content: '[';
+  }
+  footnote-ref::after {
+    content: ']';
   }
   .footnote-backref {
     color: var(--primary);

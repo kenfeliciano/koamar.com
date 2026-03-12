@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
-import tw from 'tailwind-styled-components'
+import styled from 'styled-components'
 
-const TagWrapper = tw(Link)`
-  rounded-lg hover:(ring-2 ring-brand) bg-brand-opposite mr-2 px-2 py-1 cursor-pointer text-xs
+const TagWrapper = styled(Link)`
+  @apply rounded-lg hover:(ring-2 ring-primary) bg-brand-opposite mr-2 px-2 py-1 cursor-pointer text-xs;
 `
 
 export const TagLink = ({ tag }) => <TagWrapper to={`/tags/${tag}`}># {tag}</TagWrapper>

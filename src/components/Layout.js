@@ -2,13 +2,13 @@ import * as React from 'react'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
-import tw from 'tailwind-styled-components'
+import styled from 'styled-components'
 import Headroom from 'react-headroom'
 
 import { Header, ExternalLink, MenuProvider } from '.'
 
-const SiteWrapper = tw.div`
-  h-full m-auto max-w-(--breakpoint-lg) pt-0 px-0 pb-6 mt-0
+const SiteWrapper = styled.div`
+  background: var(--container);
 `
 
 export const Layout = ({ children }) => {
@@ -34,9 +34,9 @@ export const Layout = ({ children }) => {
             setMenuOpen={setMenuOpen}
           />
         </Headroom>
-        <SiteWrapper>
-          <main>{children}</main>
-          <footer className='text-content-muted text-sm mt-6 px-4'>
+        <SiteWrapper className='mx-auto w-full max-w-5xl px-4 sm:px-8 lg:px-12 pb-8'>
+          <main className='w-full max-w-full'>{children}</main>
+          <footer className='text-muted text-sm mt-6 px-4'>
             Built with
             {` `}
             <ExternalLink href='https://www.gatsbyjs.com'>Gatsby</ExternalLink> from 2020

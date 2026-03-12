@@ -19,7 +19,7 @@ export const Header = ({ siteTitle }) => {
           <button
             type='button'
             onClick={() => setMenuOpen(!menuOpen)}
-            className='rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand aria-expanded="false"'
+            className='rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary aria-expanded="false"'
           >
             <span className='sr-only'>Open main menu</span>
             {menuOpen ? <X /> : <Hamburger />}

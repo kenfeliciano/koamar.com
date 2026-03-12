@@ -1,20 +1,21 @@
 import * as React from 'react'
 import { useContext } from 'react'
-import tw from 'tailwind-styled-components'
+import styled from 'styled-components'
 
 import { MenuContext } from '../components'
 
-const ContentWrapper = tw.div`
-  p-4 mx-4 mt-6  rounded-lg bg-surface-main-container shadow-lg
-  ${({ menuOpen, menuShift }) => menuOpen && menuShift && tw`mt-40`}
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0.5rem; /* rounded-lg */
+  background: var(--container); /* bg-container */
+  box-shadow: var(--shadow-lg); /* shadow-lg */
 `
 
 export const Content = ({ menuShift, children }) => {
   const { menuOpen } = useContext(MenuContext)
 
-  return (
-    <ContentWrapper menuOpen={menuOpen} menuShift={menuShift}>
-      {children}
-    </ContentWrapper>
-  )
+  const shiftClass = menuOpen && menuShift ? 'mt-40' : 'mt-6'
+
+  return <ContentWrapper className={`p-4 ${shiftClass}`}>{children}</ContentWrapper>
 }

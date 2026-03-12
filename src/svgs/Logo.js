@@ -46,7 +46,7 @@ export const Logo = ({ siteTitle }) => (
           KoaMar
         </tspan>
       </text>
-      <path className='text-brand' d='M13 10.3 L 32.5,10.1 L 32.5, 10.5 z' />
+      <path className='text-primary' d='M13 10.3 L 32.5,10.1 L 32.5, 10.5 z' />
     </svg>
   </LogoWrapper>
 )

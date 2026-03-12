@@ -1,21 +1,24 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
-import tw from 'tailwind-styled-components'
+import styled from 'styled-components'
 
-export const PostWrapper = tw(Link)`
-  rounded-lg mt-4 hover:(ring-2 ring-brand)
+const PostWrapper = styled(Link)`
+  /* structure only */
 `
 
-export const UpdatedWrapper = tw.p`
-  m-0
+export const UpdatedWrapper = styled.p`
+  @apply m-0;
 `
 
 export const PostCard = ({ post, collection }) => (
-  <PostWrapper to={`/${collection}/${post.node.frontmatter.slug}`}>
+  <PostWrapper
+    className='rounded-lg mt-4 hover:ring-2 hover:ring-primary'
+    to={`/${collection}/${post.node.frontmatter.slug}`}
+  >
     <div
       key={post.node.id}
-      className='flex flex-col h-full p-4 rounded-lg shadow-lg sm:flex-row bg-surface-main'
+      className='flex flex-col h-full p-4 rounded-lg shadow-lg sm:flex-row bg-surface'
     >
       {post.node.frontmatter.coverImage ? (
         <GatsbyImage
@@ -31,9 +34,9 @@ export const PostCard = ({ post, collection }) => (
           <h2>{post.node.frontmatter.title}</h2>
           <p className='mt-1'>{post.node.excerpt}</p>
         </div>
-        <p className='text-sm text-content-muted'>{post.node.frontmatter.date}</p>
+        <p className='text-sm text-muted'>{post.node.frontmatter.date}</p>
         {post.node.frontmatter.updated ? (
-          <UpdatedWrapper className='text-sm text-content-muted'>
+          <UpdatedWrapper className='text-sm text-muted'>
             Updated: {post.node.frontmatter.updated}
           </UpdatedWrapper>
         ) : null}

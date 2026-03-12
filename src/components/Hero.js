@@ -11,7 +11,7 @@ const Moog = () => (
 
 export const Hero = () => (
   <>
-    <div className='relative h-64 m-0 overflow-hidden rounded-lg bg-surface-main-branded dark:bg-brand-opposite'>
+    <div className='relative h-64 m-0 overflow-hidden rounded-lg bg-hero'>
       <div className='absolute z-30 flex items-center w-full h-full'>
         <div className='relative z-30 w-5/6 px-6 py-8 text-body md:py-6 md:w-1/2'>
           <div className='hidden md:inline'>
@@ -39,12 +39,12 @@ export const Hero = () => (
           <span></span>
         </div>
         <div className='absolute top-0 right-0 flex w-full h-full'>
-          <div className='h-full transition-all sm:w-1/3 w-14 bg-surface-main-branded dark:bg-brand-opposite'></div>
-          <div className='relative w-1/3 w-6xl h-288'>
+          <div className='h-full transition-all sm:w-1/3 w-14 bg-hero'></div>
+          <div className='relative w-1/3 h-[288px]'>
             <svg
               fill='currentColor'
               viewBox='0 0 100 100'
-              className='absolute inset-y-0 z-20 h-full text-surface-branded dark:text-brand-opposite'
+              className='absolute inset-y-0 z-20 h-full text-hero'
             >
               <polygon id='diagonal' points='0,0 100,0 50,100 0,100'></polygon>
             </svg>

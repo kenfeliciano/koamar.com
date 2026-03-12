@@ -19,7 +19,7 @@ export const DarkToggle = () => {
         }}
         className='sm:block flex justify-between items-center w-full pr-6 sm:pr-0'
       >
-        <span className='block sm:hidden px-2 py-1 font-semibold rounded hover:bg-brand-opposite'>
+        <span className='block sm:hidden px-2 py-1 font-semibold rounded hover:bg-opposite'>
           {' '}
           Toggle Theme{' '}
         </span>

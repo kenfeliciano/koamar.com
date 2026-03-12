@@ -2,14 +2,14 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, LinkEdges, TagLinks } from '../components'
-import tw from 'tailwind-styled-components'
+import styled from 'styled-components'
 
-const InfoWrapper = tw.div`
-  flex flex-col items-center sm:flex-row
+const InfoWrapper = styled.div`
+  @apply flex flex-col items-center sm:flex-row;
 `
 
-const InfoSeparator = tw.span`
-  hidden sm:inline
+const InfoSeparator = styled.span`
+  @apply hidden sm:inline;
 `
 
 const getThirdField = ({ implementation, created, createdCirca, date }) => {
@@ -55,7 +55,7 @@ const BlogPost = ({ data, pageContext, children }) => {
     <Layout>
       <SEO title={frontmatter.title} description={frontmatter.excerpt} />
       <CoverImage fluid={coverImage} alt={coverAlt} />
-      <div className='flex items-center justify-between mt-1 ml-2 mr-2 text-xs lg:items-start lg:text-sm text-content-muted lg:ml-0 lg:mr-0'>
+      <div className='flex items-center justify-between mt-1 ml-2 mr-2 text-xs lg:items-start lg:text-sm text-muted lg:ml-0 lg:mr-0'>
         <InfoWrapper>
           <span>Posted </span>
           <InfoSeparator>:&nbsp;</InfoSeparator>
@@ -72,14 +72,14 @@ const BlogPost = ({ data, pageContext, children }) => {
       <Content>
         <h1>
           {frontmatter.draft && (
-            <span className='inline-block p-2 tracking-wide uppercase rounded-lg bg-brand-opposite'>
+            <span className='inline-block p-2 tracking-wide uppercase rounded-lg bg-opposite'>
               (Draft)
             </span>
           )}{' '}
           {frontmatter.title}
         </h1>
         {frontmatter.updated ? (
-          <p className='mt-1 text-sm text-content-muted'>Updated: {frontmatter.updated}</p>
+          <p className='mt-1 text-sm text-muted'>Updated: {frontmatter.updated}</p>
         ) : null}
         {children}
       </Content>
