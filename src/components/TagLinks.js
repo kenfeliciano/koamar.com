@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { TagLink } from '../components'
 
 const TagContainer = styled.div`
-  @apply flex flex-row justify-start py-1 pl-1 my-1 rounded-lg;
+  /* structure only */
 `
 
 export const TagLinks = ({ tags }) => (
-  <TagContainer>
+  <TagContainer className='flex flex-row justify-start py-1 pl-1 my-1 rounded-lg'>
     {tags.map((tag) => (
       <TagLink tag={tag} />
     ))}
