@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import styled from 'styled-components'
 
-const PostWrapper = styled(Link)`
+export const PostWrapper = styled(Link)`
   /* structure only */
 `
 

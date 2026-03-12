@@ -7,10 +7,7 @@ const PostContainer = styled.div`
 `
 
 export const PostList = ({ posts }) => (
-  <PostContainer
-    className='className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:pb-4 bg-red-200"
-'
-  >
+  <PostContainer className='grid gap-y-0 lg:grid-cols-1 lg:pb-4'>
     {posts.map((post) => (
       <PostListCard
         post={post}
