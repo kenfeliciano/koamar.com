@@ -4,13 +4,13 @@ import SEO from '../components/seo'
 import { Layout, CoverImage, Content, LinkEdges, TagLinks } from '../components'
 import styled from 'styled-components'
 
-const InfoWrapper = styled.div`
-  @apply flex flex-col items-center sm:flex-row;
-`
+const InfoWrapper = styled.div.attrs({
+  className: 'flex flex-col items-center sm:flex-row',
+})``
 
-const InfoSeparator = styled.span`
-  @apply hidden sm:inline;
-`
+const InfoSeparator = styled.span.attrs({
+  className: 'hidden sm:inline',
+})``
 
 const getThirdField = ({ implementation, created, createdCirca, date }) => {
   if (implementation)
