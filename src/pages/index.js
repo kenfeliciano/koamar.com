@@ -59,7 +59,6 @@ export const query = graphql`
             }
           }
           id
-          excerpt
           fields {
             collection
           }
@@ -90,7 +89,6 @@ export const query = graphql`
             }
           }
           id
-          excerpt
           fields {
             collection
           }

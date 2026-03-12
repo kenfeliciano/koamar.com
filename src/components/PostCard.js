@@ -8,7 +8,7 @@ const PostWrapper = styled(Link)`
 `
 
 export const UpdatedWrapper = styled.p`
-  @apply m-0;
+  /* structure only */
 `
 
 export const PostCard = ({ post, collection }) => (
@@ -32,11 +32,11 @@ export const PostCard = ({ post, collection }) => (
       <div className='relative flex flex-col justify-between mt-2 sm:ml-4 sm:mt-0'>
         <div>
           <h2>{post.node.frontmatter.title}</h2>
-          <p className='mt-1'>{post.node.excerpt}</p>
+          <p className='mt-1'>{post.node.frontmatter.excerpt}</p>
         </div>
         <p className='text-sm text-muted'>{post.node.frontmatter.date}</p>
         {post.node.frontmatter.updated ? (
-          <UpdatedWrapper className='text-sm text-muted'>
+          <UpdatedWrapper className='text-sm text-muted m-0'>
             Updated: {post.node.frontmatter.updated}
           </UpdatedWrapper>
         ) : null}
