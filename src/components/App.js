@@ -101,7 +101,6 @@ const GlobalStyles = createGlobalStyle`
   ol {
     list-style-type: decimal;
   }
-
   p {
     margin-top: 1.5rem;
     color: var(--text-body);

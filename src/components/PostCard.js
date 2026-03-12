@@ -34,7 +34,7 @@ export const PostCard = ({ post, collection }) => (
           <h2>{post.node.frontmatter.title}</h2>
           <p className='mt-1'>{post.node.frontmatter.excerpt}</p>
         </div>
-        <p className='text-sm text-muted'>{post.node.frontmatter.date}</p>
+        <p className='mt-6 text-sm text-muted'>{post.node.frontmatter.date}</p>
         {post.node.frontmatter.updated ? (
           <UpdatedWrapper className='text-sm text-muted m-0'>
             Updated: {post.node.frontmatter.updated}
