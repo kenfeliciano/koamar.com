@@ -8,7 +8,7 @@ import Headroom from 'react-headroom'
 import { Header, ExternalLink, MenuProvider } from '.'
 
 const SiteWrapper = styled.div`
-  background: var(--container);
+  /* just structure */
 `
 
 export const Layout = ({ children }) => {
