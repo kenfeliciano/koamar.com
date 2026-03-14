@@ -215,50 +215,62 @@ exports.createPages = async ({ graphql, actions }) => {
   //
   // SINGLE MDX PAGES (blog, project, site)
   //
-  const postEdges = data.posts.edges
-  const sortedPosts = postEdges.slice().sort((a, b) => {
-    return new Date(a.node.frontmatter.date) - new Date(b.node.frontmatter.date)
+  // const postEdges = data.posts.edges
+  // const sortedPosts = postEdges.slice().sort((a, b) => {
+  //   return new Date(a.node.frontmatter.date) - new Date(b.node.frontmatter.date)
+  // })
+  const sortedByCollection = sorted
+  const collections = ['blog', 'project', 'site']
+
+  collections.forEach((collection) => {
+    const postsInCollection = sortedByCollection.filter(
+      (edge) => edge.node.fields.collection === collection
+    )
+
+    postsInCollection.forEach((edge, index) => {
+      const node = edge.node
+
+      const previous =
+        index > 0
+          ? postsInCollection[index - 1].node // newer post
+          : null
+
+      const next =
+        index < postsInCollection.length - 1
+          ? postsInCollection[index + 1].node // older post
+          : null
+
+      const { slug } = node.frontmatter
+
+      if (collection === 'collections') return
+
+      const postTemplate = path.resolve('./src/templates/single-post.js')
+
+      createPage({
+        path: `${collection}/${slug}`,
+        component: `${postTemplate}?__contentFilePath=${node.internal.contentFilePath}`,
+        context: {
+          frontmatter: node.frontmatter,
+          fields: node.fields,
+          prev: previous,
+          next: next,
+          timeToRead: node.timeToRead,
+        },
+      })
+    })
   })
-  sortedPosts.forEach((edge, index) => {
-    const node = edge.node
-    const next =
-      sortedPosts[index - 1]?.node.fields.collection === node.fields.collection
-        ? sortedPosts[index - 1]?.node || null
-        : null
-    const previous =
-      sortedPosts[index + 1]?.node.fields.collection === node.fields.collection
-        ? sortedPosts[index + 1]?.node || null
-        : null
 
-    const { slug } = node.frontmatter
-    const { collection } = node.fields
-
-    if (collection === 'collections') return
-
-    const postTemplate = path.resolve('./src/templates/single-post.js')
-
-    // Create homepage manually
-    createPage({
-      path: '/',
-      component: path.resolve('./src/templates/index.js'),
-      context: {
-        mostRecent: mostRecent || [],
-        featured: featured || [],
-        tags: homepageTags || [],
-      },
-    })
-
-    createPage({
-      path: `${collection}/${slug}`,
-      component: `${postTemplate}?__contentFilePath=${node.internal.contentFilePath}`,
-      context: {
-        frontmatter: node.frontmatter,
-        fields: node.fields,
-        prev: previous && previous.fields.collection === collection ? previous : null,
-        next: next && next.fields.collection === collection ? next : null,
-        timeToRead: node.timeToRead, // optional if you want it
-      },
-    })
+  //
+  // HOME PAGE
+  //
+  createPage({
+    path: '/',
+    component: path.resolve('./src/templates/index.js'),
+    context: {
+      mostRecent: mostRecent || [],
+      featured: featured || [],
+      tags: homepageTags || [],
+    },
   })
 
   //
