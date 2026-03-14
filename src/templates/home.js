@@ -5,7 +5,7 @@ import { Layout, Hero, Content, Posts, TagList } from '../components'
 
 export const Head = () => <SEO title='Home' />
 
-export default function IndexPage({ pageContext }) {
+export default function HomePage({ pageContext }) {
   const { mostRecent, featured, tags } = pageContext
 
   return (

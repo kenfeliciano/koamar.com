@@ -287,7 +287,7 @@ exports.createPages = async ({ graphql, actions }) => {
   //
   createPage({
     path: '/',
-    component: path.resolve('./src/templates/index.js'),
+    component: path.resolve('./src/templates/home.js'),
     context: {
       mostRecent: mostRecent || [],
       featured: featured || [],
