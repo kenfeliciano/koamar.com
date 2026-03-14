@@ -174,7 +174,7 @@ export default Code
 - The goal is to accept any or all of the following (I've indicated which of these are working after the initial code):
 
   ✅ language - a language that `prism-react-render` understands<br />
-  ✅ highlighted lines - specified in curly braces like {5-7,10} (highlight lines 5 thru 7 as well as 10)<br />
+  ✅ highlighted lines - specified in curly braces like `{5-7,10}` (highlight lines 5 thru 7 as well as 10)<br />
   ✅ tab - tab on the code block showing the language in each languages chosen color (starting with javascript, js, html, and css)<br />
   ⬜ title - specified after language (if there is one) with a `:` as `title=my-title` (if no language, still use `:`)<br />
   ⬜ copy code button - something that makes it easy to copy the code block to the clipboard<br />
@@ -498,6 +498,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
 				)
 		//...
 	)
+}
 ```
 
 ✅ line numbers - by default, code will render with line numbers unless `noLineNumbers` is specified
@@ -524,6 +525,7 @@ export const Code = ({ codeString, noLineNumbers = false, language, metastring, 
     )
   }
   //...
+}
 ```
 
 ✅ react-live - if specified, will use the react-live renderer
