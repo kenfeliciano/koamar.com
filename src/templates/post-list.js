@@ -13,7 +13,7 @@ export const Head = ({ pageContext }) => {
   return <SEO title={titles[collection] || 'Posts'} />
 }
 
-const postList = ({ pageContext, data, children }) => {
+const PostList = ({ pageContext, data, children }) => {
   const { currentPage, numPages, collection } = pageContext
   const isFirst = currentPage === 1
   const isLast = currentPage === numPages
@@ -32,6 +32,7 @@ const postList = ({ pageContext, data, children }) => {
       <Content>
         <h1>{site.frontmatter.title}</h1>
         {currentPage === 1 && children}
+
         <Posts posts={posts} />
       </Content>
       <Pagination
@@ -44,4 +45,4 @@ const postList = ({ pageContext, data, children }) => {
   )
 }
 
-export default postList
+export default PostList

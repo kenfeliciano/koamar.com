@@ -45,6 +45,11 @@ exports.createPages = async ({ graphql, actions }) => {
       collections: allMdx(filter: { fields: { collection: { eq: "collections" } } }) {
         edges {
           node {
+            id
+            body
+            internal {
+              contentFilePath
+            }
             frontmatter {
               name
               title
@@ -200,13 +205,14 @@ exports.createPages = async ({ graphql, actions }) => {
 
       createPage({
         path: i === 0 ? `/${groupName}` : `/${groupName}/${i + 1}`,
-        component: postListTemplate,
+        component: `${postListTemplate}?__contentFilePath=${sitePage.node.internal.contentFilePath}`,
         context: {
           posts: postsForPage,
           site: sitePage.node,
           numPages,
           currentPage: i + 1,
           collection: groupName,
+          introFile: sitePage.node.internal.contentFilePath,
         },
       })
     })
