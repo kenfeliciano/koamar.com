@@ -13,6 +13,21 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 }
 
+exports.createResolvers = ({ createResolvers }) => {
+  createResolvers({
+    Mdx: {
+      timeToRead: {
+        type: 'Int',
+        resolve(source) {
+          const raw = source.body || ''
+          const words = raw.split(/\s+/).filter(Boolean).length
+          return Math.ceil(words / 240)
+        },
+      },
+    },
+  })
+}
+
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes, createFieldExtension } = actions
 
@@ -70,6 +85,7 @@ exports.createPages = async ({ graphql, actions }) => {
         edges {
           node {
             id
+            timeToRead
             internal {
               contentFilePath
             }
