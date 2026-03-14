@@ -40,8 +40,6 @@ const getThirdField = ({ implementation, created, createdCirca, date }) => {
 }
 
 export default function BlogPost({ pageContext, children }) {
-  console.log('SINGLE POST CONTEXT:', pageContext)
-
   const { frontmatter, fields, prev, next, timeToRead } = pageContext
 
   const coverImage = frontmatter.coverImage
