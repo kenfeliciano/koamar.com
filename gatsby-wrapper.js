@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { App } from './src/components'
 import { MDXProvider } from '@mdx-js/react'
-import { preToCodeBlock } from 'mdx-utils'
 import {
   Table,
   Code,
@@ -50,10 +49,31 @@ export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([<MagicScriptTag key='magic-script' />])
 }
 
+function preToCodeBlockV2(preProps) {
+  const child = preProps.children
+
+  if (
+    child &&
+    child.props &&
+    typeof child.props.children === 'string' &&
+    child.props.className &&
+    child.props.className.startsWith('language-')
+  ) {
+    const language = child.props.className.replace('language-', '')
+    return {
+      codeString: child.props.children.trim(),
+      language,
+      ...child.props,
+    }
+  }
+
+  return null
+}
+
 const components = {
   table: Table,
   pre: (preProps) => {
-    const props = preToCodeBlock(preProps)
+    const props = preToCodeBlockV2(preProps)
     if (props) {
       return <Code {...props} />
     }
@@ -78,10 +98,17 @@ const components = {
 
 export const mdxComponents = components
 
+// ----------------------
+// CRITICAL FIX:
+// MDXProvider must wrap PAGE elements, not just the root.
+// ----------------------
+export const wrapPageElement = ({ element }) => {
+  return <MDXProvider components={components}>{element}</MDXProvider>
+}
+
+// ----------------------
+// Root wrapper: App wraps the whole site
+// ----------------------
 export const wrapRootElement = ({ element }) => {
-  return (
-    <App>
-      <MDXProvider components={components}>{element}</MDXProvider>
-    </App>
-  )
+  return <App>{element}</App>
 }

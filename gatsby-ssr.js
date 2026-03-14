@@ -1,1 +1,1 @@
-export { wrapRootElement, onRenderBody } from './gatsby-wrapper'
+export { wrapRootElement, wrapPageElement, onRenderBody } from './gatsby-wrapper'
