@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
 
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, Pagination, Posts } from '../components'
@@ -12,8 +11,7 @@ const postList = ({ pageContext, data, children }) => {
     currentPage - 1 === 1 ? `/${collection}` : `/${collection}/${currentPage - 1}`
   const nextPage = `/${collection}/${currentPage + 1}`
 
-  const posts = data.allMdx.edges
-  const site = data.mdx
+  const { posts, site } = pageContext
 
   return (
     <Layout>
@@ -38,53 +36,3 @@ const postList = ({ pageContext, data, children }) => {
 }
 
 export default postList
-
-export const pageQuery = graphql`
-  query AllPostsQuery($skip: Int!, $limit: Int!, $collection: String!) {
-    allMdx(
-      sort: { frontmatter: { date: DESC } }
-      filter: {
-        fields: { collection: { eq: $collection } }
-        frontmatter: { draft: { eq: false } }
-      }
-      skip: $skip
-      limit: $limit
-    ) {
-      edges {
-        node {
-          frontmatter {
-            slug
-            title
-            date(formatString: "MMMM D, YYYY")
-            updated(formatString: "MMMM D, YYYY")
-            excerpt
-            coverAlt
-            coverImage {
-              publicURL
-              childImageSharp {
-                gatsbyImageData(layout: FULL_WIDTH)
-              }
-            }
-          }
-          id
-          excerpt
-          fields {
-            collection
-          }
-        }
-      }
-    }
-    mdx(frontmatter: { name: { eq: $collection } }) {
-      frontmatter {
-        title
-        coverAlt
-        coverImage {
-          publicURL
-          childImageSharp {
-            gatsbyImageData(layout: FULL_WIDTH)
-          }
-        }
-      }
-    }
-  }
-`

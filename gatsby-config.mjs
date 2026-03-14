@@ -1,4 +1,11 @@
-module.exports = {
+import remarkGfm from 'remark-gfm'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const config = {
   trailingSlash: 'always',
   siteMetadata: {
     title: `KoaMar`,
@@ -49,18 +56,8 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.md`, `.mdx`],
-        useGatsbyHead: false,
         mdxOptions: {
-          gatsbyRemarkPlugins: [
-            {
-              resolve: `gatsby-remark-images`,
-              options: {
-                maxWidth: 1200,
-                quality: 90,
-                linkImagesToOriginal: true,
-              },
-            },
-          ],
+          remarkPlugins: [remarkGfm],
         },
       },
     },
@@ -99,3 +96,5 @@ module.exports = {
     // `gatsby-plugin-offline`,
   ],
 }
+
+export default config

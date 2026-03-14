@@ -133,17 +133,16 @@ const GlobalStyles = createGlobalStyle`
     margin-top: 1.5rem;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary), rgba(0, 0, 0, 0));
   }
-  table {
+  .mdx-content table {
     width: 100%;    
     border: 2px solid var(--muted);
   }
-  th, td {
+  .mdx-content th, 
+  .mdx-content td {
     border: 1px solid var(--muted);
-  }
-  th, td {
     padding: 0.5rem;
   }
-  th {
+  .mdx-content th {
     border-bottom: 2px solid var(--muted);
     background-color: rgba(var(--primary-rgb), var(--th-opacity));
   }

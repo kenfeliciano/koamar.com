@@ -4,7 +4,9 @@ import styled from 'styled-components'
 
 import { MenuContext } from '../components'
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div.attrs((props) => ({
+  className: `p-4 ${props.shiftClass} ${props.className || ''}`,
+}))`
   width: 100%;
   max-width: 100%;
   border-radius: 0.5rem; /* rounded-lg */
@@ -12,10 +14,13 @@ const ContentWrapper = styled.div`
   box-shadow: var(--shadow-lg); /* shadow-lg */
 `
 
-export const Content = ({ menuShift, children }) => {
+export const Content = ({ menuShift, children, className }) => {
   const { menuOpen } = useContext(MenuContext)
-
   const shiftClass = menuOpen && menuShift ? 'mt-40' : 'mt-6'
 
-  return <ContentWrapper className={`p-4 ${shiftClass}`}>{children}</ContentWrapper>
+  return (
+    <ContentWrapper shiftClass={shiftClass} className={className}>
+      {children}
+    </ContentWrapper>
+  )
 }

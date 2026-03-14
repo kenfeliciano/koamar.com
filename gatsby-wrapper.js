@@ -51,14 +51,15 @@ export const onRenderBody = ({ setHeadComponents }) => {
 }
 
 const components = {
-  table: Table,
-  pre: (preProps) => {
+  'mdx.table': Table,
+  'mdx.pre': (preProps) => {
     const props = preToCodeBlock(preProps)
     if (props) {
       return <Code {...props} />
     }
     return <pre {...preProps} />
   },
+  'mdx.inlineCode': (props) => <code {...props} />,
   a: (props) => <MarkdownLink {...props} />,
   h2: (props) => (
     <h2 id={props.children.replace(/\s/g, '-').toLowerCase()}>
@@ -74,6 +75,8 @@ const components = {
   Success,
   Info,
 }
+
+export const mdxComponents = components
 
 export const wrapRootElement = ({ element }) => {
   return (
