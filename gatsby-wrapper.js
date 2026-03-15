@@ -10,6 +10,8 @@ import {
   Warning,
   Success,
   Info,
+  Flat,
+  Sharp,
 } from './src/components'
 
 const MagicScriptTag = () => {
@@ -82,6 +84,8 @@ const components = {
   inlineCode: (props) => <code {...props} />,
   a: (props) => <MarkdownLink {...props} />,
   MarkdownLink,
+  Flat,
+  Sharp,
   h2: (props) => (
     <h2 id={props.children.replace(/\s/g, '-').toLowerCase()}>
       <a href={`#${props.children.replace(/\s/g, '-').toLowerCase()}`}>
