@@ -81,6 +81,7 @@ const components = {
   },
   inlineCode: (props) => <code {...props} />,
   a: (props) => <MarkdownLink {...props} />,
+  MarkdownLink,
   h2: (props) => (
     <h2 id={props.children.replace(/\s/g, '-').toLowerCase()}>
       <a href={`#${props.children.replace(/\s/g, '-').toLowerCase()}`}>
@@ -98,17 +99,10 @@ const components = {
 
 export const mdxComponents = components
 
-// ----------------------
-// CRITICAL FIX:
-// MDXProvider must wrap PAGE elements, not just the root.
-// ----------------------
-export const wrapPageElement = ({ element }) => {
-  return <MDXProvider components={components}>{element}</MDXProvider>
-}
-
-// ----------------------
-// Root wrapper: App wraps the whole site
-// ----------------------
 export const wrapRootElement = ({ element }) => {
-  return <App>{element}</App>
+  return (
+    <MDXProvider components={components}>
+      <App>{element}</App>
+    </MDXProvider>
+  )
 }
