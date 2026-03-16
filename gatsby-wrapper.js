@@ -62,9 +62,11 @@ function preToCodeBlockV2(preProps) {
     child.props.className.startsWith('language-')
   ) {
     const language = child.props.className.replace('language-', '')
+    const metastring = child.props['data-meta']
     return {
       codeString: child.props.children.trim(),
       language,
+      metastring,
       ...child.props,
     }
   }
@@ -81,6 +83,7 @@ const components = {
     }
     return <pre {...preProps} />
   },
+
   inlineCode: (props) => <code {...props} />,
   a: (props) => <MarkdownLink {...props} />,
   MarkdownLink,

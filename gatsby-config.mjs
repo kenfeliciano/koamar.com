@@ -1,4 +1,5 @@
 import remarkGfm from 'remark-gfm'
+import rehypeMetaToDataMeta from './plugins/rehype-meta-to-data-meta.mjs'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
@@ -58,6 +59,7 @@ const config = {
         extensions: [`.md`, `.mdx`],
         mdxOptions: {
           remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeMetaToDataMeta],
         },
         gatsbyRemarkPlugins: [
           {
