@@ -98,6 +98,9 @@ exports.createPages = async ({ graphql, actions }) => {
               title
               tags
               excerpt
+              implementation(formatString: "MM/DD/YYYY")
+              created(formatString: "MM/DD/YYYY")
+              createdCirca
               coverAlt
               coverImage {
                 publicURL
