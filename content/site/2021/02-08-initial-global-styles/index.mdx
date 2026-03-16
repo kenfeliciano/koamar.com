@@ -20,14 +20,15 @@ My first thought was to just remove `layout.css` and see what happens. My hypoth
 In my App component, I had the `ThemeProvider` component wrapping the whole site. To me, it made sense that App was where the global styles should live.
 
 <Info>
-  <h3>Keeping it DRY-er</h3>
-  <p>
-    This had the added benefit of removing some code duplication! When working through the
-    Skillthrive tutorial, [Gatsby JS: Build a
-    Blog](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT), I
-    ended up with duplicate code in `gatsby-ssr.js` and `gatsby-browser.js`. Using the App
-    component in those two files allows the code to live only in one place.
-  </p>
+
+### Keeping it DRY-er
+
+This had the added benefit of removing some code duplication! When working through the
+Skillthrive tutorial, [Gatsby JS: Build a
+Blog](https://www.youtube.com/playlist?list=PLW0RabRDhwwzVNhlOgQQgw6HJzXdM1MnT), I
+ended up with duplicate code in `gatsby-ssr.js` and `gatsby-browser.js`. Using the App
+component in those two files allows the code to live only in one place.
+
 </Info>
 
 I did not want to try and convert all this CSS into Tailwind at this point since it was **mostly** already done. I knew I liked `styled-components` and I was somewhat familiar with using [createGlobalStyle](https://styled-components.com/docs/api#createglobalstyle) from styled-components. I decided to convert what I needed from layout.css into a GlobalStyles component.
@@ -39,8 +40,10 @@ Even though I did not convert this to Tailwind CSS, I knew I was going to try an
 ## Margin Spacing
 
 <Warning>
-  Future me has read about trying to do without margin spacing at all! Present me had not
-  read about it!
+
+Future me has read about trying to do without margin spacing at all! Present me had not
+read about it!
+
 </Warning>
 
 A lot of Gatsby's initial styling used margin-bottom to separate elements. I had planned on using margin-top. I had experience with it, and to quote something from [Adam Wathan's Tailwind CSS tutorial](https://youtu.be/5byxwJce6zc):
@@ -139,14 +142,14 @@ export default App
 ```
 
 <Primary>
-<h3>First game against the dreaded LA Kings tomorrow!</h3>
-<p>
+
+### First game against the dreaded LA Kings tomorrow!
+
 I know it makes no sense but when in Sharks-fan-mode, I despise the LA Kings. I firmly believe that a King fan will despise the SJ Sharks as well. That's just the way it is! Meanwhile, they are both lovely teams with lovely people playing on them.
-</p>
-<ul>
-<li>Sharks are 4-5-1 (next to last place in the West)</li>
-<li>Kings are 3-6-2 (last place in the West)</li>
-</ul>
+
+- Sharks are 4-5-1 (next to last place in the West)
+- Kings are 3-6-2 (last place in the West)
+
 </Primary>
 
 ##### Attributions
