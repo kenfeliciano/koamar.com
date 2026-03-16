@@ -307,7 +307,7 @@ exports.createPages = async ({ graphql, actions }) => {
     const tagTemplate = path.resolve('./src/templates/single-tag.js')
 
     // Filter posts by tag
-    const postsWithTag = allPosts.filter((edge) =>
+    const postsWithTag = newestFirst.filter((edge) =>
       edge.node.frontmatter.tags?.includes(id)
     )
 
