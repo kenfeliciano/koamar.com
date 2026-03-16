@@ -100,6 +100,7 @@ exports.createPages = async ({ graphql, actions }) => {
               excerpt
               implementation(formatString: "MM/DD/YYYY")
               created(formatString: "MM/DD/YYYY")
+              updated(formatString: "MM/DD/YYYY")
               createdCirca
               coverAlt
               coverImage {
