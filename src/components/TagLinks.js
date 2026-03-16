@@ -9,7 +9,7 @@ const TagContainer = styled.div`
 export const TagLinks = ({ tags }) => (
   <TagContainer className='flex flex-row justify-start py-1 pl-1 my-1 rounded-lg'>
     {tags.map((tag) => (
-      <TagLink tag={tag} />
+      <TagLink tag={tag} key={tag} />
     ))}
   </TagContainer>
 )

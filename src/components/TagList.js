@@ -22,6 +22,7 @@ export const TagList = ({ tags }) => {
         <TagContainer
           className='pt-1 mt-0 text-sm focus:ring-2 focus:ring-primary hover:ring-2 hover:ring-primary'
           to={`/tags/${tag[0]}`}
+          key={`${tag[0]}`}
         >
           {tag[0]}&nbsp;({tag[1]})
         </TagContainer>
