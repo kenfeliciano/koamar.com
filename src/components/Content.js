@@ -5,10 +5,8 @@ import styled from 'styled-components'
 import { MenuContext } from '../components'
 
 const ContentWrapper = styled.div.attrs((props) => ({
-  className: `p-4 ${props.shiftClass} ${props.className || ''}`,
+  className: `p-4 mx-4 ${props.shiftClass} ${props.className || ''}`,
 }))`
-  width: 100%;
-  max-width: 100%;
   border-radius: 0.5rem; /* rounded-lg */
   background: var(--container); /* bg-container */
   box-shadow: var(--shadow-lg); /* shadow-lg */

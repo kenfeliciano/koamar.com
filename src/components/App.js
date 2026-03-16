@@ -164,7 +164,18 @@ const GlobalStyles = createGlobalStyle`
     color: var(--primary);
     margin-left: .25rem;
   }
-
+  section[data-footnotes] h2 {
+    display: none;
+  }
+  section[data-footnotes]::before {
+    content: "";
+    display: block;
+    border: 0;
+    height: 2px;
+    margin-top: 1.5rem;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary), rgba(0, 0, 0, 0));
+  }
+  
   /* Branded Links */
   .border-gradient {
     border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%);
