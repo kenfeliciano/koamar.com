@@ -1,19 +1,23 @@
 import * as React from 'react'
 import { useContext } from 'react'
-import tw, { styled } from 'twin.macro'
+import styled from 'styled-components'
 
 import { MenuContext } from '../components'
 
-const ContentWrapper = styled.div(({ menuOpen, menuShift }) => [
-  tw`p-4 mx-4 mt-6 bg-container rounded-lg shadow-lg`,
-  menuOpen && menuShift && tw`mt-40`,
-])
+const ContentWrapper = styled.div.attrs((props) => ({
+  className: `p-4 mx-4 ${props.shiftClass} ${props.className || ''}`,
+}))`
+  border-radius: 0.5rem; /* rounded-lg */
+  background: var(--container); /* bg-container */
+  box-shadow: var(--shadow-lg); /* shadow-lg */
+`
 
-export const Content = ({ menuShift, children }) => {
+export const Content = ({ menuShift, children, className }) => {
   const { menuOpen } = useContext(MenuContext)
+  const shiftClass = menuOpen && menuShift ? 'mt-40' : 'mt-6'
 
   return (
-    <ContentWrapper menuOpen={menuOpen} menuShift={menuShift}>
+    <ContentWrapper shiftClass={shiftClass} className={className}>
       {children}
     </ContentWrapper>
   )

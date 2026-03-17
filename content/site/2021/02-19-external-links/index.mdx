@@ -24,9 +24,11 @@ I wanted to do this correctly! I did a bit of research and found that links that
 - [nofollow](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#attr-nofollow)
 
 <Warning>
-  I must admit, even after reading all the docs, I'm still nogrok-ing this stuff. But, I
-  see this as the way to do it properly. Click on this external link and you are in a
-  different world not connected to my site at all. That sounds good!
+
+I must admit, even after reading all the docs, I'm still nogrok-ing this stuff. But, I
+see this as the way to do it properly. Click on this external link and you are in a
+different world not connected to my site at all. That sounds good!
+
 </Warning>
 
 ### The React component
@@ -50,7 +52,11 @@ const ExternalLink = ({ href, children }) => (
 export default ExternalLink
 ```
 
-<Info>That'd be the end of this post but, foreshadowing, remember?</Info>
+<Info>
+
+That'd be the end of this post but, foreshadowing, remember?
+
+</Info>
 
 What's confusing about that I ask? I'm glad I asked! I've got a few classes in there don't I? Some are certainly Tailwind but some are certainly **_not_**! If I'm _not_ using Tailwind for the whole thing, why can't I just use a single class, like `inline-link` or at least two classes, `inline-link` and `border-fadeaway`?
 

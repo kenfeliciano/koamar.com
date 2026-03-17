@@ -13,9 +13,12 @@ _This one didn't go as planned!_ Jump to the end [Decisions, Decisions](#decisio
 
 <Warning>
 
-This implementation happened in Gatsby 2 days. At the moment, the site is still in Gatsby 2.
+This implementation happened in Gatsby 2 days. At the moment, the site is still in
+Gatsby 2.
 
-Also, I need a plugin so I can link to headings in a document which I have **_not_** installed as of yet! If you want to go to Decisions, Decisions, it's down there a bit...you'll find it!
+Also, I need a plugin so I can link to headings in a document which I have **_not_**
+installed as of yet! If you want to go to Decisions, Decisions, it's down there a
+bit...you'll find it!
 
 </Warning>
 
@@ -41,7 +44,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        extensions: [`.mdx`, `.md`],
+        extensions: [`.mdx`, `.md`],7
       },
     },
     {
@@ -67,7 +70,7 @@ Add just enough code to gather slugs and ids to create pages.
 exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query {
-      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+      allMdx(sort: { frontmatter: { date: DESC } }) {
         edges {
           node {
             frontmatter {
@@ -203,7 +206,9 @@ on [Unsplash](https://unsplash.com/s/photos/content?utm_source=unsplash&utm_medi
 
 ## Optional reading
 
-Yes, I realize the whole site and in fact Internet is optional reading, but this really is! These are just some of the initial thoughts I went through when trying to figure out how to configure the site for content.
+Yes, I realize the whole site and in fact Internet is optional reading, but this
+really is! These are just some of the initial thoughts I went through when trying to
+figure out how to configure the site for content.
 
 </Info>
 
@@ -273,7 +278,7 @@ sourceInstanceName already exists, but you cannot filter on this with allMdx (al
 
 ```graphql
 query {
-  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+  allMdx(sort: { frontmatter: { date: DESC } }) {
     edges {
       node {
         id
@@ -316,7 +321,7 @@ Going with `onCreateNode` to add a collection field. It works for creating the p
 
 ```graphql
 query {
-  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+  allMdx(sort: { frontmatter: { date: DESC } }) {
     edges {
       node {
         id
@@ -360,6 +365,8 @@ For each tag, a list of matching files of all content type with something that i
 
 i.e. `gatsby` tag
 
-- Site: {Name of post}
-- Blog: {Name of post}
-- Project: {Name of project}
+<ul>
+  <li>Site: (Name of post)</li>
+  <li>Blog: (Name of post)</li>
+  <li>Project: (Name of project)</li>
+</ul>

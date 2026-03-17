@@ -12,9 +12,10 @@ featured: true
 
 <Info>
 
-**tl;dr**
+### tl;dr
 
-Jump to the [Final code](#final-code)  
+Jump to the [Final code](#final-code)
+
 Jump to the [updated version](#refactored-note-query)
 
 </Info>
@@ -140,7 +141,7 @@ if (data.successful) {
 }
 ```
 
-Using console.log({data}) I could see there was a bit of nesting going on, hence `data.value.values` is my starting point.
+Using console.log(`{data}`) I could see there was a bit of nesting going on, hence `data.value.values` is my starting point.
 
 - "`values` is an array of stuff" is how I'm thinking of this. There are two possibilities for each row in the array:
   - `link, string` - When `[0]` is a link and `[1]` is a string, there is only one log entry for this type (i.e. log-tv) on the day and, because of the WHERE clause in the Dataview query, it is for the current show.
@@ -160,7 +161,9 @@ There's S4E15!
 
 **Just in time!**
 
-It's working with JavaScript. For Good Girls, we're so close to the end of Season 4. We're going to watch the Season Finale tonight. I bet Season 5 will be very exciting. Wait, what? Cancelled? C'mon Netflix pick it up at least to give it some closure!
+It's working with JavaScript. For Good Girls, we're so close to the end of Season 4.
+We're going to watch the Season Finale tonight. I bet Season 5 will be very exciting.
+Wait, what? Cancelled? C'mon Netflix pick it up at least to give it some closure!
 
 </Success>
 
@@ -201,7 +204,7 @@ if (data.successful) {
 
 For my `log-music` entries I have some that are just a link to the tune. Like this!
 
-- log-music:: [[} Stanley Clarke - Silly Putty]]
+- log-music:: [[\} Stanley Clarke - Silly Putty]]
 
 What does this mean? By default, I suppose it means I listened to the tune. On this date, for this tune, I was getting ready to transcribe it. Find a recording, see if there's already a chart on the Internet[^4], and decide whether I need to transcribe it or not.
 

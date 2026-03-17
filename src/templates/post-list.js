@@ -1,11 +1,19 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import SEO from '../components/seo'
 import { Layout, CoverImage, Content, Pagination, Posts } from '../components'
 
-const postList = ({ pageContext, data }) => {
+export const Head = ({ pageContext }) => {
+  const { collection } = pageContext
+  const titles = {
+    blog: "Ken's Blog",
+    project: 'Projects and Creations',
+    site: 'Site Development',
+  }
+  return <SEO title={titles[collection] || 'Posts'} />
+}
+
+const PostList = ({ pageContext, data, children }) => {
   const { currentPage, numPages, collection } = pageContext
   const isFirst = currentPage === 1
   const isLast = currentPage === numPages
@@ -13,19 +21,18 @@ const postList = ({ pageContext, data }) => {
     currentPage - 1 === 1 ? `/${collection}` : `/${collection}/${currentPage - 1}`
   const nextPage = `/${collection}/${currentPage + 1}`
 
-  const posts = data.allMdx.edges
-  const site = data.mdx
+  const { posts, site } = pageContext
 
   return (
     <Layout>
-      <SEO />
       <CoverImage
         fluid={site.frontmatter.coverImage.childImageSharp.gatsbyImageData}
         alt={site.frontmatter.coverAlt}
       />
       <Content>
         <h1>{site.frontmatter.title}</h1>
-        {currentPage === 1 && <MDXRenderer>{site.body}</MDXRenderer>}
+        {currentPage === 1 && children}
+
         <Posts posts={posts} />
       </Content>
       <Pagination
@@ -38,55 +45,4 @@ const postList = ({ pageContext, data }) => {
   )
 }
 
-export default postList
-
-export const pageQuery = graphql`
-  query AllPostsQuery($skip: Int!, $limit: Int!, $collection: String!) {
-    allMdx(
-      sort: { fields: frontmatter___date, order: DESC }
-      filter: {
-        fields: { collection: { eq: $collection } }
-        frontmatter: { draft: { eq: false } }
-      }
-      skip: $skip
-      limit: $limit
-    ) {
-      edges {
-        node {
-          frontmatter {
-            slug
-            title
-            date(formatString: "MMMM D, YYYY")
-            updated(formatString: "MMMM D, YYYY")
-            excerpt
-            coverAlt
-            coverImage {
-              publicURL
-              childImageSharp {
-                gatsbyImageData(layout: FULL_WIDTH)
-              }
-            }
-          }
-          id
-          excerpt
-          fields {
-            collection
-          }
-        }
-      }
-    }
-    mdx(frontmatter: { name: { eq: $collection } }) {
-      body
-      frontmatter {
-        title
-        coverAlt
-        coverImage {
-          publicURL
-          childImageSharp {
-            gatsbyImageData(layout: FULL_WIDTH)
-          }
-        }
-      }
-    }
-  }
-`
+export default PostList

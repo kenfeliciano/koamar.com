@@ -1,11 +1,19 @@
-module.exports = {
+import remarkGfm from 'remark-gfm'
+import rehypeMetaToDataMeta from './plugins/rehype-meta-to-data-meta.mjs'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const config = {
+  trailingSlash: 'always',
   siteMetadata: {
     title: `KoaMar`,
     description: `KoaMar Site and Blog`,
     author: `@koamar`,
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
     `gatsby-plugin-postcss`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -49,6 +57,10 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.md`, `.mdx`],
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeMetaToDataMeta],
+        },
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
@@ -61,7 +73,13 @@ module.exports = {
         ],
       },
     },
-    `gatsby-plugin-styled-components`,
+    {
+      resolve: `gatsby-plugin-styled-components`,
+      options: {
+        displayName: true,
+        pure: true,
+      },
+    },
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
@@ -90,3 +108,5 @@ module.exports = {
     // `gatsby-plugin-offline`,
   ],
 }
+
+export default config

@@ -36,10 +36,12 @@ h2: (props) => (
 ```
 
 <Warning>
-  The code supplied will only catch the first space it finds. That works fine for two word
-  headers. What if you are a little silly and right a header like, oh, "Look out behind
-  you". It doesn't work there. Changed it to use RegEx (now I've got two bugs) 😆 Just
-  kidding RegEx!
+
+The code supplied will only catch the first space it finds. That works fine for two word
+headers. What if you are a little silly and right a header like, oh, "Look out behind
+you". It doesn't work there. Changed it to use RegEx (now I've got two bugs) 😆 Just
+kidding RegEx!
+
 </Warning>
 
 **RegEx**: `/\s/g` - Match any whitespace character in the string globally. It will iteratively

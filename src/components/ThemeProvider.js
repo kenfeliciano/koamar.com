@@ -9,6 +9,7 @@ export const ThemeProvider = ({ children }) => {
     const root = window.document.documentElement
     const initialTheme = root.style.getPropertyValue('--initial-theme')
     rawSetTheme(initialTheme)
+    root.className = initialTheme
   }, [])
 
   const setTheme = (value) => {
@@ -18,5 +19,7 @@ export const ThemeProvider = ({ children }) => {
     window.document.documentElement.className = value
   }
 
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+  )
 }

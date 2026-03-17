@@ -1,13 +1,13 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  darkMode: 'class', // or 'media' or 'class'
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './content/**/*.{md,mdx}'],
+
   theme: {
-    fontFamily: {
-      sans: ['lato'],
-      serif: ['open sans'],
-      mono: ['fira code'],
-    },
     extend: {
+      fontFamily: {
+        sans: ['lato'],
+        serif: ['open sans'],
+        mono: ['fira code'],
+      },
       colors: {
         primary: 'var(--primary)',
         opposite: 'var(--opposite)',
@@ -22,11 +22,14 @@ module.exports = {
         disabled: 'var(--disabled)',
         codeTitleContainer: 'var(--code-title-background)',
         codeTitle: 'var(--code-title-text)',
+
+        'surface-main-branded': 'var(--branded-surface)',
+        'surface-main-container': 'var(--container)',
+        'surface-branded': 'var(--branded-surface)',
+        'brand-opposite': 'var(--opposite)',
+
+        hero: 'var(--hero-bg)',
       },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
 }

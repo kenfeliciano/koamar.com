@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.light {
+html.light {
   --primary: #007889;
   --primary-rgb: 0, 120, 137;
   --opposite: #f4901e;
@@ -23,9 +23,10 @@
   --code-mark-add: rgba(2, 81, 55, 1);
   --code-diff-sub: rgba(255, 153, 153, 0.25);
   --code-mark-sub: rgba(120, 35, 35, 1);
+  --hero-bg: var(--branded-surface);
 }
 
-.dark {
+html.dark {
   --primary: #f4901e;
   --primary-rgb: 244, 144, 30;
   --opposite: #007889;
@@ -46,4 +47,5 @@
   --code-mark-add: rgba(2, 81, 55, 1);
   --code-diff-sub: rgba(120, 35, 35, 0.25);
   --code-mark-sub: rgba(120, 35, 35, 1);
+  --hero-bg: var(--opposite);
 }

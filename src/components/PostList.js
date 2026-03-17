@@ -1,11 +1,13 @@
 import * as React from 'react'
-import tw, { styled } from 'twin.macro'
+import styled from 'styled-components'
 import { PostListCard } from '../components'
 
-const PostContainer = styled.div(tw`grid gap-y-0 lg:grid-cols-1 lg:pb-4`)
+const PostContainer = styled.div`
+  /* only for structure */
+`
 
 export const PostList = ({ posts }) => (
-  <PostContainer>
+  <PostContainer className='grid gap-y-0 lg:grid-cols-1 lg:pb-4'>
     {posts.map((post) => (
       <PostListCard
         post={post}

@@ -1,6 +1,9 @@
 import * as React from 'react'
-import { ThemeProvider } from '../components'
-import { createGlobalStyle } from 'styled-components'
+import { ThemeProvider as CustomThemeProvider } from '../components'
+import {
+  ThemeProvider as StyledThemeProvider,
+  createGlobalStyle,
+} from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -26,9 +29,14 @@ const GlobalStyles = createGlobalStyle`
     font-family: lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
     Helvetica Neue, sans-serif;
     margin-top: 1.5rem;
-    &:first-child {
-      margin-top: 0;
-    }
+  }
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  h5:first-child,
+  h6:first-child {
+    margin-top: 0;
   }
   h1 {    
     font-size: 2.25rem;
@@ -93,13 +101,12 @@ const GlobalStyles = createGlobalStyle`
   ol {
     list-style-type: decimal;
   }
-
   p {
     margin-top: 1.5rem;
     color: var(--text-body);
-    &:first-child {
-      margin-top: 0;
-    }
+  }
+  p:first-child {
+    margin-top: 0;
   }
   blockquote {
     margin: 1.5rem 3rem 0 3rem;    
@@ -126,17 +133,16 @@ const GlobalStyles = createGlobalStyle`
     margin-top: 1.5rem;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary), rgba(0, 0, 0, 0));
   }
-  table {
+  .mdx-content table {
     width: 100%;    
     border: 2px solid var(--muted);
   }
-  th, td {
+  .mdx-content th, 
+  .mdx-content td {
     border: 1px solid var(--muted);
-  }
-  th, td {
     padding: 0.5rem;
   }
-  th {
+  .mdx-content th {
     border-bottom: 2px solid var(--muted);
     background-color: rgba(var(--primary-rgb), var(--th-opacity));
   }
@@ -147,18 +153,29 @@ const GlobalStyles = createGlobalStyle`
     margin-left: .25rem;
 
     font-size: .75rem;
-    &:before {
-      content: '[';
-    }
-    &:after {
-      content: ']';
-    }
+  }
+  footnote-ref::before {
+    content: '[';
+  }
+  footnote-ref::after {
+    content: ']';
   }
   .footnote-backref {
     color: var(--primary);
     margin-left: .25rem;
   }
-
+  section[data-footnotes] h2 {
+    display: none;
+  }
+  section[data-footnotes]::before {
+    content: "";
+    display: block;
+    border: 0;
+    height: 2px;
+    margin-top: 1.5rem;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary), rgba(0, 0, 0, 0));
+  }
+  
   /* Branded Links */
   .border-gradient {
     border-image-source: linear-gradient(to right, var(--primary) 0%, var(--link) 76%);
@@ -192,10 +209,11 @@ const GlobalStyles = createGlobalStyle`
 
 export const App = ({ children }) => {
   return (
-    <ThemeProvider>
+    <StyledThemeProvider theme={{}}>
       <GlobalStyles />
-      {children}
-    </ThemeProvider>
+
+      <CustomThemeProvider>{children}</CustomThemeProvider>
+    </StyledThemeProvider>
   )
 }
 

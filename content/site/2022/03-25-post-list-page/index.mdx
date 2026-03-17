@@ -86,7 +86,7 @@ I want to go through the edges array returned from GraphQL. It is standard tutor
 
 ```graphql
 query {
-  allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+  allMdx(sort: { frontmatter: { date: DESC } }) {
     edges {
       node {
         id
