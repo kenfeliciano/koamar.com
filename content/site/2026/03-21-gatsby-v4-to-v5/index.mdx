@@ -1,0 +1,618 @@
+---
+title: Gatsby v4 to v5
+slug: gatsby-v4-to-v5
+date: 2026-03-21
+coverImage: ./brad-barmore-IQxcuHBF7Uo-unsplash.jpg
+excerpt: Upgraded Gatsby, MDX, and Tailwind. Everything broke, everything got better.
+tags: [gatsby, mdx, tailwind, react, javascript]
+implementation: 2026-03-16
+---
+
+Dependabot has been yelling at me about my Gatsby 4 site and all the vulnerabilities since November 2024! I've tried but I've always been thwarted by things I don't understand. To me, it's like the migration docs start speaking in a dream language. It's still English, but it makes no sense. This time when I got stuck, I asked AI (Copilot in this case) to help me migrate.
+Once more, I pulled up the official [Gatsby Migrating from v4 to v5](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v4-to-v5/) docs and off I went. These are the docs that say, "For most users we expect a **smooth upgrade path** as only a couple of changes will be required[.]"
+
+## Updating Dependencies
+
+Have to add `--legacy-peer-deps` or these updates don't work. I'm finding that I really don't want to do this! A lot of my issues eventually stemmed from having an invalid dependency tree. But, for now, I did need to do this.
+
+### Update Gatsby and Official Packages
+
+```bash
+npm install gatsby@latest --legacy-peer-deps
+```
+
+### Update All Gatsby-managed Packages
+
+```bash
+npm install gatsby-plugin-google-fonts@latest gatsby-plugin-image@latest
+	gatsby-plugin-manifest@latest gatsby-plugin-mdx@latest gatsby-plugin-offline@latest
+	gatsby-plugin-postcss@latest gatsby-plugin-react-helmet@latest gatsby-plugin-sharp@latest
+	gatsby-plugin-styled-components@latest gatsby-remark-images@latest
+	gatsby-source-filesystem@latest gatsby-transformer-sharp@latest --legacy-peer-deps
+```
+
+### Update React
+
+One of the options is to update React to the latest version so I go that route. It's React v19.
+
+```bash
+npm install react@latest react-dom@latest --legacy-peer-deps
+```
+
+### Update Community Plugins
+
+```bash
+npm outdated
+```
+
+```output
+Package               Current   Wanted   Latest  Location                           Depended by
+@mdx-js/mdx            1.6.22   1.6.22    3.1.1  node_modules/@mdx-js/mdx           koamar.com
+@mdx-js/react          1.6.22   1.6.22    3.1.1  node_modules/@mdx-js/react         koamar.com
+autoprefixer          10.4.21  10.4.27  10.4.27  node_modules/autoprefixer          koamar.com
+postcss                 8.5.6    8.5.8    8.5.8  node_modules/postcss               koamar.com
+prettier                2.8.8    2.8.8    3.8.1  node_modules/prettier              koamar.com
+prism-react-renderer    1.3.5    1.3.5    2.4.1  node_modules/prism-react-renderer  koamar.com
+react                  17.0.2   17.0.2   19.2.4  node_modules/react                 koamar.com
+react-dom              18.3.1   18.3.1   19.2.4  node_modules/react-dom             koamar.com
+react-is               17.0.2   17.0.2   19.2.4  node_modules/react-is              koamar.com
+react-live              2.4.1    2.4.1    4.1.8  node_modules/react-live            koamar.com
+styled-components      5.3.11   5.3.11   6.3.11  node_modules/styled-components     koamar.com
+tailwindcss            3.4.17   3.4.19    4.2.1  node_modules/tailwindcss           koamar.com
+```
+
+```bash
+# These are the ones that aren't up to "Wanted"
+npm install autoprefixer@latest postcss@latest tailwindcss@latest --legacy-peer-deps
+```
+
+### Fix Breaking API Changes
+
+#### useNavigate No Longer Supported
+
+I don't have any instance of this
+
+#### StaticQuery Component No Longer Supported
+
+I only have one instance of this and it is in a post
+
+### GraphQL Queries
+
+Schema changes if using sorting or aggregation.
+In post-list.js
+
+Wow, VS Code really helped, once I figured out what it was doing.
+
+#### Sort Changes
+
+```diff
+-allMdx(sort: { fields: frontmatter___date, order: DESC }) {
++allMdx(sort: { frontmatter: { date: DESC } }) {
+```
+
+#### Aggregation Changes
+
+I don't have any aggregation in GraphQL queries.
+
+#### Remove Obsolete Flags and Environment Variables (Gatsby)
+
+I don't use any of these.
+
+### Migration of Gatsby-plugin-mdx (this is the Big one)
+
+Oh yes, the docs helpfully say if you haven't done the [migration from v3 to v4 for `gatsby-plug-mdx`](https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#migrating-from-v3-to-v4), you'd best do that first!
+
+#### Update @mdx-js Packages
+
+```bash
+npm remove @mdx-js/mdx --legacy-peer-deps
+npm install @mdx-js/react@latest -legacy-peer-deps
+```
+
+#### Update Gatsby-config
+
+Explicitly define trailing Slash option. Gatsby no longer uses `legacy` and it is recommended to explicitly state that this value is `always`. I like the intentionality of that so I did it!
+
+```javascript
+module.exports = {
+  trailingSlash: 'always',
+  // the rest of gatsby-config.js
+}
+```
+
+Wrap remarkPlugins and rehypePlugins (I don't have those) under [mdxOptions](https://mdxjs.com/packages/mdx/#compilefile-options)
+
+```javascript
+{
+  resolve: `gatsby-plugin-mdx`,
+  options: {
+```
+
+#### Update Templates
+
+The templates are using MDXRenderer and that's not how you do it anymore. Instead of `<MDXRenderer>{site.body}</MDXRenderer>` you just use `{children}`. Also, instead of simply providing the template as the component in createPage(), you have to use postTemplate… I end up with:
+
+```javascript
+// Collection (Group) pages
+actions.createPage({
+        path: i === 0 ? `/${groupName}` : `/${groupName}/${i + 1}`,
+        component: `${postTemplate}?__contentFilePath=/${groupName}`,
+		context: {
+          limit: postsPerPage,
+          skip: i * postsPerPage,
+// Post pages
+actions.createPage({
+        path: `${collection}/${slug}`,
+        component: `${postTemplate}?__contentFilePath=${collection}/${slug}`,
+        context: { id, prev, next },
+// Tag pages
+actions.createPage({
+      path: `tags/${id}`,
+      component: `${postTemplate}?__contentFilePath=tags/${id}`,
+      context: { id },
+```
+
+Don't worry, I know they are all wrong at this point! The thing is, the documentation just says to use postTemplate, so I define the correct template for each section like they say and guess the rest. They say to use `node.internal.contentFilePath` and even though I see it right there in the docs, my past self **did not** see or understand this! So everything breaks.
+
+#### Update React
+
+I actually say as the commit message, "Update React to latest for grins".
+
+#### How'd it Go? Errors Galore!
+
+So, you know how all the kids are using AI to help with coding? Well, I'm no kid but I'm certainly having difficulty sticking with this project. There are too many cryptic errors for me to muddle through. So, I'm asking. Hey, AI! (Copilot in my case since it is sitting there all the time). Help me migrate my static website from Gatsby 4 to 5.
+
+## AI as a helper
+
+- AI is tenacious, it never gives up. I would have stopped day 1 without it giving me ideas to try.
+- AI will tell you to do things that are wrong with 100% certainty that they are correct.
+- AI will constantly tell you that this is the one! This is the clue that tells us what the real problem is. This is the change that will fix all the build errors, runtime errors, missing functionality, or whatever is wrong. 99% of the time, that is not the case.
+- Most of the time, its suggestions seemed reasonable to me since I'm no expert at any of this by any means!
+- It reminds of those just one more turn games like Civilization. I'm just going to leave it here. You don't want to know what AI in VS Code wanted me to write here!
+
+<Warning>
+
+**Let's assume from now on that whatever I try fails until I say otherwise! Even though AI says this will 100% fix your problem and it is guaranteed!**
+
+</Warning>
+
+Update GraphQL
+Lots of things have moved or gone away. AI says let's move `timeToRead` (built-in back in the day) and `slug` (actually in my `frontmatter`) to fields!
+
+- You have the syntax wrong for sorting. You need it to look like the old system.
+- Oh, now it looks like the old system, you need it to look like the new system (revert that commit!)
+- In order to sort like you want, you'll need the collection field in your GraphQL
+- Oh wait, now I can tell you with 100% certainty that you cannot sort in GraphQL. You should sort (and filter) in JavaScript. This seemed to work. It's actually nice this way. `sorted` always contains a sorted lists of posts.
+
+```javascript
+// Sorting by collection ascending then date descending
+const sorted = listEdges.slice().sort((a, b) => {
+  if (a.node.fields.collection < b.node.fields.collection) return -1
+  if (a.node.fields.collection > b.node.fields.collection) return 1
+  return new Date(b.node.frontmatter.date) - new Date(a.node.frontmatter.date)
+})
+```
+
+- Sorry I told you to move `slug` and `timeToRead`, put them back where you found them.
+
+I put slug back but forgot about timeToRead until much later.
+
+## Styling Issues
+
+I'm getting errors with twin.macro so I decide to have AI help me come up with an alternative. We run options and think that `tailwind-styled-components` is a good idea. It'll keep the same syntax so I can quickly update everything. Mostly it is just changing the import. The important thing is…it doesn't work.
+
+- Ah, you're using tailwind 4 so you need to change your imports in your global stylesheet and use a different `postcss` configuration.
+- Yeah, it's probably that warning thrown by that MagicScriptTag(). You need to provide a key for that component. That's causing the styling problem because it's not setting the correct dark and/or light theme.
+
+Seriously, I don't know what happened after this but apparently, I got a lot of the styling working. This seems strange to my memory because I know at one point, AI said, Oh you can't use tailwind 4, you have to use tailwind 3. That is what I'm running now and it is working.
+
+## React Helmet Isn't Needed
+
+I would get this warning whenever I built my website. You don't need it anymore says Gatsby. Away it went. It tells me to just put all that Helmet component stuff into HTML meta elements so I do.
+
+## Markdown in Callouts Not Working
+
+I have these callouts I use for Info, Warnings, Danger, and the like. AI says I can't do this and that's why my site won't build certain pages. I was able to use Markdown to style them as long as put blank lines between paragraphs and the like. AI says this isn't supported anymore with MDX V2. _Spoiler_, it is. But for now, I make the easy change and write a bunch of HTML. Blank lines aren't good either so I remove them. I _fix_ 67 posts with one or more callouts in them. I'm still having problems. There must be something wrong with the `TextBlock` component. We make changes there. At some point we figure out that some of my Markdown includes {} in the text. AI explains that isn't going to work and I'll need to escape those cases or, as I did, wrap them in `{code}` so it looks like code.
+
+## Styling Isn't Going Well
+
+So many problems.
+
+- I have a ThemeProvider but it is not really a ThemeProvider. It just sets dark or light mode. I need to bring in the ThemeProvider from `styled-components`. I'll alias my current one as `CustomThemeProvider`
+- My App component is wrapping the whole thing incorrectly.
+  Since this is how it actually looks now, let's put it down!
+
+```javascript
+export const App = ({ children }) => {
+  return (
+    <StyledThemeProvider theme={{}}>
+      <GlobalStyles />
+
+      <CustomThemeProvider>{children}</CustomThemeProvider>
+    </StyledThemeProvider>
+  )
+}
+```
+
+- All of my custom colors are not named semantically as Tailwind 4 requires. `container` becomes `surface-main-container`, `opposite` becomes `brand-opposite` and the like.
+- My custom colors are under .light and .dark classes. AI says it should be `html.dark` and `html.light`. That works so I leave it.
+- In Gatsby 5, `gatsby-browser` and `gatsby-ssr` should be much smaller. I've moved a lot of the code to `gatsby-wrapper`. Silly me, I rename `gatsby-browser.js` to `gatsby-browser-old.js` which eventually causes things to fail. Once AI finds out about it, it tells me that Gatsby will see any file even if it is named like that and it is overwriting my code. I'm not sure if that's true but I didn't need it so I eventually got rid of it.
+
+```javascript
+// gatsby-ssr.js
+export { wrapRootElement, onRenderBody } from './gatsby-wrapper'
+
+// gatsby-browser.js
+import './src/styles/global.css'
+import './src/styles/code-layout.css'
+export { wrapRootElement } from './gatsby-wrapper'
+```
+
+- The reason Tailwind 4 is not styling my content yet is because I haven't defined it in tailwind.config.js.
+
+```javascript
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './content/**/*.{md,mdx}'],
+  // and the rest
+```
+
+### Tailwind Specific Troubleshooting
+
+Things are still not styled. Even though AI says this will **finally** fix the issue and you won't have (insert list of problems here) anymore.
+
+- I have values in my Tailwind classes that are not supported in Tailwind 4: `h-288` is one. AI says to put a literal there `h-[288px]`. It eventually works so I leave it.
+- Tailwind 4 defines breakpoints differently so instead of `max-w-screen-lg` I have to use `max-w-(--breakpoint-lg)`. I don't remember defining this new CSS variable!
+
+### More Styling Updates
+
+- I'm using what AI calls SASS styling in my GlobalStyles components. I can't use `&`. I have to spell everything out. I do, it sticks. It's not as clean but it works.
+
+## Major Updates/downgrades
+
+Here's the first big one, AI calmly says all my problems are because:
+
+- I can't use Tailwind 4 with Gatsby 5, downgrade to 3
+- I can't use React 19 with Gatsby 5, downgrade to 18
+- I can't use `@mdx-js/react@3.1.1` with Gatsby 5, downgrade to `@mdx-js/react@2.3.0` and bring back `@mdx-js/mdx@2.3.0`
+- I can't use tailwind-styled-components with tailwindcss 3.4.14 so that has to go.
+- All those colors you took out of your tailwind.config.js and renamed, you should put them all back.
+- But what about `tailwind-styled-components`? We chat a bit and decide to use `styled` from `styled-components` for anything that should go on the component. Then when the component is used, add the Tailwind classes there.
+- At one point, we're trying to use `@apply` in the styled component. That does not work. AI often tells me how what I have is wrong and I get to casually explain that's what it said to try.
+- Also, there's a new option enabled for `gatsby-plugin-styled-components`, `pure: true`. It's still there but I wonder what it does. Lots of questions still!
+
+```javascript:title=Content.js
+// Content component
+import * as React from 'react'
+import { useContext } from 'react'
+import styled from 'styled-components'
+
+import { MenuContext } from '../components'
+
+const ContentWrapper = styled.div.attrs((props) => ({
+  className: `p-4 mx-4 ${props.shiftClass} ${props.className || ''}`,
+}))`
+  border-radius: 0.5rem; /* rounded-lg */
+  background: var(--container); /* bg-container */
+  box-shadow: var(--shadow-lg); /* shadow-lg */
+`
+
+export const Content = ({ menuShift, children, className }) => {
+  const { menuOpen } = useContext(MenuContext)
+  const shiftClass = menuOpen && menuShift ? 'mt-40' : 'mt-6'
+
+  return (
+    <ContentWrapper shiftClass={shiftClass} className={className}>
+      {children}
+    </ContentWrapper>
+  )
+}
+```
+
+Sometimes my components just have a comment saying it is just for structure.
+
+- postcss.config is back to the way it was before all this
+
+### Now it Won't Build
+
+- This is when AI says it's not going to run on Node v22 so I start using v18 (late v20 and much later, v22 again)
+- Even then, it is still breaking. There are lots of cryptic error messages which AI is very happy to digest. We end up, successfully, fixing the dependency tree with npm magic. I don't think I'd ever be able to deal with this on my own. This is one of those insane things about web development I don't get. Check out what's in my `package.json`!
+
+```json
+"overrides": {
+    "schema-utils": "3.3.0",
+    "babel-loader": {
+      "schema-utils": "2.7.1"
+    },
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.16",
+    "ajv": "6.12.6",
+    "ajv-keywords": "3.5.2",
+    "ajv-formats": "1.6.1",
+    "webpack-dev-middleware": "4.3.0"
+  },
+```
+
+What the heck? There are a lot of iterations of overrides and resolutions. Eventually, I just have overrides and that seems to do the trick.
+
+<Info>
+
+**This is my understanding of this at this time**
+
+Every npm package brings in their own dependencies. Sometimes, those dependencies have their own dependencies. For example, I'm getting errors because `ajv` does not have a function that Gatsby thinks it should have.
+
+In the case of `schema-utils`, Gatsby requires `3.3.0` while babel-loader requires `2.7.1`.
+
+`overrides` is a field in `package.json` that allows you to specify versions of dependencies that should be used instead of the ones specified by the packages you depend on. It took a long time to figure out which overrides were correct! I worry this won't be as maintainable as I'd like.
+
+</Info>
+
+## Back to Styling
+
+- The site is building again but styling is wrong in many places. This is when we get rid of `@apply` in the styled-components. Anything that is applied is now placed in the `className` of the component.
+- Content-wise, the cards that should show **my** excerpt are showing a generated one based on the content of the page. I've got excerpt at the root of the GraphQL and that's wrong, it should be `frontmatter.excerpt`.
+- I also replace some missing styling on dates that appear in the `PostCard` component
+- There's no space between any of the cards. It's still trying to `@apply` styling. This is when I learn about styled-components `attrs`
+
+```javascript:title=single-post.js
+// I want to use these components more than just once (for structure). This is how to do it.
+const InfoWrapper = styled.div.attrs({
+  className: 'flex flex-col items-center sm:flex-row',
+})``
+
+const InfoSeparator = styled.span.attrs({
+  className: 'hidden sm:inline',
+})``
+```
+
+- The tags on the pages are not styled. Again, there is an `@apply` that needs to be removed.
+- All this messing around made it so the `PostWrapper` component was not being exported.
+- I redid the tailwind classes for the `PostContainer` so it would display as I wanted. I ended up just discarding everything AI said to do.
+- Also, for some reason, I had the container background color as the background color for the site so it looked incorrect. Got rid of that from SiteWrapper.
+
+## MDX Files Are Not Always Generating
+
+This is when I fix the curly braces in plain Markdown text that is messing up MDX V2.
+
+- AI says that the template function has to be a default export as a function and cannot be an arrow function with an export default later. Whatever, it is still there.
+- We start trying to use MDXProvider to wrap children which does not work.
+- It's also where I figure out what to put in this new component. It requires internal.contentFilePath which I did not have in my GraphQL queries. Oh if I only read the docs better!
+- **Many iterations later**
+  - Change `gatsby-config` to use ESM
+  - Try different versions of plugins
+  - Clean-up of GraphQL queries and combine them all into `gatsby-node`
+  - Migrate most of `gatsby-browser` and `gatsby-ssr` to `gatsby-wrapper`
+  - Add classes for `mdx-content` to specify table styles (may not have done anything)
+  - Update how styled-components are working
+  - Move index.js (home page) to templates
+  - Change all templates to use `pageContext` and GraphQL query from `gatsby-node`
+    - The templates sure look cleaner without having the GraphQL query in there too.
+  - AI also had me change the name of one of my posts from `post-template` to `post-template-writeup` so as to not confuse Gatsby if it spotted a file named `post-template`.
+  - I'm using `remark-gfm` to do Markdown table formatting properly.
+  - Now that `gatsby-config` is using ESM, it does not have access to `__filename` and `__dirname`, but could deal with that.
+
+```javascript:title=gatsby-config.mjs
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+```
+
+This was truly the most brutal part of the whole migration as I thought it would be. I was shocked when I got it working.
+
+## Syntax Highlighting
+
+When the MDX started finally generating, syntax highlighting stopped working. I thought this would be fairly simple but, as with everything else, many iterations!
+
+- At one point, AI had me put `mdx.table` and `mdx.pre` in my components list instead of `table` and `pre` as I had always. Well, back to my way.
+  All is great except, after a bunch of other fixes, I see that highlighting is not working.
+- After many other attempts at a fix, AI and I (well AI) wrote a rehype plug-in. It converts the Meta from the HAST (yes?) to `data-meta` that I can see and work with.
+- This works perfectly!
+
+```javascript
+// rehype-meta-to-data-meta.js
+import { visit } from 'unist-util-visit'
+
+export default function rehypeMetaToDataMeta() {
+  return (tree) => {
+    visit(tree, 'element', (node) => {
+      if (node.tagName !== 'code') return
+
+      const meta = node.data && node.data.meta
+      if (!meta) return
+
+      node.properties = node.properties || {}
+      node.properties['data-meta'] = meta
+    })
+  }
+}
+```
+
+Add this new plugin to the `rehypePlugins` list in `gatsby-config` and then update the `preToCodeBlock` function to look for `data-meta` instead of `meta`.
+
+```javascript
+// in gatsby-config.mjs
+import rehypeMetaToDataMeta from './plugins/rehype-meta-to-data-meta.mjs'
+// ...
+{
+  resolve: `gatsby-plugin-mdx`,
+  options: {
+	extensions: [`.md`, `.mdx`],
+	mdxOptions: {
+	  remarkPlugins: [remarkGfm],
+	  rehypePlugins: [rehypeMetaToDataMeta],
+	},
+	gatsbyRemarkPlugins: [
+	  {
+		resolve: `gatsby-remark-images`,
+		options: {
+		  maxWidth: 1200,
+		  quality: 90,
+		  linkImagesToOriginal: true,
+		},
+	  },
+	],
+  },
+},
+
+// in gatsby-wrapper.js - a new preToCodeBlock function that works with MDX 2
+function preToCodeBlockV2(preProps) {
+  const child = preProps.children
+
+  if (
+    child &&
+    child.props &&
+    typeof child.props.children === 'string' &&
+    child.props.className &&
+    child.props.className.startsWith('language-')
+  ) {
+    const language = child.props.className.replace('language-', '')
+    const metastring = child.props['data-meta']
+    return {
+      codeString: child.props.children.trim(),
+      language,
+      metastring,
+      ...child.props,
+    }
+  }
+
+  return null
+}
+```
+
+## Final Bits?
+
+The site is basically working except for a few things that are not perfect. What are these last bits?
+
+### Inline Pictures Are Gone
+
+Oh look at that, my posts have pictures in them but they are broken links now.
+I've gone and deleted `gatsbyRemarkPlugins` configuration from `gatsby-config`. That's an easy fix!
+
+### Pages Are Not Sorting Within the Collection
+
+- I had two sorts going on. But now that I've combined queries into one source of truth, I should just use that!
+- Sorting for everything is now the same.
+
+### My Non-post Pages Don't Have Titles
+
+- The browser either says `undefined` or whatever the last post was. I added Head to `post-list` and `single-tag` templates to fix this.
+
+```jsx:title=post-list.js
+export const Head = ({ pageContext }) => {
+  const { collection } = pageContext
+  const titles = {
+    blog: "Ken's Blog",
+    project: 'Projects and Creations',
+    site: 'Site Development',
+  }
+  return <SEO title={titles[collection] || 'Posts'} />
+}
+```
+
+### The Collections Are Missing Intro Text
+
+My collection pages are MDX too. They have some Markdown text I'd like to display on the first page. That has stopped. This one took a long time to work through! But…
+
+- I was missing body in the GraphQL query.
+- I had to put back in, component: `${postListTemplate}__contentFilePath=${sitePage.node.internal.contentFilePath}` when creating pages for the collections.
+- AI said my `postList` component should be capitalized so we made it `PostList`. I don't remember it ever being `postList`!
+
+### How About timeToRead?
+
+I thought this would be easy, get back `timeToRead` but it was not as easy.
+
+- Create a new `field` at the root of the GraphQL
+- Learn about `createResolvers`
+
+```javascript:title=gatsby-node.js
+exports.createResolvers = ({ createResolvers }) => {
+  createResolvers({
+    Mdx: {
+      timeToRead: {
+        type: 'Int',
+        resolve(source) {
+          const raw = source.body || ''
+          const words = raw.split(/\s+/).filter(Boolean).length
+          return Math.ceil(words / 240)
+        },
+      },
+    },
+  })
+}
+```
+
+### My Links for PDFs Aren't Styled
+
+Surely this one will be easy (nope!). Lots of hemming and hawing and:
+
+- Add `MarkdownLink` to the component list
+- Instead of using `wrapPageElement` which AI said was CRITICAL, just wrap the App component with `wrapRootElement` after all.
+- So to get it to look like I want with blank lines, looking like an external link, and just opening the darn PDF in a separate tab, the Markdown looks like this. The plain text in the component works if it is treated as a JavaScript expression. Otherwise, it is seen as something that needs to be in a paragraph.
+
+```jsx
+<p>
+  <MarkdownLink href='/charts/twelve-chord-tune-c.pdf'>
+    {'Download PDF - C version'}
+  </MarkdownLink>
+</p>
+```
+
+Renders correctly as:
+
+```html:title=Simplified rendered HTML
+<p>
+	<a href="/charts/twelve-chord-tune-c.pdf" class="inline-link external-link border-fadeaway
+	 	hover:bg-brandedSurface focus:bg-brandedSurface"
+		target="_blank" rel="noreferrer noopener nofollow">
+		Download PDF - C version
+	</a>
+</p>
+```
+
+### More Fields to Bring Back
+
+I had removed a few more fields during the migration so I brought back:
+
+- implementation as a formatted date
+- created as a formatted date
+- and createdCirca
+
+### More Formatting
+
+- On the Cards, if there is an updated value, it sometimes sits in the middle of the card and sometimes sits right next to created. I'd like the two dates close together.
+  - Easy fix, wrap both dates in a div so flexbox keeps them together
+- You know, I think my old Markdown callouts should work. I try it and it does. So I update those 67 files again!
+- Content should be slightly narrower than the cover image (1 rem on both sides)
+  - During the migration, we had put a width and max-width of 100% on Content so it didn't care what we put for margins. Once that was gone, I could put mx-4 and it was perfect again.
+- What's with the huge word "Footnotes"? Where's my lovely line?
+  - Added some CSS for that. It **is** duplicating what I had for an `<hr />`
+
+### More Non-formatting
+
+- The tag pages aren't sorting newest first
+  - Use `newestFirst` list of posts that is sorted instead of `allPosts` which is not! Again, one source of truth and not a bunch!
+
+## Clean-up
+
+- Remove exports of `wrapPageElement`
+- Remove Spotify player and `react-live` from test post since I never use these in reality.
+
+## Next Steps
+
+There are some things that AI and I did that I question.
+
+- Node 22.x works just fine so what about Gatsby 19?
+- Can I put back in the `&` styling in the GlobalStyles component?
+
+Plus, there are a few tasks I'd like to handle now that it is migrated.
+
+- Footnotes go to the footnote but the link to return does not return.
+- Another Gatsby warning is to switch to `gastby-plugin-image` for images in MDX.
+- Whenever I refresh while in development mode, the typography is all messed up. I have to refresh twice to get it back to normal.
+- I'd rather not have duplicate styling code for `<hr />` and the line in footnotes.
+
+##### Attributions
+
+Photo by [Photographer (@bradbarmore)](https://unsplash.com/@bradbarmore?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/photo-of-man-climbing-mountain-IQxcuHBF7Uo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+I asked Unsplash for some pictures related to upgrade. Well, here's a mountain climber going up a grade. It's a nice photo so there ya go!
