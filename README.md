@@ -10,8 +10,7 @@ This is an experiment on learning and creating in public. Fun!
 
 ## Current Status
 
-One post complete!
-Menus, dark mode, landing pages for the different content sections, all done. Code syntax highlighting works.
+It's finally running on Gatsby v5. That took a lot of sweat and tears for me. The transition from v4 was not as easy as everything that came before. I've been working on more subtle things now, plus adding more music (to play, not listen to, yet), and more about creating the site.
 
 ## Acknowledgments
 
@@ -32,6 +31,7 @@ Menus, dark mode, landing pages for the different content sections, all done. Co
 - [Gatsby](https://www.gatsbyjs.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Headroom](https://kyleamathews.github.io/react-headroom/)
+- [Styled Components](https://styled-components.com/)
 
 ## License for Site
 
