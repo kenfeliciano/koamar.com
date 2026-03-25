@@ -14,7 +14,7 @@ import {
   Sharp,
 } from './src/components'
 
-const MagicScriptTag = () => {
+export const MagicScriptTag = () => {
   const codeToRunOnClient = `
     (function() {
       function getInitialTheme() {
@@ -46,9 +46,6 @@ const MagicScriptTag = () => {
 
   // eslint-disable-next-line react/no-danger
   return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />
-}
-export const onRenderBody = ({ setHeadComponents }) => {
-  setHeadComponents([<MagicScriptTag key='magic-script' />])
 }
 
 function preToCodeBlockV2(preProps) {
