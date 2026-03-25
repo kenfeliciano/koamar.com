@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
-import { MagicScriptTag } from './gatsby-wrapper'
+import { wrapRootElement, MagicScriptTag } from './gatsby-wrapper'
 
 export const onRenderBody = ({ setHeadComponents, setPreBodyComponents }) => {
   // MagicScriptTag MUST run before hydration
