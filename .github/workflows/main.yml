@@ -54,3 +54,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./public/
           server-dir: ./
+          retry: 3
+          retry-delay: 5000
